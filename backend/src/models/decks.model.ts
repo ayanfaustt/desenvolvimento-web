@@ -1,5 +1,8 @@
 import { DataTypes } from "sequelize";
 import { db } from "../database/db";
+import { CardsModel } from "./cards.model";
+import { UserModel } from "./user.models";
+import { TagsModel } from "./tags.model";
 
 export const DecksModel = db.define("decks", {
     id: {
@@ -18,3 +21,16 @@ export const DecksModel = db.define("decks", {
     }
 });
 
+DecksModel.hasMany(CardsModel, {
+    foreignKey: "deck_id",
+    sourceKey: "id"
+});
+
+DecksModel.belongsToMany(TagsModel, {
+    through: "deckTags"
+});
+CardsModel.belongsTo(DecksModel);
+
+TagsModel.belongsToMany(DecksModel,{
+    through: "deckTags"
+});

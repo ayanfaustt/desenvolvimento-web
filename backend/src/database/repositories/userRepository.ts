@@ -3,6 +3,7 @@ import { UserModel } from "../../models/user.models";
 import { MetricsModel } from "../../models/metrics.model";
 import { DecksModel } from "../../models/decks.model";
 import { Model } from "sequelize";
+import { SummariesModel } from "../../models/summaries.model";
 
 
 export const createUser = async (username: string): Promise<void> => {
@@ -23,12 +24,13 @@ export const createUser = async (username: string): Promise<void> => {
 };
 
 
+
 export const getUser = async (username: string): Promise<Model> => {
     const userInfo = await UserModel.findOne({
         where:{
             username : username
         },
-        include: [MetricsModel]
+        include: [MetricsModel, DecksModel, SummariesModel]
     });
 
     if(!userInfo) throw new Error("User not found !");
@@ -45,7 +47,7 @@ export const deleteUser = async (username: string): Promise<void> => {
             cascade: true
         });
     }catch(error){
-        throw new Error();
+        throw new Error("The operation can not be completed !");
     }
 
 };

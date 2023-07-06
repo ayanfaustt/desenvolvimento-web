@@ -20,15 +20,18 @@ export const UserModel = db.define("user", {
 
 UserModel.hasMany(DecksModel, {
     foreignKey: "user_id",
-    constraints: true
+    sourceKey: "id"
 });
+DecksModel.belongsTo(UserModel);
 
 UserModel.hasMany(SummariesModel, {
     foreignKey: "user_id",
-    constraints: true,
+    sourceKey: "id"
 });
 
 UserModel.hasMany(MetricsModel, {
     foreignKey: "user_id",
     sourceKey: "id"
 });
+
+SummariesModel.belongsTo(UserModel);

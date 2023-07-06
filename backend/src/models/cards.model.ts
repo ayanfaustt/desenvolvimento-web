@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { db } from "../database/db";
+import { DecksModel } from "./decks.model";
 
 export const CardsModel = db.define("cards", {
     id:{

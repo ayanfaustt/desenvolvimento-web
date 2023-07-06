@@ -1,5 +1,7 @@
 import { DataTypes } from "sequelize";
 import { db } from "../database/db";
+import { DecksModel } from "./decks.model";
+import { SummariesModel } from "./summaries.model";
 
 export const TagsModel = db.define("tags", {
     id:{
@@ -13,4 +15,13 @@ export const TagsModel = db.define("tags", {
         allowNull: false
     }
 
+});
+
+
+TagsModel.belongsToMany(SummariesModel, {
+    through: "summarieTags"
+});
+
+SummariesModel.belongsToMany(TagsModel, {
+    through: "sumarrieTags"
 });

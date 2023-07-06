@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import { UserModel } from "../models/user.models";
+import { Model } from "sequelize";
 //repositories
 import { 
     getUser as getUserRepository, 
@@ -8,10 +8,15 @@ import {
 } from "../database/repositories/userRepository";
 
 import {
+    createSummarie as createSummarieRepository,
+    getSummarie as getSummarieRepository,
+    deleteSummarie as deleteSummarieRepository
+} from "../database/repositories/summarieRepository"
+import {
     createMetrics as createMetricsRepository 
 } from "../database/repositories/metricRepository"
 
-import { Model } from "sequelize";
+
 import { 
     IGetUser,
     IMetricsParams,
@@ -81,6 +86,52 @@ class UserController {
 
             return res.status(200).send({message: "User metrics updated !"})
         }catch(error){
+            if (error instanceof Error) return res.status(400).send({message: error.message});
+            
+            return res.status(400).send({message: error});
+        }
+    }
+
+    //summaries
+    async getSummaries (req: Request, res: Response): Promise<Response> {
+        try {
+            const { userId: id } = req.params;
+
+            const summarie = await getSummarieRepository(id);
+
+            return res.status(200).send(summarie);
+        } catch (error) {
+            if(error instanceof Error ) return res.status(400).send({message: error.message});
+
+            return res.status(400).send({message: error});
+        }
+    }
+
+    async createSummarie (req: Request, res: Response): Promise<Response> {
+        try {
+            const { userId: id } = req.params;
+
+            const { summarie_title, summarie_content } = req.body;
+
+            await createSummarieRepository(id, summarie_title, summarie_content); 
+
+            return res.status(200).send({message: "Summarie created !"})
+        } catch (error) {
+            if (error instanceof Error) return res.status(400).send({messege: error.message});
+
+            return res.status(400).send({message: error});
+            
+        }
+    }
+
+    async deleteSummarie (req: Request, res: Response): Promise<Response> {
+        try {
+            const { summarieId: id } = req.params;
+
+            await deleteSummarieRepository(id);
+
+            return res.status(200).send({message: "summarie deleted !"})
+        } catch (error) {
             if (error instanceof Error) return res.status(400).send({message: error.message});
             
             return res.status(400).send({message: error});

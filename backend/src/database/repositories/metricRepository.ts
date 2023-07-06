@@ -5,7 +5,7 @@ import { DecksModel } from "../../models/decks.model";
 import { Model } from "sequelize";
 
 
-export const createMetrics =async (user_id: string, reviews: number, last_login: Date): Promise<void> => {
+export const createMetrics = async (user_id: string, reviews: number, last_login: Date): Promise<void> => {
     
     const newDate = new Date(last_login)
     console.log(newDate)

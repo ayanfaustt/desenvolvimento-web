@@ -11,33 +11,12 @@ import { TagsModel } from "../models/tags.model";
 //User table associations
 
 //Deck table associations
-DecksModel.hasMany(CardsModel, {
-    foreignKey: "deck_id",
-    constraints: true,
-});
-DecksModel.belongsTo(UserModel);
-DecksModel.belongsToMany(TagsModel, {
-    through: "deckTags"
-});
 
 //Card table associations
-CardsModel.hasOne(DecksModel);
 
 //Metrics table associations
 
 
 //Tags table associations
-TagsModel.belongsToMany(DecksModel,{
-    through: "deckTags"
-});
-
-TagsModel.belongsToMany(SummariesModel, {
-    through: "summarieTags"
-});
 
 //Summaries table associations
-SummariesModel.belongsTo(UserModel);
-
-SummariesModel.belongsToMany(TagsModel, {
-    through: "sumarrieTags"
-});
