@@ -1,0 +1,62 @@
+.content {
+    display: flex;
+    gap: 120px;
+    margin: auto;
+}
+
+.content-left {
+    padding-top: 20px;
+}
+
+.content-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.box-remember {
+    display: flex;
+    gap: .2rem;
+    margin-top: .4rem;
+}
+
+.forgot-register {
+    display: flex;
+    justify-content: space-between;
+    margin-top: .5rem;
+}
+
+.forgot-register p {
+    font-size: 12px;
+    color: #006699;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.login-btn {
+    width: 100%;
+    border-radius: .5rem;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border: none;
+    background-color: #004257;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: #DAE9F1;
+}
+
+.teste {
+    width: 400px;
+    height: 200px;
+    background-color: #004257;
+}
