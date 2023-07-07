@@ -11,26 +11,17 @@ export const DecksModel = db.define("decks", {
         allowNull: false,
         primaryKey: true
     },
-    user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
     deck_name:{
         type: DataTypes.STRING(200),
         allowNull: false
     }
+},{
+    timestamps: false,
 });
 
-DecksModel.hasMany(CardsModel, {
-    foreignKey: "deck_id",
-    sourceKey: "id"
-});
+DecksModel.hasMany(CardsModel);
 
-DecksModel.belongsToMany(TagsModel, {
-    through: "deckTags"
-});
+TagsModel.hasMany(DecksModel);
+DecksModel.belongsTo(TagsModel)
+
 CardsModel.belongsTo(DecksModel);
-
-TagsModel.belongsToMany(DecksModel,{
-    through: "deckTags"
-});

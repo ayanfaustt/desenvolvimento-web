@@ -3,12 +3,22 @@ import UserController from "./controllers/userController";
 
 export const router = express.Router();
 
+router.get("/user/:username", UserController.getUser);
+router.post('/user/create/:username', UserController.createUser);
 
-router.post('/createUser/:username', UserController.createUser);
-router.get("/:username", UserController.getUser);
+router.post("/metrics/:userId", UserController.updateMetrics);
 
-router.post("/metrics/:userId", UserController.updateMetrics)
-
+//summaries
 router.get("/summaries/:userId", UserController.getSummaries);
-router.post("/summaries/createSummarie/:userId", UserController.createSummarie);
+router.post("/summaries/create/:userId", UserController.createSummarie);
 router.delete("/summaries/delete/:summarieId", UserController.deleteSummarie);
+
+//decks
+router.get("/decks/:deckId", UserController.getDeck);
+router.post("/decks/create/:userId", UserController.createDeck);
+router.delete("/decks/delete/:deckId", UserController.deleteDeck);
+
+//cards
+router.get("/cards/:deckId", UserController.getCard);
+router.post("/cards/create/:deckId", UserController.createCard);
+router.delete("/cards/delete/:deckId", UserController.deleteCard);

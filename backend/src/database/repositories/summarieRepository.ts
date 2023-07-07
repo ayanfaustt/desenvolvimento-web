@@ -3,13 +3,14 @@ import { SummariesModel } from "../../models/summaries.model";
 
 
 
-export const createSummarie = async (userId: string, summarieName: string, summarieContent?: string): Promise<void> => {
+export const createSummarie = async (userId: string, summarieName: string, summarieContent?: string, tagId?: string): Promise<void> => {
     //TODO confirm if a summarie name can be duplicated
 
     const isSummarieCreated = await SummariesModel.create({
-        user_id: userId,
+        userId: userId,
         summarie_name: summarieName,
-        summarie_content: summarieContent
+        summarie_content: summarieContent,
+        tagId: tagId
     });
 
     if(!isSummarieCreated) throw new Error("Summarie can not be created !")

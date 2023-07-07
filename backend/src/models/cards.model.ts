@@ -9,10 +9,6 @@ export const CardsModel = db.define("cards", {
         allowNull: false,
         primaryKey: true
     },
-    deck_id:{
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
     card_name:{
         type: DataTypes.STRING(200),
         allowNull: false
@@ -21,4 +17,6 @@ export const CardsModel = db.define("cards", {
         type: DataTypes.TEXT,
         allowNull: true
     }
+},{
+    timestamps: false,
 });

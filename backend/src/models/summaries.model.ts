@@ -11,10 +11,6 @@ export const SummariesModel = db.define("summaries", {
         allowNull: false,
         primaryKey: true
     },
-    user_id:{
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
     summarie_name:{
         type: DataTypes.STRING(200),
         allowNull: false
@@ -23,4 +19,8 @@ export const SummariesModel = db.define("summaries", {
         type: DataTypes.TEXT,
         allowNull: true
     }
+},{
+    timestamps: false,
 });
+
+TagsModel.hasMany(SummariesModel);

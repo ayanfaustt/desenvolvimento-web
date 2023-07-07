@@ -18,10 +18,3 @@ export const TagsModel = db.define("tags", {
 });
 
 
-TagsModel.belongsToMany(SummariesModel, {
-    through: "summarieTags"
-});
-
-SummariesModel.belongsToMany(TagsModel, {
-    through: "sumarrieTags"
-});

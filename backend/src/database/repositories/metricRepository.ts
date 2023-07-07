@@ -11,7 +11,7 @@ export const createMetrics = async (user_id: string, reviews: number, last_login
     console.log(newDate)
 
     const metric = await MetricsModel.create({
-        user_id: user_id,
+        userId: user_id,
         reviews: reviews,
         last_login: newDate
     });

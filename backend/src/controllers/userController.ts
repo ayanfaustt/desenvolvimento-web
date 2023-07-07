@@ -11,11 +11,23 @@ import {
     createSummarie as createSummarieRepository,
     getSummarie as getSummarieRepository,
     deleteSummarie as deleteSummarieRepository
-} from "../database/repositories/summarieRepository"
+} from "../database/repositories/summarieRepository";
 import {
     createMetrics as createMetricsRepository 
-} from "../database/repositories/metricRepository"
+} from "../database/repositories/metricRepository";
 
+import {
+    createCard as createCardRepository,
+    deleteCard as deleteCardRepository,
+    getCard as getCardRepository,
+    getCards as getCardsRepository
+} from "../database/repositories/cardRepository";
+
+import {
+    createDeck as createDeckRepository,
+    deleteDeck as deleteDeckRepository,
+    getDeck as getDeckRepository
+} from "../database/repositories/deckRepository";
 
 import { 
     IGetUser,
@@ -137,6 +149,113 @@ class UserController {
             return res.status(400).send({message: error});
         }
     }
+
+    //decks
+
+    async getDeck (req: Request, res: Response): Promise<Response<Model>> {
+        try {
+            const { deckId: id } = req.params;
+
+            const deck = await getDeckRepository(id);
+
+            return res.status(200).send(deck);
+        } catch (error) {
+            if(error instanceof Error ) return res.status(400).send({message: error.message});
+
+            return res.status(400).send({message: error});
+        }
+    }
+
+    async createDeck (req: Request, res: Response): Promise<Response> {
+        try {
+            const { userId: id } = req.params;
+            const { deckName, tagId } = req.body;
+
+            await createDeckRepository(id, deckName, tagId); 
+
+            return res.status(200).send({message: "Deck created !"});
+        } catch (error) {
+            if (error instanceof Error) return res.status(400).send({messege: error.message});
+
+            return res.status(400).send({message: error});
+            
+        }
+    }
+
+    async deleteDeck (req: Request, res: Response): Promise<Response> {
+        try {
+            const { deckId: id } = req.params;
+
+            await deleteDeckRepository(id);
+
+            return res.status(200).send({message: "Deck deleted !"})
+        } catch (error) {
+            if (error instanceof Error) return res.status(400).send({message: error.message});
+            
+            return res.status(400).send({message: error});
+        }
+    }
+
+    //cards
+    async getCard (req: Request, res: Response): Promise<Response<Model>> {
+        try {
+            const { deckId: id } = req.params;
+
+            const card = await getCardRepository(id);
+
+            return res.status(200).send(card);
+        } catch (error) {
+            if(error instanceof Error ) return res.status(400).send({message: error.message});
+
+            return res.status(400).send({message: error});
+        }
+    }
+
+    async getCards (req: Request, res: Response): Promise<Response<Model[]>> {
+        try {
+            const { deckId: id } = req.params;
+
+            const cards = await getCardsRepository(id);
+
+            return res.status(200).send(cards);
+        } catch (error) {
+            if(error instanceof Error ) return res.status(400).send({message: error.message});
+
+            return res.status(400).send({message: error});
+        }
+    }
+
+    async createCard (req: Request, res: Response): Promise<Response> {
+        try {
+            const { deckId: id } = req.params;
+            const { cardName, cardContent } = req.body;
+
+            await createCardRepository(id, cardName, cardContent); 
+
+            return res.status(200).send({message: "Card created !"});
+        } catch (error) {
+            if (error instanceof Error) return res.status(400).send({messege: error.message});
+
+            return res.status(400).send({message: error});
+            
+        }
+    }
+
+    async deleteCard (req: Request, res: Response): Promise<Response> {
+        try {
+            const { cardId: id } = req.params;
+
+            await deleteCardRepository(id);
+
+            return res.status(200).send({message: "Card deleted !"})
+        } catch (error) {
+            if (error instanceof Error) return res.status(400).send({message: error.message});
+            
+            return res.status(400).send({message: error});
+        }
+    }
+
+
 
 };
 
