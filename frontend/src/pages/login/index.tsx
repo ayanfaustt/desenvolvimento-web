@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import TextInput from '../../components/textInput';
 import './styles.css';
 import TextField from '../../components/textField';
@@ -25,8 +25,7 @@ export default function LoginPage(props: LoginPageProps) {
         <main className='content'>
 
             <div className="content-left">
-                <div className='teste'>
-                </div>
+                <img src="study.png" alt="study icon" width={270} />
             </div>
 
             <div className="content-right">
@@ -51,7 +50,7 @@ export default function LoginPage(props: LoginPageProps) {
                     <button className='login-btn'>Login</button>
                 </div>
             </div>
-            
+
         </main>
     );
 }

@@ -1,6 +1,13 @@
-.centered-content {
+.content-centered {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: auto;
     height: 100vh;
+}
+
+@media (min-width: 1200px) {
+    .content-centered{
+        max-width: 1350px;
+    }
 }

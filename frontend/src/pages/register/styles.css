@@ -5,7 +5,9 @@
 }
 
 .content-left {
+    display: flex;
     padding-top: 20px;
+    align-items: center;
 }
 
 .user-info {
@@ -14,30 +16,19 @@
     gap: .8rem;
 }
 
-.box-remember {
-    display: flex;
-    gap: .2rem;
-    margin-top: .4rem;
-}
-
-.forgot-register {
-    display: flex;
-    justify-content: space-between;
+.login-page {
     margin-top: .5rem;
-}
-
-.forgot-register p {
     font-size: 12px;
     color: #006699;
 }
 
-.login {
+.register {
     display: flex;
     justify-content: center;
-    margin-top: 1.5rem;
+    margin-top: 1.5rem;    
 }
 
-.login-btn {
+.register-btn {
     width: 100%;
     border-radius: .5rem;
     padding-top: 7px;
@@ -48,8 +39,9 @@
     color: #DAE9F1;
 }
 
-.teste {
+.img {
     width: 400px;
     height: 200px;
     background-color: #004257;
+    border-radius: 30px;
 }
