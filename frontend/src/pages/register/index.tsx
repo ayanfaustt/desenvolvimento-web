@@ -27,7 +27,7 @@ export default function RegisterPage(props: RegisterPageProps) {
                 </form>
 
                 <div className='login-page'>
-                    <p>Already have an account? Sign in</p>
+                    <p className='p'>Already have an account? Sign in</p>
                 </div>
 
                 <div className="register">

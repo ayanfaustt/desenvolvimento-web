@@ -43,8 +43,8 @@ export default function LoginPage(props: LoginPageProps) {
                     <TextField name='Remember me' />
                 </div>
                 <div className='forgot-register'>
-                    <p>Forgot your password</p>
-                    <p>New? Register</p>
+                    <p className='p'>Forgot your password</p>
+                    <p className='p'>New? Register</p>
                 </div>
                 <div className="login">
                     <button className='login-btn'>Login</button>
