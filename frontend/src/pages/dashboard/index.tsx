@@ -8,7 +8,7 @@ interface DashboardPageProps {
 export default function DashboardPage(props: DashboardPageProps) {
     return (
         <main className='sidebar-content'>
-            <SideBar></SideBar>
+            <SideBar />
             <div className='dashboard-content'>
                 <div className='box-center'>
                     <div className='content-inside'>

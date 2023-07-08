@@ -4,6 +4,7 @@ import React from 'react';
 import Container from '../components/container';
 import DashboardPage from '../pages/dashboard';
 import RegisterPage from '../pages/register';
+import ConfigPage from '../pages/config';
 
 export const routes = createBrowserRouter([
     {
@@ -17,5 +18,9 @@ export const routes = createBrowserRouter([
     {
         path: "/register",
         element: <Container comp={<RegisterPage/>} />
+    },
+    {
+        path: "/config",
+        element: <ConfigPage />
     }
 ])

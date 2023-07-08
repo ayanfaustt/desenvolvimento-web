@@ -1,0 +1,20 @@
+.sidebar-content {
+    display: flex;
+    justify-content: left;
+
+}
+
+.dashboard-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.box-center {
+    width: 900px;
+    height: 550px;
+    background-color: #DAE9F1;
+    border-radius: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

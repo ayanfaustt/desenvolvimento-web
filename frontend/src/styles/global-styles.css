@@ -6,7 +6,7 @@
 }
 
 body {
-  background-color: #F1F5F6;
+  background-color: #F1F5F6 !important;
 }
 
 p {
