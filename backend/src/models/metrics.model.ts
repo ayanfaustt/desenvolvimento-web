@@ -17,8 +17,7 @@ export const MetricsModel = db.define("metrics", {
         type: DataTypes.STRING(50),
         allowNull: false
     },
-    last_login:{
+    metrics_date:{
         type: DataTypes.DATE,
-        allowNull: false
     }
 });

@@ -28,6 +28,20 @@ export const getDeck = async (deckId: string): Promise<Model> => {
     return deck;
 };
 
+export const listDecks = async (userId: string): Promise<Model[]> => {
+    try{
+        const deck = await DecksModel.findAll({
+                where: {
+                    userId : userId
+                }
+            });
+
+        return deck;
+    } catch (error) {
+        throw new Error("The operation can not be completed !")
+    }
+};
+
 export const deleteDeck = async (deckId: string): Promise<void> =>{
     try {
         await DecksModel.destroy({

@@ -2,6 +2,7 @@ import { DataTypes } from "sequelize";
 import { db } from "../database/db";
 import { DecksModel } from "./decks.model";
 import { SummariesModel } from "./summaries.model";
+import { UserModel } from "./user.models";
 
 export const TagsModel = db.define("tags", {
     id:{
@@ -16,5 +17,3 @@ export const TagsModel = db.define("tags", {
     }
 
 });
-
-

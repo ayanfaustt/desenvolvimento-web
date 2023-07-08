@@ -1,4 +1,4 @@
-import { Model } from "sequelize";
+import { Model, where } from "sequelize";
 import { CardsModel } from "../../models/cards.model";
 
 
@@ -26,18 +26,19 @@ export const getCard = async (cardId: string): Promise<Model> => {
     return card;
 };
 
-export const getCards = async (cardId: string): Promise<Model[]> => {
-    const cards = await CardsModel.findAll({
-        where: {
-            id : cardId
-        }
-    });
+export const listCards = async (deckId: string): Promise<Model[]> => {
+    try{
+        const cards = await CardsModel.findAll({
+            where:{
+                deckId: deckId
+            }
+        });
 
-    if(!cards) throw new Error("Cards not found !");
-
-    return cards;
+        return cards;
+    }catch (error) {
+        throw new Error("The operation can not be completed !")
+    }
 };
-
 
 export const deleteCard = async (cardId: string): Promise<void> =>{
     try {
