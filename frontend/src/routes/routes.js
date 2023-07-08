@@ -4,11 +4,13 @@ import React from 'react';
 import Container from '../components/container';
 import DashboardPage from '../pages/dashboard';
 import RegisterPage from '../pages/register';
+import ConfigPage from '../pages/config';
+import SideBarWithBox from '../components/sidebarWithBox';
 
 export const routes = createBrowserRouter([
     {
         path: "/",
-        element: <DashboardPage />
+        element: <SideBarWithBox comp={<DashboardPage />} />
     },
     {
         path: "/login",
@@ -17,5 +19,9 @@ export const routes = createBrowserRouter([
     {
         path: "/register",
         element: <Container comp={<RegisterPage/>} />
+    },
+    {
+        path: "/config",
+        element: <ConfigPage />
     }
 ])
