@@ -1,10 +1,10 @@
-.content {
+.main-container {
     display: flex;
     gap: 120px;
     margin: auto;
 }
 
-.content-left {
+.container-inside-left-register {
     display: flex;
     padding-top: 20px;
     align-items: center;

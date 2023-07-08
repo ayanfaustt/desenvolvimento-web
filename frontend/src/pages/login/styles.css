@@ -1,10 +1,10 @@
-.content {
+.main-container {
     display: flex;
     gap: 120px;
     margin: auto;
 }
 
-.content-left {
+.container-inside-left-login {
     padding-top: 20px;
 }
 
@@ -46,10 +46,4 @@
     background-color: #004257;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     color: #DAE9F1;
-}
-
-.teste {
-    width: 400px;
-    height: 200px;
-    background-color: #004257;
 }

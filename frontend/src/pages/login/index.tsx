@@ -22,13 +22,13 @@ export default function LoginPage(props: LoginPageProps) {
     };
 
     return (
-        <main className='content'>
+        <main className='main-container'>
 
-            <div className="content-left">
+            <div className="container-inside-left-login">
                 <img src="study.png" alt="study icon" width={270} />
             </div>
 
-            <div className="content-right">
+            <div className="container-inside-right-login">
                 <form className='user-info'>
                     <TextInput name='Email:' />
                     <TextInput name='Password:' />

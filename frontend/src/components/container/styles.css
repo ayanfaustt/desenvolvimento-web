@@ -1,4 +1,4 @@
-.content-centered {
+.container-centered {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,7 +7,7 @@
 }
 
 @media (min-width: 1200px) {
-    .content-centered{
+    .container-centered{
         max-width: 1350px;
     }
 }
