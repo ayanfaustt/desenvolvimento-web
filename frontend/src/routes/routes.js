@@ -22,6 +22,6 @@ export const routes = createBrowserRouter([
     },
     {
         path: "/config",
-        element: <ConfigPage />
+        element: <SideBarWithBox comp={<ConfigPage />} />
     }
 ])
