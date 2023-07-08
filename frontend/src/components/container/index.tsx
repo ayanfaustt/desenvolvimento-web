@@ -7,7 +7,7 @@ interface ContainerProps {
 
 export default function Container(props : ContainerProps){
     return(
-        <div className='content-centered'>
+        <div className='container-centered'>
             {props.comp}
         </div>
     );

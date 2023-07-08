@@ -11,25 +11,29 @@ interface RegisterPageProps {
 
 export default function RegisterPage(props: RegisterPageProps) {
     return (
-        <main className='content'>
+        <main className='main-container'>
 
-            <div className="content-left">
+            <div className="container-inside-left-register">
                 <img src="study.png" alt="study icon" width={270} />
             </div>
 
-            <div className="content-right">
+            <div className="container-inside-right-register">
+
                 <form className='user-info'>
                     <TextInput name='Username:' />
                     <TextInput name='Email:' />
                     <TextInput name='Password:' />
                     <TextInput name='Repeat Password:' />
                 </form>
+
                 <div className='login-page'>
                     <p>Already have an account? Sign in</p>
                 </div>
+
                 <div className="register">
                     <Button className='register-btn'>Sign up </Button>
                 </div>
+
             </div>
 
         </main>

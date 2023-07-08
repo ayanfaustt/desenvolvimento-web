@@ -9,7 +9,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <Container comp={<RegisterPage/>}/>
+      <Container comp={<LoginPage/>}/>
     </div>
   );
 }
