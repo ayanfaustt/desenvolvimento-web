@@ -7,6 +7,6 @@ interface TextFieldProps {
 
 export default function TextField(props : TextFieldProps){
     return(
-        <p className='textName'>{props.name}</p>
+        <p className='p textName'>{props.name}</p>
     );
 }

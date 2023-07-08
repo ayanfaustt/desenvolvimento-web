@@ -22,13 +22,13 @@ export default function LoginPage(props: LoginPageProps) {
     };
 
     return (
-        <main className='content'>
+        <main className='main-container'>
 
-            <div className="content-left">
+            <div className="container-inside-left-login">
                 <img src="study.png" alt="study icon" width={270} />
             </div>
 
-            <div className="content-right">
+            <div className="container-inside-right-login">
                 <form className='user-info'>
                     <TextInput name='Email:' />
                     <TextInput name='Password:' />
@@ -43,8 +43,8 @@ export default function LoginPage(props: LoginPageProps) {
                     <TextField name='Remember me' />
                 </div>
                 <div className='forgot-register'>
-                    <p>Forgot your password</p>
-                    <p>New? Register</p>
+                    <p className='p'>Forgot your password</p>
+                    <p className='p'>New? Register</p>
                 </div>
                 <div className="login">
                     <button className='login-btn'>Login</button>

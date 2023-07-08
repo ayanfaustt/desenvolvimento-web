@@ -16,13 +16,13 @@ export default function SideBar(props: SideBarProps) {
         <div className='sidebar'>
             <div className="logo">
                 <img src="logo.png" alt="logo study" width={54} />
-                <p className='logo-name'>Study.io</p>
+                <p className='p logo-name'>Study.io</p>
             </div>
 
             <div className="user">
                 <div className='user-profile'>
                 </div>
-                <p className='user-name'>User</p>
+                <p className='p user-name'>User</p>
             </div>
 
             <div className='content'>
@@ -44,14 +44,14 @@ export default function SideBar(props: SideBarProps) {
                                 </clipPath>
                             </defs>
                         </svg>
-                        <p className='text'>Dashboard</p>
+                        <p className='p text'>Dashboard</p>
                     </button>
 
                     <button className="icon-text" onClick={flashcardPage} >
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M13 4.00007H3C2.20435 4.00007 1.44129 4.31614 0.87868 4.87875C0.31607 5.44136 0 6.20442 0 7.00007L0 24.0001H16V7.00007C16 6.20442 15.6839 5.44136 15.1213 4.87875C14.5587 4.31614 13.7956 4.00007 13 4.00007ZM8 18.0001C8 18.0001 4 15.3331 4 13.0001C4 12.4696 4.21071 11.9609 4.58579 11.5859C4.96086 11.2108 5.46957 11.0001 6 11.0001C6.53043 11.0001 7.03914 11.2108 7.41421 11.5859C7.78929 11.9609 8 12.4696 8 13.0001C8 12.4696 8.21071 11.9609 8.58579 11.5859C8.96086 11.2108 9.46957 11.0001 10 11.0001C10.5304 11.0001 11.0391 11.2108 11.4142 11.5859C11.7893 11.9609 12 12.4696 12 13.0001C12 15.3331 8 18.0001 8 18.0001ZM23.88 6.69307L19.1 23.1071L18 22.7001V7.00007C17.9984 5.67448 17.4711 4.40363 16.5338 3.46629C15.5964 2.52896 14.3256 2.00166 13 2.00007H8.757C9.00816 1.27683 9.52823 0.678109 10.2092 0.328215C10.8902 -0.021679 11.6798 -0.0958603 12.414 0.121074L21.85 2.97707C22.6111 3.20201 23.252 3.71934 23.6325 4.41581C24.013 5.11228 24.102 5.93113 23.88 6.69307Z" fill="#DAE9F1" />
                         </svg>
-                        <p className='text'>Flashcards</p>
+                        <p className='p text'>Flashcards</p>
                     </button>
 
                     <button className="icon-text" onClick={studyMaterialPage} >
@@ -65,7 +65,7 @@ export default function SideBar(props: SideBarProps) {
                                 </clipPath>
                             </defs>
                         </svg>
-                        <p className='text'>Study material</p>
+                        <p className='p text'>Study material</p>
                     </button>
 
                     <button className="icon-text" onClick={summariesPage} >
@@ -79,7 +79,7 @@ export default function SideBar(props: SideBarProps) {
                                 </clipPath>
                             </defs>
                         </svg>
-                        <p className='text'>Summaries</p>
+                        <p className='p text'>Summaries</p>
                     </button>
 
                 </div>
@@ -87,7 +87,7 @@ export default function SideBar(props: SideBarProps) {
 
             <div className="logout">
                 <button className='icon-text'>
-                    <p className='logout-text'>Logout</p>
+                    <p className='p logout-text'>Logout</p>
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M6 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H6" stroke="#F25C54" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M10.667 11.3337L14.0003 8.00033L10.667 4.66699" stroke="#F25C54" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
