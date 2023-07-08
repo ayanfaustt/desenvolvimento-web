@@ -19,9 +19,30 @@
 
 .changePassword {
     border-radius: 10px;
-    border: 3px solid;
+    padding: 18px 40px;
+    border: 1px solid;
+}
+
+.changePassword-fields{
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
 }
 
 .new-confirm {
     display: flex;
+    gap: 70px;
+}
+
+.save-btn {
+    align-self: center;
+    margin-top: 30px;
+    width: 160px;
+    border-radius: .5rem;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border: none;
+    background-color: #004257;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: #DAE9F1;
 }

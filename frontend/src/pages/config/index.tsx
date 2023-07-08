@@ -29,7 +29,7 @@ export default function ConfigPage(props: ConfigPageProps) {
                 </div>
             </div>
 
-            <button>Save Settings</button>
+            <button className='save-btn'>Save Settings</button>
 
         </div>
     )
