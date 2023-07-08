@@ -1,0 +1,14 @@
+.textName{
+    color: #004257;
+}
+
+.inputField{
+    border-radius: .7rem;
+    border-width: 0px;
+    color: #004257;
+    background-color: #A4C3DA;
+    width: 15rem;
+    height: 2rem;
+    padding-left: .8rem;
+    padding-right: .8rem;
+}
