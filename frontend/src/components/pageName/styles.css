@@ -1,0 +1,10 @@
+.deckName {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icons2 {
+    display: flex;
+    gap: 6px;
+}

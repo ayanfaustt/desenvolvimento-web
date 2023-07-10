@@ -6,7 +6,7 @@ import DashboardPage from '../pages/dashboard';
 import RegisterPage from '../pages/register';
 import ConfigPage from '../pages/config';
 import SideBarWithBox from '../components/sidebarWithBox';
-import DeckPage from '../pages/deck';
+import FlashcardPage from '../pages/flashcard';
 
 export const routes = createBrowserRouter([
     {
@@ -26,7 +26,7 @@ export const routes = createBrowserRouter([
         element: <SideBarWithBox comp={<ConfigPage />} />
     },
     {
-        path: "/deck",
-        element: <DeckPage />
+        path: "/flashcard",
+        element: <FlashcardPage />
     }
 ])

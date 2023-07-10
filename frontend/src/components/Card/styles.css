@@ -2,12 +2,40 @@
     display: flex;
     border-radius: 10px;
     background-color: #DAE9F1;
+    padding: 8px;
+}
+
+.insideCard {
+    display: flex;
+    flex-direction: row;
+    border-radius: 10px;
+    border: 1px solid #004257;
+    background-color: #DAE9F1;
     justify-content: space-between;
     padding: 25px 30px;
+    flex-grow: 1;
 }
 
 .icons {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.tag {
+    display: flex;
+    gap: 4px;
+}
+
+.tag p {
+    font-size: 14px;
+}
+
+.blackbox {
+    width: 8px;
+    height: 8px;
+    border: 2px solid #F5BF42;
+    border-radius: 50%;
+    background-color: #F5BF42;
+    align-self: center;
 }
