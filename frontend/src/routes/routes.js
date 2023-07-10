@@ -6,6 +6,8 @@ import DashboardPage from '../pages/dashboard';
 import RegisterPage from '../pages/register';
 import ConfigPage from '../pages/config';
 import SideBarWithBox from '../components/sidebarWithBox';
+import FlashcardPage from '../pages/flashcard';
+import SummariesPage from '../pages/summaries';
 
 export const routes = createBrowserRouter([
     {
@@ -22,6 +24,14 @@ export const routes = createBrowserRouter([
     },
     {
         path: "/config",
-        element: <ConfigPage />
-    }
+        element: <SideBarWithBox comp={<ConfigPage />} />
+    },
+    {
+        path: "/flashcard",
+        element: <FlashcardPage />
+    },
+    {
+        path: "/summaries",
+        element: <SummariesPage />
+    },
 ])
