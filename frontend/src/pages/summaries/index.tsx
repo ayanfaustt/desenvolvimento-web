@@ -1,5 +1,4 @@
 import React from 'react';
-import './styles.css';
 import PageContent from '../../components/pageContent';
 
 interface SummariesPageProps {
