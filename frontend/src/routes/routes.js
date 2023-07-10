@@ -6,6 +6,7 @@ import DashboardPage from '../pages/dashboard';
 import RegisterPage from '../pages/register';
 import ConfigPage from '../pages/config';
 import SideBarWithBox from '../components/sidebarWithBox';
+import DeckPage from '../pages/deck';
 
 export const routes = createBrowserRouter([
     {
@@ -23,5 +24,9 @@ export const routes = createBrowserRouter([
     {
         path: "/config",
         element: <SideBarWithBox comp={<ConfigPage />} />
+    },
+    {
+        path: "/deck",
+        element: <DeckPage />
     }
 ])
