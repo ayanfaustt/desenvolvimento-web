@@ -40,6 +40,22 @@ export const listCards = async (deckId: string): Promise<Model[]> => {
     }
 };
 
+export const updateCard = async (deckId: string, cardName: string, cardContent: string): Promise<void> =>{
+    try {
+        await CardsModel.update(
+        {
+            card_name: cardName,
+            card_content: cardContent    
+        },{
+            where: {
+                deckId: deckId
+            }
+        });
+    } catch (error) {
+        throw new Error("The operation can not be completed !")
+    }
+};
+
 export const deleteCard = async (cardId: string): Promise<void> =>{
     try {
         await CardsModel.destroy({
