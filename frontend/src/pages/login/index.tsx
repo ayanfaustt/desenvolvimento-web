@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import TextInput from '../../components/textInput';
 import './styles.css';
 import TextField from '../../components/textField';
-
+import { motion } from 'framer-motion'
+import { Button } from 'react-bootstrap';
 interface LoginPageProps {
 
 }
@@ -11,7 +12,6 @@ type eventType = {
     target: {
         checked: boolean;
     }
-
 };
 
 export default function LoginPage(props: LoginPageProps) {
@@ -24,11 +24,17 @@ export default function LoginPage(props: LoginPageProps) {
     return (
         <main className='main-container'>
 
-            <div className="container-inside-left-login">
-                <img src="study.png" alt="study icon" width={270} />
-            </div>
+            <motion.div className="container-inside-left-login">
+                <motion.div className='slider'>
+                    <img src="dashboard-slide.png" alt="study icon" width={270} className='itemslider' />
+                    <img src="flashcard-slide.png" alt="study icon" width={270} className='itemslider' />
+                    <img src="summaries-slide.png" alt="study icon" width={270} className='itemslider' />
+                    <img src="study-slide.png" alt="study icon" width={270} className='itemslider' />
+                </motion.div>
+            </motion.div>
 
             <div className="container-inside-right-login">
+
                 <form className='user-info'>
                     <TextInput name='Email:' />
                     <TextInput name='Password:' />
@@ -47,8 +53,9 @@ export default function LoginPage(props: LoginPageProps) {
                     <p className='p'>New? Register</p>
                 </div>
                 <div className="login">
-                    <button className='login-btn'>Login</button>
+                    <Button className='login-btn'>Login</Button>
                 </div>
+
             </div>
 
         </main>

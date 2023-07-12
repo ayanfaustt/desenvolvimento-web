@@ -14,10 +14,22 @@
     gap: .8rem;
 }
 
+.user-info p {
+    font-size: 24px;
+
+}
+.user-info input {
+    font-size: 24px;
+}
+
 .box-remember {
     display: flex;
     gap: .2rem;
     margin-top: .4rem;
+}
+
+.box-remember p {
+    font-size: 20px;
 }
 
 .forgot-register {
@@ -27,7 +39,7 @@
 }
 
 .forgot-register p {
-    font-size: 12px;
+    font-size: 14px;
     color: #006699;
 }
 
@@ -43,7 +55,17 @@
     padding-top: 7px;
     padding-bottom: 7px;
     border: none;
-    background-color: #004257;
+    background-color: #004257 !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     color: #DAE9F1;
+    font-size: 20px;
 }
+
+
+.slider {
+    display: flex;
+}
+
+/* .itemslider {
+    min-height: ;
+} */

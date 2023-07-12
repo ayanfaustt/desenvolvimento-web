@@ -1,7 +1,7 @@
 import React from 'react';
 import './styles.css';
 import SideBar from '../../components/sidebar';
-import Cards from '../../components/card';
+import Cards from '../card';
 import PageName from '../../components/pageName';
 
 interface CardInfo {

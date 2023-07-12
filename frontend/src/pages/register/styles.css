@@ -18,7 +18,7 @@
 
 .login-page {
     margin-top: .5rem;
-    font-size: 12px;
+    font-size: 14px;
     color: #006699;
 }
 
@@ -37,6 +37,7 @@
     background-color: #004257;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     color: #DAE9F1;
+    font-size: 20px;
 }
 
 .img {
