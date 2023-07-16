@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import TextInput from '../../components/textInput';
 import './styles.css';
 import TextField from '../../components/textField';
 import { motion } from 'framer-motion'
 import { Button } from 'react-bootstrap';
+import dashboard from './dashboard-slide.png'
+import flashcard from './flashcard-slide.png'
+import summaries from './summaries-slide.png'
+import studyMaterial from './study-slide.png'
 interface LoginPageProps {
 
 }
@@ -14,6 +18,8 @@ type eventType = {
     }
 };
 
+const sliderImgs = [dashboard, flashcard, summaries, studyMaterial]
+
 export default function LoginPage(props: LoginPageProps) {
     const [check, setCheck] = useState(false);
 
@@ -21,17 +27,41 @@ export default function LoginPage(props: LoginPageProps) {
         setCheck(e.target.checked);
     };
 
+    const carousel = useRef<HTMLDivElement>(null);
+    const [width, setWidth] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const handlePrevSlide = () => {
+        setCurrentIndex((prevIndex) => (prevIndex === 0 ? sliderImgs.length - 1 : prevIndex - 1));
+    };
+
+    const handleNextSlide = () => {
+        setCurrentIndex((prevIndex) => (prevIndex === sliderImgs.length - 1 ? 0 : prevIndex + 1));
+    };
+
+    useEffect(() => {
+        const currentWidth = carousel.current ? carousel.current.scrollWidth : 0;
+        const currenOffset = carousel.current ? carousel.current.offsetWidth : 0;
+        console.log(currentWidth - currenOffset)
+        console.log(currenOffset)
+        console.log(currentWidth)
+        setWidth(currentWidth - currenOffset);
+    }, []);
+
     return (
         <main className='main-container'>
+            <div className='slider-width'>
+                    <motion.div className='slider'>
+                        {sliderImgs.map((image, index) => (
+                            <motion.div className='images' hidden={index === currentIndex ? false : true}>
+                                <img src={image} alt="slide page" />
+                            </motion.div>
+                        ))}
 
-            <motion.div className="container-inside-left-login">
-                <motion.div className='slider'>
-                    <img src="dashboard-slide.png" alt="study icon" width={270} className='itemslider' />
-                    <img src="flashcard-slide.png" alt="study icon" width={270} className='itemslider' />
-                    <img src="summaries-slide.png" alt="study icon" width={270} className='itemslider' />
-                    <img src="study-slide.png" alt="study icon" width={270} className='itemslider' />
                 </motion.div>
-            </motion.div>
+            </div>
+                <button onClick={handlePrevSlide}>p ca</button>
+                <button onClick={handleNextSlide}>p la</button>
 
             <div className="container-inside-right-login">
 
