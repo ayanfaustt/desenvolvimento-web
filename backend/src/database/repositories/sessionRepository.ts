@@ -2,10 +2,10 @@ import { Model } from "sequelize";
 import { SessionModel } from "../../models/session.model";
 
 function rand(): string{
-    return Math.random().toString(36).substring(2); // remove `0.`
+    return Math.random().toString(32).substring(2); // remove `0.`
 }
 function token(): string{
-    return rand() + rand() as string;
+    return rand() + rand() + rand() + rand() as string;
 }
 
 export const createSession = async (userId: string): Promise<void> => {
