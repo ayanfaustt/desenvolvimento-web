@@ -7,7 +7,7 @@ interface FlashcardPageProps {
 
 const teste = [
     {
-        cardName: "Teste",
+        cardName: "caneco",
         cardTag: "Mat"
     },
     {

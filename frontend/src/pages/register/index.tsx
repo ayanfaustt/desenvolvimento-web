@@ -14,7 +14,7 @@ export default function RegisterPage(props: RegisterPageProps) {
         <main className='main-container'>
 
             <div className="container-inside-left-register">
-                <img src="study.png" alt="study icon" width={270} />
+                <img src="study.png" alt="study icon" width={350} />
             </div>
 
             <div className="container-inside-right-register">

@@ -63,11 +63,11 @@
     overflow: hidden;
 }
 
-
 .images img {
     width: 100%;
     height: 100%;
     border-radius: 8px;
+    
 }
 
 .container-inside-left-login {
@@ -77,6 +77,27 @@
 }
 
 .slider-width {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: auto;
     max-width: 300px;
+    gap: 16px;
+}
+
+.circles {
+    display: flex;
+    gap: 8px;
+}
+
+.circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 30px;
+    border: none;
+    background-color: #004257;
+}
+
+.active {
+    background-color: #00212C;
 }

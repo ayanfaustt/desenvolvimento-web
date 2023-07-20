@@ -2,12 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import TextInput from '../../components/textInput';
 import './styles.css';
 import TextField from '../../components/textField';
-import { motion } from 'framer-motion'
 import { Button } from 'react-bootstrap';
-import dashboard from './dashboard-slide.png'
-import flashcard from './flashcard-slide.png'
-import summaries from './summaries-slide.png'
-import studyMaterial from './study-slide.png'
+import dashboard from '../../images/dashboard-slide.png'
+import flashcard from '../../images/flashcard-slide.png'
+import summaries from '../../images/summaries-slide.png'
+import studyMaterial from '../../images/study-slide.png'
 interface LoginPageProps {
 
 }
@@ -27,41 +26,32 @@ export default function LoginPage(props: LoginPageProps) {
         setCheck(e.target.checked);
     };
 
-    const carousel = useRef<HTMLDivElement>(null);
-    const [width, setWidth] = useState(0);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentImage, setCurrentImage] = useState(0);
 
-    const handlePrevSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === 0 ? sliderImgs.length - 1 : prevIndex - 1));
+
+    const handleImage = (circleNumber: number) => {
+        setCurrentImage(circleNumber);
+        return undefined;
     };
-
-    const handleNextSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex === sliderImgs.length - 1 ? 0 : prevIndex + 1));
-    };
-
-    useEffect(() => {
-        const currentWidth = carousel.current ? carousel.current.scrollWidth : 0;
-        const currenOffset = carousel.current ? carousel.current.offsetWidth : 0;
-        console.log(currentWidth - currenOffset)
-        console.log(currenOffset)
-        console.log(currentWidth)
-        setWidth(currentWidth - currenOffset);
-    }, []);
 
     return (
         <main className='main-container'>
             <div className='slider-width'>
-                    <motion.div className='slider'>
-                        {sliderImgs.map((image, index) => (
-                            <motion.div className='images' hidden={index === currentIndex ? false : true}>
-                                <img src={image} alt="slide page" />
-                            </motion.div>
-                        ))}
-
-                </motion.div>
+                <div className='slider'>
+                    {sliderImgs.map((image, index) => (
+                        <div className='images' hidden={index === currentImage ? false : true}>
+                            <img src={image} alt="slide page" />
+                        </div>
+                    ))}
+                </div>
+                <div className='circles'>
+                    <button className={`circle ${currentImage === 0 ? 'active' : ''}`} onClick={() => handleImage(0)}></button>
+                    <button className={`circle ${currentImage === 1 ? 'active' : ''}`} onClick={() => handleImage(1)}></button>
+                    <button className={`circle ${currentImage === 2 ? 'active' : ''}`} onClick={() => handleImage(2)}></button>
+                    <button className={`circle ${currentImage === 3 ? 'active' : ''}`} onClick={() => handleImage(3)}></button>
+                </div>
             </div>
-                <button onClick={handlePrevSlide}>p ca</button>
-                <button onClick={handleNextSlide}>p la</button>
+
 
             <div className="container-inside-right-login">
 
