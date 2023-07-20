@@ -1,5 +1,6 @@
 export interface IGetUser {
     username: string
+    password: string
 }
 
 export interface IMetricsParams{
