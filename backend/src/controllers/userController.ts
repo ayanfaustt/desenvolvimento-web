@@ -11,6 +11,7 @@ import {
     createMetrics as createMetricsRepository 
 } from "../database/repositories/metricRepository";
 
+import { gpt }  from "../services/external/openai";
 
 import { 
     IGetUser,
