@@ -4,6 +4,7 @@ import TagController from "./controllers/TagController";
 import DeckController from "./controllers/DeckController";
 import SummarieController from "./controllers/SummarieController";
 import CardController from "./controllers/CardController";
+import SessionController from "./controllers/SessionController";
 
 export const router = express.Router();
 
@@ -38,3 +39,7 @@ router.delete("/cards/delete/:deckId", CardController.deleteCard);
 router.get("/tags/list/:userId", TagController.listTags);
 router.post("/tags/create/:userId", TagController.createTag);
 router.delete("/tags/delete/:tagId", TagController.deleteTag);
+
+//TODO test all endpoints
+//Tags
+router.post("/login", SessionController.login)

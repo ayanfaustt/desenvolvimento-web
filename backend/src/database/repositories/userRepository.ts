@@ -4,9 +4,10 @@ import { MetricsModel } from "../../models/metrics.model";
 import { DecksModel } from "../../models/decks.model";
 import { Model } from "sequelize";
 import { SummariesModel } from "../../models/summaries.model";
+import { SessionModel } from "../../models/session.model";
 
 
-export const createUser = async (username: string): Promise<void> => {
+export const createUser = async (username: string, password: string): Promise<void> => {
     
     const isAlreadyExist = await UserModel.findOne({
         where: {
@@ -17,7 +18,8 @@ export const createUser = async (username: string): Promise<void> => {
     if(isAlreadyExist)  throw new Error("User already exist !");
     
     const isUserCreated = await UserModel.create({
-        username: username
+        username: username,
+        password: password
     });
 
     if(!isUserCreated) throw new Error("User not created !");
@@ -30,7 +32,7 @@ export const getUser = async (username: string): Promise<Model> => {
         where:{
             username : username
         },
-        include: [MetricsModel, DecksModel, SummariesModel]
+        include: [SessionModel ,MetricsModel, DecksModel, SummariesModel]
     });
 
     if(!userInfo) throw new Error("User not found !");
