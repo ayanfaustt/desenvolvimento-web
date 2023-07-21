@@ -19,6 +19,7 @@ import {
     IMetricsVBody
  } from "./types";
 import { MetricsModel } from "../models/metrics.model";
+import { createSession } from "../database/repositories/sessionRepository";
 
 
 class UserController {
@@ -42,8 +43,11 @@ class UserController {
     async createUser (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response>{
         try{
             const { username } = req.params;
+            const { password }  = req.body;
+            await createUserRepository(username, password)
 
-            await createUserRepository(username)
+            const userId = (await getUserRepository(username)).get("id");
+            await createSession(userId as string);
 
             return res.status(200).send({message: "User created !"})
         }catch(error ){
