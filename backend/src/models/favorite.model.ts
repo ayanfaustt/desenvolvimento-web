@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { db } from "../database/db";
-import { UserModel } from "./user.models";
 
 export const FavoriteModel = db.define("favorites", {
     id:{
