@@ -1,22 +1,21 @@
 import { DataTypes } from "sequelize";
 import { db } from "../database/db";
-import { DecksModel } from "./decks.model";
+import { UserModel } from "./user.models";
 
-export const CardsModel = db.define("cards", {
+export const FavoriteModel = db.define("favorites", {
     id:{
         type: DataTypes.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    card_name:{
+    favorite_name:{
         type: DataTypes.STRING(255),
         allowNull: false
-    },
-    card_content:{
-        type: DataTypes.TEXT,
-        allowNull: true
     }
-},{
-    timestamps: false,
+
 });
+
+
+
+

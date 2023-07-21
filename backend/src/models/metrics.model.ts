@@ -14,7 +14,15 @@ export const MetricsModel = db.define("metrics", {
         allowNull: false
     },
     reviews:{
-        type: DataTypes.STRING(50),
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    decks_reviews:{
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    summaries_reviews:{
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     metrics_date:{
