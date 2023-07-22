@@ -57,7 +57,7 @@ class CardController {
     async createCard (req: Request, res: Response): Promise<Response> {
         try {
             const { deckId: id } = req.params;
-            const { cardName, cardContent } = req.body;
+            const { cardName, cardContent, isGpt } = req.body;
 
             await createCardRepository(id, cardName, cardContent); 
 

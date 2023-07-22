@@ -3,10 +3,12 @@ import { db } from "./database/db";
 import cors from "cors";
 import 'dotenv/config';
 import { router } from "./router";
+import DateObserver from "./system/DataObserver";
 
 const server = express()
 const { SERVER_PORT } = process.env;
-
+const dateObserver = new DateObserver();
+  
 server.use(express.json());
 server.use(cors({
     origin: "*",

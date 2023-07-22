@@ -40,6 +40,12 @@ export const getUser = async (username: string): Promise<Model> => {
     return userInfo;
 };
 
+export const getOnlyUser = async (): Promise<Model[]> => {
+    const users = await UserModel.findAll();
+
+    return users;
+}
+
 export const deleteUser = async (username: string): Promise<void> => {
     try{
         await UserModel.destroy({
