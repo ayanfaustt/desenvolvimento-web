@@ -4,6 +4,7 @@ import { MetricsModel } from "./metrics.model";
 import { DecksModel } from "./decks.model";
 import { SummariesModel } from "./summaries.model";
 import { TagsModel } from "./tags.model";
+import { FavoriteModel } from "./favorite.model";
 import { SessionModel } from "./session.model";
 
 export const UserModel = db.define("user", {
@@ -12,6 +13,11 @@ export const UserModel = db.define("user", {
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
+    },
+    email:{
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        unique: true,
     },
     username: {
         type: DataTypes.STRING(50),
@@ -29,6 +35,9 @@ DecksModel.belongsTo(UserModel);
 
 UserModel.hasMany(SummariesModel);
 SummariesModel.belongsTo(UserModel);
+
+UserModel.hasMany(FavoriteModel);
+FavoriteModel.belongsTo(UserModel);
 
 UserModel.hasMany(TagsModel);
 TagsModel.belongsTo(UserModel);
