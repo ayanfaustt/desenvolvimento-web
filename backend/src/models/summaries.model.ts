@@ -18,7 +18,7 @@ export const SummariesModel = db.define("summaries", {
         type: DataTypes.TEXT,
         allowNull: true
     }
-},{
+},{  
     timestamps: false,
 });
 
