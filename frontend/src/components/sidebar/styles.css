@@ -59,6 +59,7 @@
     justify-content: right;
     align-items: center;
     border: none;
+    text-decoration: none;
     display: flex;
     gap: 8px;
 }
