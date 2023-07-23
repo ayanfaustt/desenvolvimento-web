@@ -22,7 +22,7 @@ export const MetricsModel = db.define("metrics", {
         allowNull: false
     },
     metrics_date:{
-        type: DataTypes.da,
+        type: DataTypes.DATE,
     }
 },{
     timestamps: false
