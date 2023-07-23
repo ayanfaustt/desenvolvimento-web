@@ -7,7 +7,7 @@ import { SummariesModel } from "../../models/summaries.model";
 import { SessionModel } from "../../models/session.model";
 
 
-export const createUser = async (username: string, password: string): Promise<void> => {
+export const createUser = async (username: string, email: string, password: string): Promise<void> => {
     
     const isAlreadyExist = await UserModel.findOne({
         where: {
@@ -19,6 +19,7 @@ export const createUser = async (username: string, password: string): Promise<vo
     
     const isUserCreated = await UserModel.create({
         username: username,
+        email: email,
         password: password
     });
 

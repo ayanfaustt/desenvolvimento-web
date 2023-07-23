@@ -46,3 +46,4 @@ UserModel.hasMany(SessionModel);
 SessionModel.belongsTo(UserModel);
 
 UserModel.hasMany(MetricsModel);
+MetricsModel.belongsTo(UserModel);

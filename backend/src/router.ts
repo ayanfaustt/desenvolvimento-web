@@ -11,7 +11,7 @@ export const router = express.Router();
 router.get("/user/:username", UserController.getUser);
 router.post('/user/create/:username', UserController.createUser);
 
-// router.post("/metrics/:userId", UserController.updateMetrics);
+router.post("/metrics/:userId", UserController.updateMetrics);
 
 //summaries
 router.get("/summaries/:userId", SummarieController.getSummaries);
