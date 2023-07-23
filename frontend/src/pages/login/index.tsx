@@ -7,6 +7,7 @@ import dashboard from '../../images/dashboard-slide.png'
 import flashcard from '../../images/flashcard-slide.png'
 import summaries from '../../images/summaries-slide.png'
 import studyMaterial from '../../images/study-slide.png'
+import { Link } from 'react-router-dom';
 interface LoginPageProps {
 
 }
@@ -72,9 +73,10 @@ export default function LoginPage(props: LoginPageProps) {
                     <p className='p'>Forgot your password</p>
                     <p className='p'>New? Register</p>
                 </div>
-                <div className="login">
+                
+                <Link to="/" className="login">
                     <Button className='login-btn'>Login</Button>
-                </div>
+                </Link>
 
             </div>
 

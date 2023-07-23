@@ -34,10 +34,16 @@
     padding-top: 7px;
     padding-bottom: 7px;
     border: none;
-    background-color: #004257;
+    background-color: #004257 !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     color: #DAE9F1;
     font-size: 20px;
+}
+
+.register-btn:hover{
+    background-color: initial;
+    color: initial;
+    border-color: initial;
 }
 
 .img {
