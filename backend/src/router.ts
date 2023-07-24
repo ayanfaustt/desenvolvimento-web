@@ -7,6 +7,7 @@ import CardController from "./controllers/CardController";
 import SessionController from "./controllers/SessionController";
 import MetricsController from "./controllers/MetricsController";
 import userController from "./controllers/userController";
+import StudyMaterialController from "./controllers/StudyMaterialController";
 
 export const router = express.Router();
 
@@ -29,6 +30,8 @@ router.get("/decks/list/:userId", DeckController.getDeck);
 router.post("/decks/create/:userId", DeckController.createDeck);
 router.delete("/decks/delete/:deckId", DeckController.deleteDeck);
 
+//Study Materials
+router.get("/studyMaterials/", StudyMaterialController.getStudyMaterial);
 
 //TODO test all endpoints
 //cards

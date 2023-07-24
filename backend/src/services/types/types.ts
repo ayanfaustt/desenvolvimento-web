@@ -4,3 +4,10 @@ export interface IStudyMaterial{
     contentDescription: string;
     whereToFind: string;
 }
+
+
+
+export interface Icard{
+    title: string;
+    content: string;
+}
