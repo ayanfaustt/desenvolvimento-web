@@ -2,15 +2,12 @@ import { Response, Request } from "express";
 import { Model } from "sequelize";
 //repositories
 import { 
-    getUser as getUserRepository, 
+    getAllUserInfo as getAllUserInfoRepository, 
     createUser as createUserRepository,
-    deleteUser as deleteUserRepository
+    deleteUser as deleteUserRepository,
+    getOnlyUser as getOnlyUserRepository,
+    getUserAndMetrics as getUserAndMetricsRepository
 } from "../database/repositories/userRepository";
-
-import {
-    createMetrics as createMetricsRepository,
-    imcrementDeckReview as imcrementDeckReviewMetricsRepository
-} from "../database/repositories/metricRepository";
 
 import { gpt }  from "../services/external/openai";
 
@@ -26,11 +23,12 @@ import { createSession } from "../database/repositories/sessionRepository";
 class UserController {
     
     //user
-    async getUser (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response<Model>> {
+    //TODO: do not return the user password
+    async getAllUserInfo (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response<Model>> {
         try{
-            const { username } = req.params
+            const { username } = req.params;
         
-            const user = await getUserRepository(username);
+            const user = await getAllUserInfoRepository(username);
             
             return res.status(200).send(user); 
         } catch(error){
@@ -41,13 +39,30 @@ class UserController {
        
     };
 
+    async getUserWithMetrics (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response<Model>> {
+        try{
+            const { username } = req.params;
+        
+            const user = await getUserAndMetricsRepository(username);
+            
+            return res.status(200).send(user); 
+        } catch(error){
+            if (error instanceof Error) return res.status(400).send({message: error.message});
+            
+            return res.status(400).send({message: error});
+        }
+       
+    };
+
+    
+
     async createUser (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response>{
         try{
             const { username } = req.params;
             const { email, password }  = req.body;
             await createUserRepository(username, email, password)
 
-            const userId = (await getUserRepository(username)).get("id");
+            const userId = (await getAllUserInfoRepository(username)).get("id");
             await createSession(userId as string);
 
             return res.status(200).send({message: "User created !"})
@@ -66,27 +81,6 @@ class UserController {
 
             return res.status(200).send({message: "User deleted !"})
         } catch (error) {
-            if (error instanceof Error) return res.status(400).send({message: error.message});
-            
-            return res.status(400).send({message: error});
-        }
-    }
-
-    //metrics
-    //TODO implement some verify on date field
-    //TODO implement a method for the system create a new record when the date changes (0 for reviews date for last login) 
-    //TODO create a method for update ONLY the reviews field
-    //TODO create a controller to metrics ?
-    async updateMetrics (req: Request, res: Response): Promise<Response>{
-        try{
-            const { userId: id } = req.params;
-            console.log(req.body, req.params);
-            const { reviews, lastLogin } = req.body;
-
-            await imcrementDeckReviewMetricsRepository(id);
-
-            return res.status(200).send({message: "User metrics updated !"})
-        }catch(error){
             if (error instanceof Error) return res.status(400).send({message: error.message});
             
             return res.status(400).send({message: error});

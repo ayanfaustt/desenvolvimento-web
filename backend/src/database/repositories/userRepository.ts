@@ -26,9 +26,21 @@ export const createUser = async (username: string, email: string, password: stri
     if(!isUserCreated) throw new Error("User not created !");
 };
 
+export const getUserAndMetrics = async (username: string): Promise<Model> => {
+    const userInfo = await UserModel.findOne({
+        where:{
+            username : username
+        },
+        include: [MetricsModel]
+    });
+
+    if(!userInfo) throw new Error("User not found !");
+    
+    return userInfo;
+}
 
 
-export const getUser = async (username: string): Promise<Model> => {
+export const getAllUserInfo = async (username: string): Promise<Model> => {
     const userInfo = await UserModel.findOne({
         where:{
             username : username

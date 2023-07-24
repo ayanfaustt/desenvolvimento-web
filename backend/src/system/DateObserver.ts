@@ -9,7 +9,7 @@ class DateObserver {
   }
 
   checkDateChange() {
-    const currentDate = new Date().;
+    const currentDate = new Date();
     const currentDay = currentDate.getDate();
 
     if (currentDay !== this.previousDate) {
@@ -39,6 +39,5 @@ class DateObserver {
       this.checkDateChange();
     }, 1000); 
   }
-}
-
+} 
 export {DateObserver}

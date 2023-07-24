@@ -52,6 +52,35 @@ export const imcrementDeckReview = async (user_id: string): Promise<void> => {
             }
         });
     } catch (error) {
+        throw new Error();
+    }
+}
+
+export const imcrementSummariesReview = async (user_id: string): Promise<void> => {
+    
+    try {
+        const date = new Date();
+        const userMetrics = await MetricsModel.findAll({
+            where:{
+                userId: user_id,
+                // metrics_date: date // TODO remove
+            }
+        });
         
+        const id = userMetrics[(userMetrics.length - 1)].getDataValue("id");
+        const summaries_reviews = userMetrics[(userMetrics.length - 1)].getDataValue("summaries_reviews");
+        const reviews = userMetrics[(userMetrics.length - 1)].getDataValue("reviews");
+    
+        await MetricsModel.update({
+            summaries_reviews: (summaries_reviews + 1),
+            reviews: (reviews + 1)
+        },{
+            where:{
+                id: id,
+                userId: user_id,
+            }
+        });
+    } catch (error) {
+        throw new Error();
     }
 }

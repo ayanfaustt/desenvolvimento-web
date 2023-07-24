@@ -7,7 +7,7 @@ import {
 } from "../database/repositories/sessionRepository";
 
 import { 
-    getUser as getUserRepository
+    getAllUserInfo as getAllUserInfoRepository
 } from "../database/repositories/userRepository";
 
 class SessionController {
@@ -15,7 +15,7 @@ class SessionController {
     async login (req: Request, res: Response): Promise<Response<Model>> {
         try {
             const { username: un , password: pw, session_type: st} = req.body;
-            const user = await getUserRepository(un as string);
+            const user = await getAllUserInfoRepository(un as string);
 
             const id  = user.get('id') as string;
             if(user.get('password') === pw){
