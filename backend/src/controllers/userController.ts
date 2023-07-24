@@ -60,12 +60,12 @@ class UserController {
         try{
             const { username } = req.params;
             const { email, password }  = req.body;
-            await createUserRepository(username, email, password)
+            await createUserRepository(username, email, password);
 
             const userId = (await getAllUserInfoRepository(username)).get("id");
             await createSession(userId as string);
 
-            return res.status(200).send({message: "User created !"})
+            return res.status(200).send({message: "User created !"});
         }catch(error ){
             if (error instanceof Error) return res.status(400).send({message: error.message});
             
@@ -79,7 +79,7 @@ class UserController {
 
             await deleteUserRepository(username);
 
-            return res.status(200).send({message: "User deleted !"})
+            return res.status(200).send({message: "User deleted !"});
         } catch (error) {
             if (error instanceof Error) return res.status(400).send({message: error.message});
             
