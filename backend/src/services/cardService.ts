@@ -39,7 +39,7 @@ export const createCard = async (deckId: string, cardName: string, cardContent: 
             if(content.data.choices[0].message?.content){
                 const parser = content.data.choices[0].message.content.replace(/'/g, '"');
                 const card = JSON.parse(parser);
-                await createCardRepository(deckId, cardContent, card.resposta)
+                await createCardRepository(deckId, cardName, card.resposta)
             }
         }
       
@@ -67,6 +67,14 @@ export const listCards = async (deckId: string): Promise<Model[]> => {
         return cards;
     }catch (error) {
         throw new Error()
+    }
+};
+
+export const updateCard = async (deckId: string, cardName: string, cardContent: string): Promise<void> =>{
+    try {
+        const card = updateCardRepository(deckId, cardName, cardContent);
+    } catch (error) {
+        throw new Error("The operation can not be completed !")
     }
 };
 
