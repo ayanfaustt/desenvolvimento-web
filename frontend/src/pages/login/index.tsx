@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, ChangeEvent } from 'react';
 import TextInput from '../../components/textInput';
 import './styles.css';
 import TextField from '../../components/textField';
@@ -35,6 +35,16 @@ export default function LoginPage(props: LoginPageProps) {
         return undefined;
     };
 
+    const handleUsername = (e: ChangeEvent<HTMLInputElement>) => {
+        const input = e.target.value 
+        console.log(input)
+    };
+
+    const handlePassword = (e: ChangeEvent<HTMLInputElement>) => {
+        const input = e.target.value 
+        console.log(input)
+    };
+
     return (
         <main className='main-container'>
             <div className='slider-width'>
@@ -53,12 +63,11 @@ export default function LoginPage(props: LoginPageProps) {
                 </div>
             </div>
 
-
             <div className="container-inside-right-login">
 
                 <form className='user-info'>
-                    <TextInput name='Email:' />
-                    <TextInput name='Password:' />
+                    {/* <TextInput name='Email:' /> */}
+                    {/* <TextInput name='Password:' /> */}
                 </form>
                 <div className='box-remember'>
                     <input

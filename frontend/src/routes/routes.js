@@ -12,16 +12,16 @@ import StudyPage from '../pages/study';
 
 export const routes = createBrowserRouter([
     {
-        path: "/",
+        path: "/dashboard",
         element: <SideBarWithBox comp={<DashboardPage />} />
     },
     {
-        path: "/login",
-        element: <Container comp={<LoginPage/>} />
+        path: "/",
+        element: <Container comp={<LoginPage />} />
     },
     {
         path: "/register",
-        element: <Container comp={<RegisterPage/>} />
+        element: <Container comp={<RegisterPage />} />
     },
     {
         path: "/config",

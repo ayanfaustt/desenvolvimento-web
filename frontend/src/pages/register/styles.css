@@ -20,12 +20,14 @@
     margin-top: .5rem;
     font-size: 14px;
     color: #006699;
+    text-decoration: none;
 }
 
 .register {
     display: flex;
     justify-content: center;
-    margin-top: 1.5rem;    
+    margin-top: 1.5rem;
+    text-decoration: none; 
 }
 
 .register-btn {
