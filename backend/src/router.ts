@@ -5,13 +5,18 @@ import DeckController from "./controllers/DeckController";
 import SummarieController from "./controllers/SummarieController";
 import CardController from "./controllers/CardController";
 import SessionController from "./controllers/SessionController";
+import MetricsController from "./controllers/MetricsController";
+import userController from "./controllers/userController";
+import StudyMaterialController from "./controllers/StudyMaterialController";
 
 export const router = express.Router();
 
-router.get("/user/:username", UserController.getUser);
+router.get("/user/:username", UserController.getAllUserInfo);
+router.get("/user/metrics/:username", userController.getUserWithMetrics);
 router.post('/user/create/:username', UserController.createUser);
 
-router.post("/metrics/:userId", UserController.updateMetrics);
+router.post("/metrics/update/decks/:userId", MetricsController.updateDecksMetrics);
+router.post("/metrics/update/summaries/:userId", MetricsController.updatedSummariesMetrics);
 
 //summaries
 router.get("/summaries/:userId", SummarieController.getSummaries);
@@ -25,6 +30,8 @@ router.get("/decks/list/:userId", DeckController.getDeck);
 router.post("/decks/create/:userId", DeckController.createDeck);
 router.delete("/decks/delete/:deckId", DeckController.deleteDeck);
 
+//Study Materials
+router.get("/studyMaterials/", StudyMaterialController.getStudyMaterial);
 
 //TODO test all endpoints
 //cards

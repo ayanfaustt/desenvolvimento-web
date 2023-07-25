@@ -9,10 +9,6 @@ export const MetricsModel = db.define("metrics", {
         allowNull: false,
         primaryKey: true
     },
-    user_id:{
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
     reviews:{
         type: DataTypes.INTEGER,
         allowNull: false
@@ -28,4 +24,6 @@ export const MetricsModel = db.define("metrics", {
     metrics_date:{
         type: DataTypes.DATE,
     }
+},{
+    timestamps: false
 });

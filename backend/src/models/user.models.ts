@@ -25,7 +25,7 @@ export const UserModel = db.define("user", {
         unique: true
     } ,
     password: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING(100),
         allowNull: false,
     }
 });
@@ -46,3 +46,4 @@ UserModel.hasMany(SessionModel);
 SessionModel.belongsTo(UserModel);
 
 UserModel.hasMany(MetricsModel);
+MetricsModel.belongsTo(UserModel);

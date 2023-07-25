@@ -1,10 +1,11 @@
 export interface IGetUser {
-    username: string
-    password: string
+    username: string;
+    email: string;
+    password: string;
 }
 
 export interface IMetricsParams{
-    userId: string
+    userId: string;
 }
 
 export interface IMetricsVBody{

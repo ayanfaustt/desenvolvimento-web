@@ -5,7 +5,7 @@ import {
     listCards as listCardsRepository,
     updateCard as updateCardRepository
     
-} from "../database/repositories/cardRepository";
+} from "../services/cardService";
 import { Response, Request } from "express";
 import { Model } from "sequelize";
 
@@ -57,9 +57,9 @@ class CardController {
     async createCard (req: Request, res: Response): Promise<Response> {
         try {
             const { deckId: id } = req.params;
-            const { cardName, cardContent } = req.body;
+            const { cardName, cardContent, isGpt } = req.body;
 
-            await createCardRepository(id, cardName, cardContent); 
+            await createCardRepository(id, cardName, cardContent, isGpt); 
 
             return res.status(200).send({message: "Card created !"});
         } catch (error) {

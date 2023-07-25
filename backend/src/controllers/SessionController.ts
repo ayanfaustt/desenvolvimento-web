@@ -7,18 +7,29 @@ import {
 } from "../database/repositories/sessionRepository";
 
 import { 
-    getUser as getUserRepository
+    getAllUserInfoByUserName,
+    getAllUserInfoByUserEmail,
+    comparePassword
 } from "../database/repositories/userRepository";
 
 class SessionController {
 
+    
+
     async login (req: Request, res: Response): Promise<Response<Model>> {
+        const emailregex = /^\S+@\S+\.\S+$/;
         try {
             const { username: un , password: pw, session_type: st} = req.body;
-            const user = await getUserRepository(un as string);
+            let user;
+            if(emailregex.test(un)){
+                user =  await getAllUserInfoByUserEmail(un as string);
+            }
+            else{
+                user = await getAllUserInfoByUserName(un as string);
+            }
 
             const id  = user.get('id') as string;
-            if(user.get('password') === pw){
+            if(await comparePassword(pw, user.get('password') as string)){
                 const loctoken = await refreshSession(id,+st)
                 return res.status(200).send({token: loctoken});
             }
