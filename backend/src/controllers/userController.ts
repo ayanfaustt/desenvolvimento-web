@@ -2,7 +2,7 @@ import { Response, Request } from "express";
 import { Model } from "sequelize";
 //repositories
 import { 
-    getAllUserInfo as getAllUserInfoRepository, 
+    getAllUserInfoByUserName as getAllUserInfoRepository, 
     createUser as createUserRepository,
     deleteUser as deleteUserRepository,
     getOnlyUser as getOnlyUserRepository,
