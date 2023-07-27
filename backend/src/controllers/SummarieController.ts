@@ -1,11 +1,4 @@
-import {
-    createSummarie as createSummarieRepository,
-    getSummarie as getSummarieRepository,
-    deleteSummarie as deleteSummarieRepository,
-    updateSummarie as updateSummarieRepository,
-    listSummaries as listSummarieRepository
-
-} from "../database/repositories/summarieRepository";
+import SummariesServices from "../services/SummariesServices";
 import { Response, Request } from "express";
 import { Model } from "sequelize";
 
@@ -16,7 +9,7 @@ class SummarieController {
         try {
             const { userId: id } = req.params;
 
-            const summarie = await getSummarieRepository(id);
+            const summarie = await SummariesServices.getSummarie(id);
 
             return res.status(200).send(summarie);
         } catch (error) {
@@ -30,7 +23,7 @@ class SummarieController {
         try {
             const { userId: id } = req.params;
 
-            const summaries = await listSummarieRepository(id);
+            const summaries = await SummariesServices.listSummaries(id);
 
             return res.status(200).send(summaries);
         } catch (error) {
@@ -45,7 +38,7 @@ class SummarieController {
             const {deckId: id} = req.params;
             const {userId, summarieName, summarieContent, tagId } = req.body;
 
-            await updateSummarieRepository(id, userId, summarieName, summarieContent, tagId);
+            await SummariesServices.updateSummarie(id, userId, summarieName, summarieContent, tagId);
 
             return res.status(200).send({message: "Summarie updated !"});
         } catch (error) {
@@ -59,9 +52,9 @@ class SummarieController {
         try {
             const { userId: id } = req.params;
 
-            const { summarie_title, summarie_content } = req.body;
+            const { summarie_title, summarie_content, isGpt, maxLen, tagId } = req.body;
 
-            await createSummarieRepository(id, summarie_title, summarie_content); 
+            await SummariesServices.createSummarie(id, summarie_title, summarie_content, maxLen, tagId, isGpt); 
 
             return res.status(200).send({message: "Summarie created !"})
         } catch (error) {
@@ -76,7 +69,7 @@ class SummarieController {
         try {
             const { summarieId: id } = req.params;
 
-            await deleteSummarieRepository(id);
+            await SummariesServices.deleteSummarie(id);
 
             return res.status(200).send({message: "summarie deleted !"})
         } catch (error) {
