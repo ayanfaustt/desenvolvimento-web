@@ -49,7 +49,7 @@ export default function RegisterPage(props: RegisterPageProps) {
             const validationSchema = Yup.object().shape({
                 username: Yup.string().required('Campo obrigatório'),
                 email: Yup.string().email('E-mail inválido').required('Campo obrigatório'),
-                password: Yup.string().required('Campo obrigatório'),
+                password: Yup.string().required('Campo obrigatório').min(6, 'A senha deve ter no mínimo 6 caracteres'),
                 repeatpassword: Yup.string()
                     .oneOf([Yup.ref('password'), ''], 'As senhas não coincidem')
                     .required('Campo obrigatório'),
@@ -91,22 +91,19 @@ export default function RegisterPage(props: RegisterPageProps) {
             <div className="container-inside-right-register">
 
                 <Form className='user-info'>
-                    <TextInput name="username" labelName='Username' onChange={handleInput} />
+                    <TextInput name="username" labelName='Username' onChange={handleInput} needValid={true} />
                     {errors.username && <div className='error-message'>{errors.username}</div>}
-                    <TextInput name="email" labelName='Email' onChange={handleInput} />
+                    <TextInput name="email" labelName='Email' onChange={handleInput} needValid={true} />
                     {errors.email && <div className='error-message'>{errors.email}</div>}
-                    <TextInput name="password" labelName='Password' onChange={handleInput} />
+                    <TextInput name="password" labelName='Password' onChange={handleInput} needValid={true} />
                     {errors.password && <div className='error-message'>{errors.password}</div>}
-                    <TextInput name="repeatpassword" labelName='Repeat Password' onChange={handleInput} />
+                    <TextInput name="repeatpassword" labelName='Repeat Password' onChange={handleInput} needValid={true} />
                     {errors.repeatpassword && <div className='error-message'>{errors.repeatpassword}</div>}
                 </Form>
 
-                <Link to="/" className='login-page'>
-                    <p className='p'>Already have an account? <b>Sign in</b></p>
-                </Link>
 
                 <div className="register">
-                {isLoading ? (
+                    {isLoading ? (
                         <Button className='register-btn' disabled>
                             <Spinner animation='border' size='sm' />
                             Loading...
@@ -116,9 +113,12 @@ export default function RegisterPage(props: RegisterPageProps) {
                             Sign up
                         </Button>
                     )}
-                    
+
                 </div>
 
+                <Link to="/" className='login-page'>
+                    <p className='p'>Already have an account? <b>Sign in</b></p>
+                </Link>
             </div>
         </main>
     );

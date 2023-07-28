@@ -16,18 +16,29 @@
     gap: .8rem;
 }
 
+
 .login-page {
-    margin-top: .5rem;
-    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
     color: #006699;
     text-decoration: none;
+}
+
+.login-page:hover {
+    background-color: #DAE9F1;
+    border-radius: 8px;
+}
+
+.login-page p {
+    font-size: 16px;
 }
 
 .register {
     display: flex;
     justify-content: center;
     margin-top: 1.5rem;
-    text-decoration: none; 
+    text-decoration: none;
 }
 
 .register-btn {
@@ -42,7 +53,7 @@
     font-size: 20px;
 }
 
-.register-btn:hover{
+.register-btn:hover {
     background-color: initial;
     color: initial;
     border-color: initial;

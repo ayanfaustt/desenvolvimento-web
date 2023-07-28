@@ -2,7 +2,7 @@ import React from 'react';
 import './styles.css';
 import SideBar from '../../components/sidebar';
 import Cards from '../card';
-import PageName from '../../components/pageName';
+import PageNameAndButtons from '../pageNameAndButtons';
 
 interface CardInfo {
     cardName: string;
@@ -19,7 +19,7 @@ export default function PageContent(props: PageContentProps) {
         <main className='sidebar-content'>
             <SideBar />
             <div className='pageContent'>
-                <PageName name={props.pageName} />
+                <PageNameAndButtons name={props.pageName} />
                 <div className='cards'>
                     {props.cardsContent.map((content) => (
                         <Cards name={content.cardName} tag={content.cardTag} />
