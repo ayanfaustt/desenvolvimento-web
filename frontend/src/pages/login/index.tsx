@@ -2,12 +2,13 @@ import React, { useState, useRef, useEffect, ChangeEvent } from 'react';
 import TextInput from '../../components/textInput';
 import './styles.css';
 import TextField from '../../components/textField';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import dashboard from '../../images/dashboard-slide.png'
 import flashcard from '../../images/flashcard-slide.png'
 import summaries from '../../images/summaries-slide.png'
 import studyMaterial from '../../images/study-slide.png'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { LoginUser } from '../../hooks/useLogin';
 interface LoginPageProps {
 
 }
@@ -21,28 +22,48 @@ type eventType = {
 const sliderImgs = [dashboard, flashcard, summaries, studyMaterial]
 
 export default function LoginPage(props: LoginPageProps) {
+    const navigate = useNavigate();
     const [check, setCheck] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [userData, setUserData] = useState({ username: "", password: "" });
+    const [userNotFoundError, setUserNotFoundError] = useState(false);
+    const [currentImage, setCurrentImage] = useState(0);
 
     const handleCheck = (e: eventType) => {
         setCheck(e.target.checked);
     };
-
-    const [currentImage, setCurrentImage] = useState(0);
-
 
     const handleImage = (circleNumber: number) => {
         setCurrentImage(circleNumber);
         return undefined;
     };
 
-    const handleUsername = (e: ChangeEvent<HTMLInputElement>) => {
-        const input = e.target.value 
-        console.log(input)
+    const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setUserNotFoundError(false)
+        setUserData((prevData) => ({
+            ...prevData,
+            [name.toLowerCase()]: value
+        }));
     };
 
-    const handlePassword = (e: ChangeEvent<HTMLInputElement>) => {
-        const input = e.target.value 
-        console.log(input)
+    const handleSubmit = async () => {
+        const { username, password } = userData;
+        const data = {
+            username,
+            password
+        };
+
+        try {
+            setIsLoading(true);
+            await LoginUser(userData.username, data).then(response => console.log(response.data));
+            setIsLoading(false);
+            navigate('/dashboard');
+        } catch (error) {
+            setIsLoading(false);
+            setUserNotFoundError(true);
+            console.error('Erro:', error)
+        }
     };
 
     return (
@@ -66,8 +87,13 @@ export default function LoginPage(props: LoginPageProps) {
             <div className="container-inside-right-login">
 
                 <form className='user-info'>
-                    {/* <TextInput name='Email:' /> */}
-                    {/* <TextInput name='Password:' /> */}
+                {userNotFoundError && (
+                    <div className='error-box'>
+                        <div className='error-message'>Usuário não encontrado.</div>
+                    </div>
+                    )}
+                    <TextInput name='username' labelName='Username' onChange={handleInput} needValid={false}/>
+                    <TextInput name='password' labelName='Password' onChange={handleInput} needValid={false}/>
                 </form>
                 <div className='box-remember'>
                     <input
@@ -82,10 +108,17 @@ export default function LoginPage(props: LoginPageProps) {
                     <p className='p'>Forgot your password</p>
                     <p className='p'>New? Register</p>
                 </div>
-                
-                <Link to="/" className="login">
-                    <Button className='login-btn'>Login</Button>
-                </Link>
+
+                <div className="login">
+                    {isLoading ? (
+                        <Button className='register-btn' disabled>
+                            <Spinner animation='border' size='sm' />
+                            Loading...
+                        </Button>
+                    ) : (
+                        <Button className='login-btn' onClick={handleSubmit}>Login</Button>
+                    )}
+                </div>
 
             </div>
 
