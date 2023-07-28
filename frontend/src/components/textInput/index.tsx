@@ -1,8 +1,10 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import './styles.css';
 import TextField from '../textField';
+import { Form, FormControl, InputGroup } from 'react-bootstrap';
 
 interface TextInputProps {
+    labelName: string,
     name: string,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -10,10 +12,26 @@ interface TextInputProps {
 
 export default function TextInput(props: TextInputProps) {
 
+    const { name, labelName, onChange } = props;
+    const [isValid, setIsValid] = useState(false);
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        onChange(e);
+        setIsValid(!value);
+    };
+
     return (
-        <div>
-            <TextField name={props.name}></TextField>
-            <input name={props.name} type="text" className='inputField' onChange={props.onChange} />
-        </div>
+        <Form>
+            <TextField name={labelName}></TextField>
+            <Form.Group >
+                <Form.Control name={name}  type="text" className='inputField' onChange={handleInputChange} isInvalid={isValid} />
+                {!isValid ? null : (
+                    <Form.Control.Feedback type="invalid">
+                        Campo obrigatório
+                    </Form.Control.Feedback>
+                )}
+
+            </Form.Group>
+        </Form>
     );
 }
