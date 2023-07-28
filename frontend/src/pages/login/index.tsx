@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, createContext, useContext } from 'react';
 import TextInput from '../../components/textInput';
 import './styles.css';
 import TextField from '../../components/textField';
@@ -9,6 +9,8 @@ import summaries from '../../images/summaries-slide.png'
 import studyMaterial from '../../images/study-slide.png'
 import { useNavigate } from 'react-router-dom';
 import { LoginUser } from '../../hooks/useLogin';
+import { UserId } from '../../hooks/useUser';
+import { useUser } from '../../hooks/useContextUserId';
 interface LoginPageProps {
 
 }
@@ -28,6 +30,9 @@ export default function LoginPage(props: LoginPageProps) {
     const [userData, setUserData] = useState({ username: "", password: "" });
     const [userNotFoundError, setUserNotFoundError] = useState(false);
     const [currentImage, setCurrentImage] = useState(0);
+
+
+    const { userId, setUserId } = useUser();
 
     const handleCheck = (e: eventType) => {
         setCheck(e.target.checked);
@@ -53,17 +58,18 @@ export default function LoginPage(props: LoginPageProps) {
             username,
             password
         };
-
         try {
             setIsLoading(true);
-            await LoginUser(userData.username, data).then(response => console.log(response.data));
+            await LoginUser(userData.username, data).then(() => {
+                UserId(userData.username).then((response) => setUserId(response.data.id))
+            });
             setIsLoading(false);
             navigate('/dashboard');
         } catch (error) {
             setIsLoading(false);
             setUserNotFoundError(true);
             console.error('Erro:', error)
-        }
+        };
     };
 
     return (
@@ -87,13 +93,13 @@ export default function LoginPage(props: LoginPageProps) {
             <div className="container-inside-right-login">
 
                 <form className='user-info'>
-                {userNotFoundError && (
-                    <div className='error-box'>
-                        <div className='error-message'>Usuário não encontrado.</div>
-                    </div>
+                    {userNotFoundError && (
+                        <div className='error-box'>
+                            <div className='error-message'>Usuário não encontrado.</div>
+                        </div>
                     )}
-                    <TextInput name='username' labelName='Username' onChange={handleInput} needValid={false}/>
-                    <TextInput name='password' labelName='Password' onChange={handleInput} needValid={false}/>
+                    <TextInput name='username' labelName='Username' onChange={handleInput} needValid={false} />
+                    <TextInput name='password' labelName='Password' onChange={handleInput} needValid={false} />
                 </form>
                 <div className='box-remember'>
                     <input
