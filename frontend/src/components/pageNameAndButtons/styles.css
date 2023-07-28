@@ -1,0 +1,29 @@
+.deckName {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icons2 {
+    display: flex;
+    gap: 6px;
+}
+
+#dropdown-basic {
+    background-color: #F1F5F6;
+    color: black;
+    border: none;
+    box-shadow: none;
+}
+
+.add-button {
+    border: none;
+}
+
+.filter-button {
+    border: none;
+}
+
+.resume-text {
+    height: 8rem;
+}

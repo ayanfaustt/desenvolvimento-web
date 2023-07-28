@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import TextInput from '../../components/textInput';
 import './styles.css';
 import TextField from '../../components/textField';
@@ -7,7 +7,7 @@ import dashboard from '../../images/dashboard-slide.png'
 import flashcard from '../../images/flashcard-slide.png'
 import summaries from '../../images/summaries-slide.png'
 import studyMaterial from '../../images/study-slide.png'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { LoginUser } from '../../hooks/useLogin';
 interface LoginPageProps {
 
