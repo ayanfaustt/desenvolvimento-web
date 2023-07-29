@@ -15,8 +15,8 @@ class DateObserver {
     if (currentDay !== this.previousDate) {
       this.onDateChange(currentDate);
       this.previousDate = currentDay;
-    }
 
+    }
     // this.onDateChange(currentDate);
     // this.previousDate = currentDay;
   }
@@ -32,6 +32,7 @@ class DateObserver {
       for (const user of users) {
         await createMetricsRepository(user.getDataValue("id"), 0, 0, 0, newDate.toDateString());
       }
+      console.log("mudei")
   }
 
   startObserving() {
