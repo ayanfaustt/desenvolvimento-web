@@ -31,7 +31,7 @@ class SessionController {
             const id  = user.get('id') as string;
             if(await comparePassword(pw, user.get('password') as string)){
                 const loctoken = await refreshSession(id,+st)
-                return res.status(200).send({token: loctoken});
+                return res.status(200).send({userId: id, token: loctoken});
             }
 
             return res.status(401).send({message: "invalid credentials"})
