@@ -26,7 +26,7 @@ router.delete("/summaries/delete/:summarieId", SummarieController.deleteSummarie
 
 //decks
 router.get("/decks/:deckId", DeckController.getDeck);
-router.get("/decks/list/:userId", DeckController.getDeck);
+router.get("/decks/list/:userId", DeckController.listDeck);
 router.post("/decks/create/:userId", DeckController.createDeck);
 router.delete("/decks/delete/:deckId", DeckController.deleteDeck);
 

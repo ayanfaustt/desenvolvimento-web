@@ -24,6 +24,20 @@ class DeckController {
         }
     }
 
+    async listDeck (req: Request, res: Response): Promise<Response<Model[]>> {
+        try {
+            const { userId: id } = req.params;
+
+            const deck = await listDecksRepository(id);
+
+            return res.status(200).send(deck);
+        } catch (error) {
+            if(error instanceof Error ) return res.status(400).send({message: error.message});
+
+            return res.status(400).send({message: error});
+        }
+    }
+
     async updateDeck (req: Request, res: Response): Promise<Response> {
         try {
             const { userId: id } = req.params;
