@@ -15,7 +15,13 @@ import {
 class SessionController {
 
     
-
+    /**
+    * @description User's login.
+    * @param {string} username - req.body (string) the username;
+    * @param {string} password - req.body (string) the user password;
+    * @param {string} session_type - req.body (string) the type of login session (web or mobile);
+    * @returns A message with status code.
+    */
     async login (req: Request, res: Response): Promise<Response<Model>> {
         const emailregex = /^\S+@\S+\.\S+$/;
         try {

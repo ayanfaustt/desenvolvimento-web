@@ -6,7 +6,8 @@ import {
     createUser as createUserRepository,
     deleteUser as deleteUserRepository,
     getOnlyUser as getOnlyUserRepository,
-    getUserAndMetrics as getUserAndMetricsRepository
+    getUserAndMetrics as getUserAndMetricsRepository,
+    updateUser as updateUserRepository,
 } from "../database/repositories/userRepository";
 
 import { gpt }  from "../services/external/openai";
@@ -71,6 +72,22 @@ class UserController {
             
             return res.status(400).send({message: error});
         }
+    }
+
+    async updateUser (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response> {
+        try {
+            const { username } = req.params;
+            const { email, password }  = req.body;
+
+            await updateUserRepository(username, email, password);
+
+            return res.status(200).send({message: "User updated !"});
+        } catch (error) {
+            if (error instanceof Error) return res.status(400).send({message: error.message});
+            
+            return res.status(400).send({message: error});
+        }
+
     }
 
     async deleteUser (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response> {

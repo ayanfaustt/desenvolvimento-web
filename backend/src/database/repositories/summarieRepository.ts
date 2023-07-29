@@ -1,5 +1,6 @@
 import { Model } from "sequelize";
 import { SummariesModel } from "../../models/summaries.model";
+import { TagsModel } from "../../models/tags.model";
 
 
 class SummarieRepository{
@@ -27,7 +28,24 @@ class SummarieRepository{
             const summaries = await SummariesModel.findAll({
                 where: {
                     userId: userId
-                }
+                },
+                include: [TagsModel]
+            });
+    
+            return summaries;
+        } catch (error) {
+            throw new Error("The operation can not be completed !");
+        }
+    }
+
+    async listSummariesByTag (userId: string, tagId: string): Promise<Model[]>  {
+        try {
+            const summaries = await SummariesModel.findAll({
+                where: {
+                    userId: userId,
+                    tagId: tagId
+                },
+                include: [TagsModel]
             });
     
             return summaries;
@@ -38,7 +56,6 @@ class SummarieRepository{
     
     async updateSummarie (
         id: string, 
-        userId :string, 
         summarieName?: string, 
         summarieContent?: string, 
         tagId?: string
@@ -51,7 +68,6 @@ class SummarieRepository{
                 },{
                     where:{
                         id: id,
-                        userId: userId
                     }
                 });
             } catch (error) {
@@ -65,7 +81,8 @@ class SummarieRepository{
             const summarie = await SummariesModel.findOne({
                 where: {
                     id : summarieId
-                }
+                },
+                include: [TagsModel]
             });
         
             if(!summarie) throw new Error("Summarie not found !");

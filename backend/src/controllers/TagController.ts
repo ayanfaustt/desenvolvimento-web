@@ -9,6 +9,11 @@ import {
 
 class TagController {
     
+    /**
+     * @description List all user's tag (for decks and summaries).
+     * @param {string} userId - (string) req.params the user id;
+     * @returns return a list with all users tag and status code.
+     */
     async listTags (req: Request, res: Response): Promise<Response<Model[]>> {
         try {
             const { userId: id } = req.params;
@@ -22,7 +27,12 @@ class TagController {
             return res.status(400).send({message: error});
         }
     }
-
+    /**
+     * @description Create an user tag (for decks and summaries).
+     * @param {string} userId - (string) req.params the user id;
+     * @param {string} tagName - (string) req.body the tag name;
+     * @returns return a message with status code.
+     */
     async createTag (req: Request, res: Response): Promise<Response> {
         try {
             const { userId: id } = req.params;
@@ -39,9 +49,14 @@ class TagController {
         }
     }
 
+    /**
+     * @description Delete an user tag (for decks and summaries).
+     * @param {string} tagId - (string) req.params the tag id;
+     * @returns return a message with status code.
+     */
     async deleteTag (req: Request, res: Response): Promise<Response> {
         try {
-            const { deckId: id } = req.params;
+            const { tagId: id } = req.params;
 
             await deleteTagRepository(id);
 

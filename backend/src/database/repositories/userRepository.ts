@@ -42,6 +42,31 @@ export const createUser = async (username: string, email: string, password: stri
     if (!isUserCreated) throw new Error("User not created !");
 };
 
+
+export const updateUser = async (username: string, email: string, password: string): Promise<void> => {
+
+    try {
+        const isAlreadyExist = await UserModel.findOne({
+            where: {
+                username: username
+            }
+        });
+    
+        if (!isAlreadyExist) throw new Error("User not found !");
+    
+        const hash = await hashPassword(password);
+        const isUserUpdated = await UserModel.create({
+            username: username,
+            email: email,
+            password: hash
+        });
+    
+        if (!isUserUpdated) throw new Error("User not created !");
+    } catch (error) {
+        throw new Error();
+    }
+};
+
 export const getUserAndMetrics = async (username: string): Promise<Model> => {
     const userInfo = await UserModel.findOne({
         where: {
