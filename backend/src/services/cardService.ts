@@ -10,7 +10,7 @@ import {
 
 import { gpt } from "./external/openai";
 
-export const createCard = async (deckId: string, cardName: string, cardContent: string, isGpt?: boolean, maxLen: string = "50") => {
+export const createCard = async (deckId: string, cardName: string, cardContent: string, isGpt: boolean, maxLen: string = "50") => {
     try {
         //TODO chang the prompt
 
@@ -72,7 +72,7 @@ export const listCards = async (deckId: string): Promise<Model[]> => {
 
 export const updateCard = async (deckId: string, cardName: string, cardContent: string): Promise<void> =>{
     try {
-        const card = updateCardRepository(deckId, cardName, cardContent);
+        const card = await updateCardRepository(deckId, cardName, cardContent);
     } catch (error) {
         throw new Error("The operation can not be completed !")
     }

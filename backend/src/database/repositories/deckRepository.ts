@@ -1,6 +1,7 @@
 import { Model } from "sequelize";
 import { DecksModel } from "../../models/decks.model";
 import { CardsModel } from "../../models/cards.model";
+import { TagsModel } from "../../models/tags.model";
 
 
 
@@ -20,7 +21,7 @@ export const getDeck = async (deckId: string): Promise<Model> => {
         where: {
             id : deckId
         },
-        include: [CardsModel]
+        include: [CardsModel,  TagsModel]
     });
 
     if(!deck) throw new Error("Deck not found !");
@@ -33,7 +34,8 @@ export const listDecks = async (userId: string): Promise<Model[]> => {
         const deck = await DecksModel.findAll({
                 where: {
                     userId : userId
-                }
+                },
+                include: [TagsModel]
             });
 
         return deck;
@@ -42,7 +44,23 @@ export const listDecks = async (userId: string): Promise<Model[]> => {
     }
 };
 
-export const updateDeck =async (deckId: string, deckName: string, tagId?: string): Promise<void> => {
+export const listDecksByTag = async (userId: string, tagId: string): Promise<Model[]> => {
+    try {
+        const decks = await DecksModel.findAll({
+            where:{
+                userId: userId,
+                tagId: tagId
+            },
+            include: [TagsModel]
+        });
+
+        return decks;
+    } catch (error) {
+        throw new Error("The operation can not be completed !");
+    }
+};
+
+export const updateDeck = async (deckId: string, deckName: string, tagId?: string): Promise<void> => {
     try {
         await DecksModel.update(
         {

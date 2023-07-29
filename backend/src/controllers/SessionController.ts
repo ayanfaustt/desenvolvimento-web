@@ -6,30 +6,32 @@ import {
     refreshSession,
 } from "../database/repositories/sessionRepository";
 
-import { 
-    getAllUserInfoByUserName,
-    getAllUserInfoByUserEmail,
-    comparePassword
-} from "../database/repositories/userRepository";
+import UserServices from "../services/UserServices";
 
 class SessionController {
 
     
-
+    /**
+    * @description User's login.
+    * @param {string} username - req.body (string) the username;
+    * @param {string} password - req.body (string) the user password;
+    * @param {string} session_type - req.body (string) the type of login session (web or mobile);
+    * @returns A message with status code.
+    */
     async login (req: Request, res: Response): Promise<Response<Model>> {
         const emailregex = /^\S+@\S+\.\S+$/;
         try {
             const { username: un , password: pw, session_type: st} = req.body;
             let user;
             if(emailregex.test(un)){
-                user =  await getAllUserInfoByUserEmail(un as string);
+                user =  await UserServices.getAllUserInfoByUserEmail(un as string);
             }
             else{
-                user = await getAllUserInfoByUserName(un as string);
+                user = await UserServices.getAllUserInfoByUserName(un as string);
             }
 
             const id  = user.get('id') as string;
-            if(await comparePassword(pw, user.get('password') as string)){
+            if(await UserServices.comparePassword(pw, user.get('password') as string)){
                 const loctoken = await refreshSession(id,+st)
                 return res.status(200).send({userId: id, token: loctoken});
             }
