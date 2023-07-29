@@ -43,6 +43,7 @@
     display: flex;
     justify-content: center;
     margin-top: 1.5rem;
+    text-decoration: none;
 }
 
 .login-btn {
@@ -107,4 +108,15 @@
 
 .active {
     background-color: #00212C;
+}
+
+.error-box {
+    background-color: #f8d7da;
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.error-message {
+    color: #721c24;
 }
