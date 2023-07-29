@@ -1,15 +1,6 @@
 import { Response, Request } from "express";
 import { Model } from "sequelize";
-//repositories
-import { 
-    getAllUserInfoByUserName as getAllUserInfoRepository, 
-    createUser as createUserRepository,
-    deleteUser as deleteUserRepository,
-    getOnlyUser as getOnlyUserRepository,
-    getUserAndMetrics as getUserAndMetricsRepository,
-    updateUser as updateUserRepository,
-} from "../database/repositories/userRepository";
-
+import UserServices from "../services/UserServices";
 import { gpt }  from "../services/external/openai";
 
 import { 
@@ -25,11 +16,16 @@ class UserController {
     
     //user
     //TODO: do not return the user password
+    /**
+    * @description Get all user info.
+    * @param {string} username - req.params (string) the username;
+    * @returns A user object with status code.
+    */
     async getAllUserInfo (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response<Model>> {
         try{
             const { username } = req.params;
         
-            const user = await getAllUserInfoRepository(username);
+            const user = await UserServices.getAllUserInfoByUserName(username);
             
             return res.status(200).send(user); 
         } catch(error){
@@ -40,11 +36,16 @@ class UserController {
        
     };
 
+    /**
+    * @description Get all user info with metrics.
+    * @param {string} username - req.params (string) the username;
+    * @returns A user object with status code.
+    */
     async getUserWithMetrics (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response<Model>> {
         try{
             const { username } = req.params;
         
-            const user = await getUserAndMetricsRepository(username);
+            const user = await UserServices.getUserAndMetrics(username);
             
             return res.status(200).send(user); 
         } catch(error){
@@ -55,15 +56,20 @@ class UserController {
        
     };
 
-    
-
+    /**
+    * @description Create a new user.
+    * @param {string} username - req.params (string) the username;
+    * @param {string} email - req.body (string) the user's email;
+    * @param {string} password - req.params (string) the user's password;
+    * @returns A message with status code.
+    */
     async createUser (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response>{
         try{
             const { username } = req.params;
             const { email, password }  = req.body;
-            await createUserRepository(username, email, password);
+            await UserServices.createUser(username, email, password);
 
-            const userId = (await getAllUserInfoRepository(username)).get("id");
+            const userId = (await UserServices.getAllUserInfoByUserName(username)).get("id");
             await createSession(userId as string);
 
             return res.status(200).send({message: "User created !"});
@@ -74,12 +80,19 @@ class UserController {
         }
     }
 
+    /**
+    * @description Update an user.
+    * @param {string} username - req.params (string) the username;
+    * @param {string} email - req.body (string) the user's email;
+    * @param {string} password - req.params (string) the user's password;
+    * @returns A message with status code.
+    */
     async updateUser (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response> {
         try {
             const { username } = req.params;
             const { email, password }  = req.body;
 
-            await updateUserRepository(username, email, password);
+            await UserServices.updateUser(username, email, password);
 
             return res.status(200).send({message: "User updated !"});
         } catch (error) {
@@ -90,11 +103,16 @@ class UserController {
 
     }
 
+    /**
+    * @description Delete an user.
+    * @param {string} username - req.params (string) the username;
+    * @returns A message with status code.
+    */
     async deleteUser (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response> {
         try {
             const { username } = req.body;
 
-            await deleteUserRepository(username);
+            await UserServices.deleteUser(username);
 
             return res.status(200).send({message: "User deleted !"});
         } catch (error) {

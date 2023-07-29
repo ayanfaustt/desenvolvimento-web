@@ -12,7 +12,7 @@ import { Model } from "sequelize";
 class DeckController {
     
     /**
-    * @description Get a specific user's deck.
+    * @description Get a specific user's deck with all your cards and tag.
     * @param {string} deckId - req.params (string) the deck id;
     * @returns A deck object with status code.
     */
@@ -31,7 +31,7 @@ class DeckController {
     }
 
     /**
-    * @description List all user's decks.
+    * @description List all user's decks without cards.
     * @param {string} userId - req.params (string) the user id;
     * @returns A list of deck objects with status code.
     */

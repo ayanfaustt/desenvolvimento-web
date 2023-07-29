@@ -6,11 +6,7 @@ import {
     refreshSession,
 } from "../database/repositories/sessionRepository";
 
-import { 
-    getAllUserInfoByUserName,
-    getAllUserInfoByUserEmail,
-    comparePassword
-} from "../database/repositories/userRepository";
+import UserServices from "../services/UserServices";
 
 class SessionController {
 
@@ -28,14 +24,14 @@ class SessionController {
             const { username: un , password: pw, session_type: st} = req.body;
             let user;
             if(emailregex.test(un)){
-                user =  await getAllUserInfoByUserEmail(un as string);
+                user =  await UserServices.getAllUserInfoByUserEmail(un as string);
             }
             else{
-                user = await getAllUserInfoByUserName(un as string);
+                user = await UserServices.getAllUserInfoByUserName(un as string);
             }
 
             const id  = user.get('id') as string;
-            if(await comparePassword(pw, user.get('password') as string)){
+            if(await UserServices.comparePassword(pw, user.get('password') as string)){
                 const loctoken = await refreshSession(id,+st)
                 return res.status(200).send({userId: id, token: loctoken});
             }

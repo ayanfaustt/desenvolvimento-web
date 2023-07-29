@@ -16,7 +16,10 @@ export const router = express.Router();
 router.get("/user/:username", UserController.getAllUserInfo);
 router.get("/user/metrics/:username", userController.getUserWithMetrics);
 router.post('/user/create/:username', UserController.createUser);
-router.post("/user/update/:userId", UserController.updateUser)
+router.post("/user/update/:userId", UserController.updateUser);
+
+// session
+router.post("/session/login", SessionController.login);
 
 //metrics
 router.post("/metrics/update/decks/:userId", MetricsController.updateDecksMetrics);
@@ -49,13 +52,7 @@ router.post("/cards/create/:deckId", CardController.createCard);
 router.put("/cards/update/:deckId", CardController.updateCard);
 router.delete("/cards/delete/:deckId", CardController.deleteCard);
 
-
-//TODO test all endpoints
 //Tags
 router.get("/tags/list/:userId", TagController.listTags);
 router.post("/tags/create/:userId", TagController.createTag);
 router.delete("/tags/delete/:tagId", TagController.deleteTag);
-
-//TODO test all endpoints
-//Tags
-router.post("/login", SessionController.login)
