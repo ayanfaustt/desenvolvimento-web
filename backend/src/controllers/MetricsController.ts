@@ -10,11 +10,12 @@ import {
 
 
 class MetricsController {
-        //metrics
-    //TODO implement some verify on date field
-    //TODO implement a method for the system create a new record when the date changes (0 for reviews date for last login) 
-    //TODO create a method for update ONLY the reviews field
-    //TODO create a controller to metrics ?
+
+    /**
+    * @description Update the user's deck review metric.
+    * @param {string} userId - req.params (string) the user id;
+    * @returns A message with status code.
+    */
     async updateDecksMetrics (req: Request, res: Response): Promise<Response>{
         try{
             const { userId: id } = req.params;
@@ -29,6 +30,11 @@ class MetricsController {
         }
     }
 
+    /**
+    * @description Update the user's summarie review metric.
+    * @param {string} userId - req.params (string) the user id;
+    * @returns A message with status code.
+    */
     async updatedSummariesMetrics (req: Request, res: Response): Promise<Response>{
         try{
             const { userId: id } = req.params;

@@ -1,5 +1,5 @@
 import { createMetrics as createMetricsRepository } from "../database/repositories/metricRepository";
-import { getOnlyUser as getOnlyUserRepository } from "../database/repositories/userRepository";
+import UserServices from "../services/UserServices";
 
 class DateObserver {
   private previousDate: number = new Date().getDate();
@@ -15,8 +15,8 @@ class DateObserver {
     if (currentDay !== this.previousDate) {
       this.onDateChange(currentDate);
       this.previousDate = currentDay;
-    }
 
+    }
     // this.onDateChange(currentDate);
     // this.previousDate = currentDay;
   }
@@ -27,11 +27,12 @@ class DateObserver {
       const day = String(newDate.getDate()).padStart(2, '0');
       const date = `${year}-${month}-${day}`;
       
-      const users = await getOnlyUserRepository();
+      const users = await UserServices.getOnlyUsers();
 
       for (const user of users) {
         await createMetricsRepository(user.getDataValue("id"), 0, 0, 0, newDate.toDateString());
       }
+      console.log("mudei")
   }
 
   startObserving() {

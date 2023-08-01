@@ -10,48 +10,42 @@ import {
 
 import { gpt } from "./external/openai";
 
-// curl https://api.openai.com/v1/chat/completions \
-//   -H "Content-Type: application/json" \
-//   -H "Authorization: Bearer $OPENAI_API_KEY" \
-//   -d '{
-//     "model": "gpt-3.5-turbo",
-//     "messages": [{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": "Hello!"}]
-//   }'
-
-
-export const createCard = async (deckId: string, cardName: string, cardContent: string, isGpt?: boolean) => {
+export const createCard = async (deckId: string, cardName: string, cardContent: string, isGpt: boolean, maxLen: string = "50") => {
     try {
+        //TODO chang the prompt
 
         if(isGpt){
-            const prompt = `Você é um professor com um vasto conhecimento em diversas áreas. 
-            Sabendo disso, Pedro, seu aluno, está com uma dúvida: {O que é o modelo OSI ?} e gostaria que você o respondesse usando no máximo {20} palavras. A saída deverá seguir o formato JSON com os campos: duvida e resposta.`;
             const content = await gpt.createChatCompletion({
                 model: "gpt-3.5-turbo",
                 messages: [
                     {
                         role: "system", 
-                        content: "Você é um professor com um vasto conhecimento em diversas áreas."
+                        content: "Você é um professor com um vasto conhecimento em diversas áreas. Sabendo disso você responde a dúvida de todos os seus alunos da seguinte maneira: {dúvida do seu aluno}? {sua resposta} e você sempre responde as perguntas com a quantidade de palavras que seu aluno pede. A saída deverá seguir o formato JSON com os campos: pergunta e resposta."
                     },
                     {
                         role: "user",
-                        content: "O que é o modelo OSI ? responder com no máximo 20 palavras e deve retornar um json contendo os seguintes campos: pergunta e resposta"
+                        content: "modelo OSI ? responder em 20 palavras."
                     },
                     {
                         role: "assistant",
-                        content: ""
+                        content: "{ 'pergunta': 'O que é o modelo OSI?', 'resposta': 'O modelo OSI é um padrão de arquitetura de redes que define como os computadores se comunicam em rede.'}"
+                    },{
+                        role: "user",
+                        content: `${cardName}? responder em ${maxLen} palavras`
                     }
                 ]
             });
-
-            await createCardRepository(deckId, cardName, content.data.choices[0].message?.content ?? ""); 
+            
+            if(content.data.choices[0].message?.content){
+                const parser = content.data.choices[0].message.content.replace(/'/g, '"');
+                const card = JSON.parse(parser);
+                await createCardRepository(deckId, cardName, card.resposta)
+            }
         }
-
-        await createCardRepository(deckId, cardName, cardContent); 
-
-       
+      
 
     } catch (error) {
-        throw new Error();
+        
     }
 };
 
@@ -73,6 +67,14 @@ export const listCards = async (deckId: string): Promise<Model[]> => {
         return cards;
     }catch (error) {
         throw new Error()
+    }
+};
+
+export const updateCard = async (deckId: string, cardName: string, cardContent: string): Promise<void> =>{
+    try {
+        const card = await updateCardRepository(deckId, cardName, cardContent);
+    } catch (error) {
+        throw new Error("The operation can not be completed !")
     }
 };
 
