@@ -13,11 +13,11 @@ export const createTag = async (userId: string, tag_name: string): Promise<void>
     if(!isTagCreated) throw new Error("The Tag can not be created !")
 };
 
-export const listTags = async (tagId: string): Promise<Model[]> => {
+export const listTags = async (userId: string): Promise<Model[]> => {
     try{
         const deck = await TagsModel.findAll({
                 where: {
-                    id : tagId
+                    userId : userId
                 }
             });
 

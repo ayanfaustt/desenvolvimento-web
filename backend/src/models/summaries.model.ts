@@ -23,3 +23,4 @@ export const SummariesModel = db.define("summaries", {
 });
 
 TagsModel.hasMany(SummariesModel);
+SummariesModel.belongsTo(TagsModel);

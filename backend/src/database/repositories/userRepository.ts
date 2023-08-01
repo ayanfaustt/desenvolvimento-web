@@ -2,7 +2,7 @@ import { db } from "../db";
 import { UserModel } from "../../models/user.models";
 import { MetricsModel } from "../../models/metrics.model";
 import { DecksModel } from "../../models/decks.model";
-import { Model } from "sequelize";
+import { DatabaseError, ForeignKeyConstraintError, Model, UniqueConstraintError, ValidationError } from "sequelize";
 import { SummariesModel } from "../../models/summaries.model";
 import { SessionModel } from "../../models/session.model";
 
@@ -19,7 +19,18 @@ class UserRepository {
 
          return isUserCreated;
        } catch (error) {
-            throw new Error();
+            if (error instanceof ValidationError){
+               throw new Error(`Validation Error: ${error.errors[0].message}`);
+            } else if (error instanceof UniqueConstraintError){
+                throw new Error(error.errors[0].message);
+            } else if (error instanceof ForeignKeyConstraintError){
+                throw new Error(`Foreing Key Error: ${error.message}`);
+            } else if (error instanceof DatabaseError) {
+                throw new Error(`Internal Error: ${error.message}`)
+            } else {
+
+                throw new Error(`Internal Error: ${error}`);
+            }
        }
     };
     
