@@ -1,5 +1,5 @@
 import { Model } from "sequelize";
-import SummarieRepository from "../database/repositories/summarieRepository";
+import SummarieRepository from "../database/repositories/SummarieRepository";
 import { gpt } from "./external/openai";
 
 
