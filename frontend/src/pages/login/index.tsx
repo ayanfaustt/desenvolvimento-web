@@ -32,7 +32,7 @@ export default function LoginPage(props: LoginPageProps) {
     const [currentImage, setCurrentImage] = useState(0);
 
 
-    const { userId, setUserId } = useUser();
+    const { setUserId } = useUser();
 
     const handleCheck = (e: eventType) => {
         setCheck(e.target.checked);
@@ -60,7 +60,7 @@ export default function LoginPage(props: LoginPageProps) {
         };
         try {
             setIsLoading(true);
-            await LoginUser(userData.username, data).then(() => {
+            await LoginUser(data).then(() => {
                 UserId(userData.username).then((response) => setUserId(response.data.id))
             });
             setIsLoading(false);
