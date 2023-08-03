@@ -39,13 +39,13 @@ export const createCard = async (deckId: string, cardName: string, cardContent: 
             if(content.data.choices[0].message?.content){
                 const parser = content.data.choices[0].message.content.replace(/'/g, '"');
                 const card = JSON.parse(parser);
-                await createCardRepository(deckId, cardName, card.resposta)
+                await createCardRepository(deckId, cardName, card.resposta);
             }
         }
-      
+        await createCardRepository(deckId, cardName, cardContent);
 
     } catch (error) {
-        
+        throw new Error("The operation can not be completed !");
     }
 };
 
@@ -55,7 +55,7 @@ export const getCard = async (cardId: string): Promise<Model> => {
 
         return card;
     } catch (error) {
-        throw new Error();
+        throw new Error("The operation can not be completed !");
     }
 };
 
@@ -66,7 +66,7 @@ export const listCards = async (deckId: string): Promise<Model[]> => {
 
         return cards;
     }catch (error) {
-        throw new Error()
+        throw new Error("The operation can not be completed !");
     }
 };
 
@@ -74,7 +74,7 @@ export const updateCard = async (deckId: string, cardName: string, cardContent: 
     try {
         const card = await updateCardRepository(deckId, cardName, cardContent);
     } catch (error) {
-        throw new Error("The operation can not be completed !")
+        throw new Error("The operation can not be completed !");
     }
 };
 
@@ -82,6 +82,6 @@ export const deleteCard = async (cardId: string): Promise<void> =>{
     try {
        await deleteCardRepository(cardId);
     } catch (error) {
-        throw new Error("The operation can not be completed !")
+        throw new Error("The operation can not be completed !");
     }
 };
