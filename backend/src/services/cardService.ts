@@ -41,8 +41,9 @@ export const createCard = async (deckId: string, cardName: string, cardContent: 
                 const card = JSON.parse(parser);
                 await createCardRepository(deckId, cardName, card.resposta);
             }
+        }else{
+            await createCardRepository(deckId, cardName, cardContent);
         }
-        await createCardRepository(deckId, cardName, cardContent);
 
     } catch (error) {
         throw new Error("The operation can not be completed !");
