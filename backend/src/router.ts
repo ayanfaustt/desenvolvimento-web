@@ -1,12 +1,12 @@
 import express from "express";
-import UserController from "./controllers/userController";
+import UserController from "./controllers/UserController";
 import TagController from "./controllers/TagController";
 import DeckController from "./controllers/DeckController";
 import SummarieController from "./controllers/SummarieController";
 import CardController from "./controllers/CardController";
 import SessionController from "./controllers/SessionController";
 import MetricsController from "./controllers/MetricsController";
-import userController from "./controllers/userController";
+import userController from "./controllers/UserController";
 import StudyMaterialController from "./controllers/StudyMaterialController";
 
 export const router = express.Router();
