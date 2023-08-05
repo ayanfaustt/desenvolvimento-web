@@ -3,89 +3,93 @@ import { DecksModel } from "../../models/decks.model";
 import { CardsModel } from "../../models/cards.model";
 import { TagsModel } from "../../models/tags.model";
 
+class DeckRepository{
+  
+  async create(userId: string, deckName: string, tagId?: string): Promise<void> {
 
+    const isDeckCreated = await DecksModel.create({
+		  userId: userId,
+		  deck_name: deckName,
+		  tagId: tagId
+    });
+	  
+    if(!isDeckCreated) throw new Error("Deck can not be created !");
+	  };
 
-export const createDeck = async (userId: string, deckName: string, tagId?: string): Promise<void> => {
-
-  const isDeckCreated = await DecksModel.create({
-    userId: userId,
-    deck_name: deckName,
-    tagId: tagId
-  });
-
-  if(!isDeckCreated) throw new Error("Deck can not be created !");
-};
-
-export const getDeck = async (deckId: string): Promise<Model> => {
-  const deck = await DecksModel.findOne({
-    where: {
-      id : deckId
-    },
-    include: [CardsModel,  TagsModel]
-  });
-
-  if(!deck) throw new Error("Deck not found !");
-
-  return deck;
-};
-
-export const listDecks = async (userId: string): Promise<Model[]> => {
-  try{
-    const deck = await DecksModel.findAll({
+  async get (deckId: string): Promise<Model> {
+    const deck = await DecksModel.findOne({
       where: {
-        userId : userId
+        id : deckId
       },
-      include: [TagsModel]
+      include: [CardsModel,  TagsModel]
     });
-
+		
+    if(!deck) throw new Error("Deck not found !");
+		
     return deck;
-  } catch (error) {
-    throw new Error("The operation can not be completed !");
-  }
-};
+  };
 
-export const listDecksByTag = async (userId: string, tagId: string): Promise<Model[]> => {
-  try {
-    const decks = await DecksModel.findAll({
-      where:{
-        userId: userId,
-        tagId: tagId
-      },
-      include: [TagsModel]
-    });
+  async list (userId: string): Promise<Model[]> {
+    try{
+      const deck = await DecksModel.findAll({
+        where: {
+          userId : userId
+        },
+        include: [TagsModel]
+      });
+	
+      return deck;
+    } catch (error) {
+      throw new Error("The operation can not be completed !");
+    }
+  };
 
-    return decks;
-  } catch (error) {
-    throw new Error("The operation can not be completed !");
-  }
-};
-
-export const updateDeck = async (deckId: string, deckName: string, tagId?: string): Promise<void> => {
-  try {
-    await DecksModel.update(
-      {
-        deck_name: deckName,
-        tagId: tagId
-      },{
+  async listByTag (userId: string, tagId: string): Promise<Model[]> {
+    try {
+      const decks = await DecksModel.findAll({
+        where:{
+          userId: userId,
+          tagId: tagId
+        },
+        include: [TagsModel]
+      });
+	
+      return decks;
+    } catch (error) {
+      throw new Error("The operation can not be completed !");
+    }
+  };
+	
+  async update (deckId: string, deckName: string, tagId?: string): Promise<void> {
+    try {
+      await DecksModel.update(
+        {
+          deck_name: deckName,
+          tagId: tagId
+        },{
+          where: {
+            id: deckId
+          }
+        });
+    } catch (error) {
+      throw new Error("The operation can not be completed !");
+    }
+  };
+	
+  async delete (deckId: string): Promise<void> {
+    try {
+      await DecksModel.destroy({
         where: {
           id: deckId
-        }
+        },
+        cascade: true,
+        truncate: true
       });
-  } catch (error) {
-    throw new Error("The operation can not be completed !");
-  }
-};
+    } catch (error) {
+      throw new Error("The operation can not be completed !");
+    }
+  };
+	
+}
 
-export const deleteDeck = async (deckId: string): Promise<void> =>{
-  try {
-    await DecksModel.destroy({
-      where: {
-        id: deckId
-      },
-      cascade: true,
-      truncate: true
-    });
-  } catch (error) {
-    throw new Error("The operation can not be completed !");
-  }
-};
+export default new DeckRepository;

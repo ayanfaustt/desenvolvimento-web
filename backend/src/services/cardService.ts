@@ -1,95 +1,102 @@
 import { Model } from "sequelize";
-import {
-  createCard as createCardRepository,
-  deleteCard as deleteCardRepository,
-  getCard as getCardRepository,
-  listCards as listCardsRepository,
-  updateCard as updateCardRepository,
-} from "../database/repositories/cardRepository";
-
 import { gpt } from "./external/openai";
+import CardRepository from "../database/repositories/CardRepository";
 
-export const createCard = async (
-  deckId: string,
-  cardName: string,
-  cardContent: string,
-  isGpt: boolean,
-  maxLen: string = "50",
-) => {
-  try {
-    //TODO chang the prompt
+class CardServices{
+  
+  private systemSamplePrompt =  "Você é um professor com um vasto conhecimento em diversas áreas. Sabendo disso você responde a dúvida de todos os seus alunos da seguinte maneira: {dúvida do seu aluno}?" 
+	+  "{sua resposta} e você sempre responde as perguntas com a quantidade de palavras que seu aluno pede. A saída deverá seguir o formato JSON com os campos: pergunta e resposta.";
 
-    if(isGpt){
-      const content = await gpt.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system", 
-            content: "Você é um professor com um vasto conhecimento em diversas áreas. Sabendo disso você responde a dúvida de todos os seus alunos da seguinte maneira: {dúvida do seu aluno}? {sua resposta} e você sempre responde as perguntas com a quantidade de palavras que seu aluno pede. A saída deverá seguir o formato JSON com os campos: pergunta e resposta."
-          },
-          {
-            role: "user",
-            content: "modelo OSI ? responder em 20 palavras."
-          },
-          {
-            role: "assistant",
-            content: "{ 'pergunta': 'O que é o modelo OSI?', 'resposta': 'O modelo OSI é um padrão de arquitetura de redes que define como os computadores se comunicam em rede.'}"
-          },{
-            role: "user",
-            content: `${cardName}? responder em ${maxLen} palavras`
-          }
-        ]
-      });
-            
-      if(content.data.choices[0].message?.content){
-        const parser = content.data.choices[0].message.content.replace(/'/g, "\"");
-        const card = JSON.parse(parser);
-        await createCardRepository(deckId, cardName, card.resposta);
+  private userSamplePrompt = "modelo OSI ? responder em 20 palavras.";
+
+  private systemSamplePromptResponse = "{ 'pergunta': 'O que é o modelo OSI?', 'resposta': 'O modelo OSI é um padrão de arquitetura de redes que define como os computadores se comunicam em rede.'}";
+
+  async create(
+    deckId: string,
+    cardName: string,
+    cardContent: string,
+    isGpt: boolean,
+    maxLen: string = "50",
+  ): Promise<void> {
+    try {
+		  //TODO chang the prompt
+	  
+      if(isGpt){
+        const content = await gpt.createChatCompletion({
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "system", 
+              content: this.systemSamplePrompt
+            },
+            {
+              role: "user",
+              content: this.userSamplePrompt
+            },
+            {
+              role: "assistant",
+              content: this.systemSamplePromptResponse
+            },{
+              role: "user",
+              content: `${cardName}? responder em ${maxLen} palavras`
+            }
+          ]
+        });
+							
+        if(content.data.choices[0].message?.content){
+          const parser = content.data.choices[0].message.content.replace(/'/g, "\"");
+          const card = JSON.parse(parser);
+          await CardRepository.create(deckId, cardName, card.resposta);
+        }
+      }else{
+        await CardRepository.create(deckId, cardName, cardContent);
       }
-    }else{
-      await createCardRepository(deckId, cardName, cardContent);
+    }catch (error) {
+		  throw new Error("The operation can not be completed !");
     }
-  }catch (error) {
-    	throw new Error("The operation can not be completed !");
-  }
-};
+  };
 
-export const getCard = async (cardId: string): Promise<Model> => {
-  try {
-    const card = await getCardRepository(cardId);
+  async get (cardId: string): Promise<Model> {
+    try {
+      const card = await CardRepository.get(cardId);
+  
+      return card;
+    } catch (error) {
+      throw new Error("The operation can not be completed !");
+    }
+  };
 
-    return card;
-  } catch (error) {
-    throw new Error("The operation can not be completed !");
-  }
-};
+  async list (deckId: string): Promise<Model[]> {
+    try {
+      const cards = await CardRepository.list(deckId);
+  
+      return cards;
+    } catch (error) {
+      throw new Error("The operation can not be completed !");
+    }
+  };
 
-export const listCards = async (deckId: string): Promise<Model[]> => {
-  try {
-    const cards = await listCardsRepository(deckId);
+  async update (
+    deckId: string,
+    cardName: string,
+    cardContent: string,
+  ): Promise<void> {
+    try {
+      await CardRepository.update(deckId, cardName, cardContent);
+    } catch (error) {
+      throw new Error("The operation can not be completed !");
+    }
+  };
 
-    return cards;
-  } catch (error) {
-    throw new Error("The operation can not be completed !");
-  }
-};
+  async delete (cardId: string): Promise<void> {
+    try {
+      await CardRepository.delete(cardId);
+    } catch (error) {
+      throw new Error("The operation can not be completed !");
+    }
+  };
 
-export const updateCard = async (
-  deckId: string,
-  cardName: string,
-  cardContent: string,
-): Promise<void> => {
-  try {
-    await updateCardRepository(deckId, cardName, cardContent);
-  } catch (error) {
-    throw new Error("The operation can not be completed !");
-  }
-};
+}
 
-export const deleteCard = async (cardId: string): Promise<void> => {
-  try {
-    await deleteCardRepository(cardId);
-  } catch (error) {
-    throw new Error("The operation can not be completed !");
-  }
-};
+
+export default new CardServices;
