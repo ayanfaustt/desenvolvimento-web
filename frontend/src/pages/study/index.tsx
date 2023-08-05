@@ -6,7 +6,7 @@ interface LoginPageProps {
 
 }
 export default function LoginPage(props : LoginPageProps){
-    return(
-        <>{props.password}</>
-    )
+  return(
+    <>{props.password}</>
+  );
 }

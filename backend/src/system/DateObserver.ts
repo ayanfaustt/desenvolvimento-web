@@ -22,17 +22,17 @@ class DateObserver {
   }
 
   async onDateChange(newDate: Date) {
-      const year = newDate.getFullYear();
-      const month = String(newDate.getMonth() + 1).padStart(2, '0');
-      const day = String(newDate.getDate()).padStart(2, '0');
-      const date = `${year}-${month}-${day}`;
+    // const year = newDate.getFullYear();
+    // const month = String(newDate.getMonth() + 1).padStart(2, "0");
+    // const day = String(newDate.getDate()).padStart(2, "0");
+    // const date = `${year}-${month}-${day}`;
       
-      const users = await UserServices.getOnlyUsers();
+    const users = await UserServices.getOnlyUsers();
 
-      for (const user of users) {
-        await createMetricsRepository(user.getDataValue("id"), 0, 0, 0, newDate.toDateString());
-      }
-      console.log("mudei")
+    for (const user of users) {
+      await createMetricsRepository(user.getDataValue("id"), 0, 0, 0, newDate.toDateString());
+    }
+    console.log("mudei");
   }
 
   startObserving() {
@@ -41,4 +41,4 @@ class DateObserver {
     }, 1000); 
   }
 } 
-export {DateObserver}
+export {DateObserver};

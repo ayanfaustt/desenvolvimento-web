@@ -1,0 +1,12 @@
+[
+    {
+        "key": "alt+shift+f",
+        "command": "eslint.executeAutofix",
+        "when": "editorHasDocumentSelectionFormattingProvider && editorTextFocus"
+    },
+    {
+        "key": "alt+shift+k",
+        "command": "editor.action.organizeImports",
+        "when": "editorHasDocumentSelectionFormattingProvider"
+    }
+]
