@@ -81,9 +81,7 @@ class DeckRepository{
       await DecksModel.destroy({
         where: {
           id: deckId
-        },
-        cascade: true,
-        truncate: true
+        }
       });
     } catch (error) {
       throw new Error("The operation can not be completed !");

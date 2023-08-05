@@ -26,12 +26,12 @@ router.post("/metrics/update/decks/:userId", MetricsController.updateDecksMetric
 router.post("/metrics/update/summaries/:userId", MetricsController.updatedSummariesMetrics);
 
 //summaries
-router.get("/summaries/:userId", SummarieController.getSummaries);
-router.get("/summaries/list/:userId", SummarieController.listSummaries);
-router.get("/summaries/listByTag/:userId", SummarieController.listSummariesByTag);
-router.put("/summaries/update/:summarieId", SummarieController.updateSummarie);
-router.post("/summaries/create/:userId", SummarieController.createSummarie);
-router.delete("/summaries/delete/:summarieId", SummarieController.deleteSummarie);
+router.get("/summaries/:summarieId", SummarieController.get);
+router.get("/summaries/list/:userId", SummarieController.list);
+router.get("/summaries/listByTag/:userId", SummarieController.listByTag);
+router.put("/summaries/update/:summarieId", SummarieController.update);
+router.post("/summaries/create/:userId", SummarieController.create);
+router.delete("/summaries/delete/:summarieId", SummarieController.delete);
 
 //decks
 router.get("/decks/:deckId", DeckController.get);

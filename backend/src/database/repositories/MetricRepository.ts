@@ -1,3 +1,4 @@
+import Model from "sequelize/types/model";
 import { MetricsModel } from "../../models/metrics.model";
 
 
@@ -23,63 +24,55 @@ class MetricsRepository {
     if (!metric) throw new Error("Can not update the user metrics");
   };
 
-  async imcrementDeckReview (user_id: string): Promise<void> {
+  async list ( userId: string ): Promise<Model[]> {
     try {
-	  const userMetrics = await MetricsModel.findAll({
-        where: {
-		  userId: user_id,
-        },
-	  });
-  
-	  const id = userMetrics[userMetrics.length - 1].getDataValue("id");
-	  const decks_reviews = userMetrics[userMetrics.length - 1].getDataValue("decks_reviews");
-	  const reviews =userMetrics[userMetrics.length - 1].getDataValue("reviews");
-  
-	  await MetricsModel.update(
-        {
-		  decks_reviews: decks_reviews + 1,
-		  reviews: reviews + 1,
-        },
-        {
-		  where: {
-            id: id,
-            userId: user_id,
-		  },
-        },
-	  );
+      const metrics = MetricsModel.findAll({
+        where:{
+          userId: userId
+        }
+      });
+
+      return metrics;
     } catch (error) {
-	  throw new Error();
+      throw new Error("The operation can not be completed");
+    }
+  }
+
+  async imcrementDeckReview (user_id: string, metricId: string, reviews: number, deckReviews: number): Promise<void> {
+    try {
+	  	await MetricsModel.update(
+      	{
+		  		decks_reviews: deckReviews,
+		  		reviews: reviews,
+        },
+        {
+		  		where: {
+            id: metricId,
+            userId: user_id,
+		  		},
+        },
+	  	);
+    } catch (error) {
+	  	throw new Error("The operation can not be completed");
     }
   };
 
-  async imcrementSummariesReview (
-    user_id: string,
-  ): Promise<void> {
+  async imcrementSummariesReview ( user_id: string, metricId: string, reviews: number, summariesReviews: string ): Promise<void> {
     try {
-	  const userMetrics = await MetricsModel.findAll({
-        where: {
-		  userId: user_id,
-        },
-	  });
-  
-	  const id = userMetrics[userMetrics.length - 1].getDataValue("id");
-	  const summaries_reviews = userMetrics[userMetrics.length - 1].getDataValue("summaries_reviews",);
-	  const reviews = userMetrics[userMetrics.length - 1].getDataValue("reviews");
-  
-	  await MetricsModel.update(
+      await MetricsModel.update(
         {
-		  summaries_reviews: summaries_reviews + 1,
-		  reviews: reviews + 1,
+          summaries_reviews: summariesReviews,
+          reviews: reviews,
         },
         {
-		  where: {
-            id: id,
+          where: {
+            id: metricId,
             userId: user_id,
-		  },
+          },
         },
-	  );
+      );
     } catch (error) {
-		  throw new Error();
+		  throw new Error("The operation can not be completed");
     }
   };
   

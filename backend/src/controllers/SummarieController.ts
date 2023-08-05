@@ -10,7 +10,7 @@ class SummarieController {
     * @param {string} summarieId - req.params (string) the summarie id;
     * @returns A summarie object with status code.
     */
-  async getSummaries (req: Request, res: Response): Promise<Response> {
+  async get (req: Request, res: Response): Promise<Response> {
     try {
       const { summarieId: id } = req.params;
 
@@ -29,7 +29,7 @@ class SummarieController {
     * @param {string} userId - req.params (string) the user id;
     * @returns A list of summaries object with status code.
     */
-  async listSummaries (req: Request, res: Response): Promise<Response<Model[]>> {
+  async list (req: Request, res: Response): Promise<Response<Model[]>> {
     try {
       const { userId: id } = req.params;
 
@@ -49,7 +49,7 @@ class SummarieController {
     * @param {string} tagId - req.body (string) the tag id;
     * @returns A list of summaries object with status code.
     */
-  async listSummariesByTag(req: Request, res: Response): Promise<Response<Model[]>> {
+  async listByTag(req: Request, res: Response): Promise<Response<Model[]>> {
     try {
       const { userId } = req.params;
       const { tagId  } = req.body;
@@ -74,7 +74,7 @@ class SummarieController {
     * @param {string} tagId - req.body (string) the tag id (optional);
     * @returns A message with status code.
     */
-  async updateSummarie (req: Request, res: Response): Promise<Response> {
+  async update (req: Request, res: Response): Promise<Response> {
     try {
       const {summarieId: id} = req.params;
       const {summarieName, summarieContent, tagId, isGpt, maxLen } = req.body;
@@ -99,7 +99,7 @@ class SummarieController {
     * @param {string} tagId - req.body (string) the tag id (optional);
     * @returns A message with status code.
     */
-  async createSummarie (req: Request, res: Response): Promise<Response> {
+  async create (req: Request, res: Response): Promise<Response> {
     try {
       const { userId: id } = req.params;
 
@@ -121,7 +121,7 @@ class SummarieController {
     * @param {string} summarieId - req.params (string) the summarie id;
     * @returns A message with status code.
     */
-  async deleteSummarie (req: Request, res: Response): Promise<Response> {
+  async delete (req: Request, res: Response): Promise<Response> {
     try {
       const { summarieId: id } = req.params;
 
