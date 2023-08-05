@@ -4,17 +4,17 @@ import './styles/global-styles.css';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider } from 'react-router';
 import { routes } from './routes/routes';
+import { UserProvider } from './hooks/useContextUserId';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={routes} />
+    <UserProvider>
+      <RouterProvider router={routes} />
+    </UserProvider>
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
