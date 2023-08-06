@@ -4,8 +4,9 @@ import UserServices from "../services/UserServices";
 
 import { createSession } from "../database/repositories/sessionRepository";
 import {
-  IGetUser
-} from "./types";
+  IGetUser, IUserWithMetrics
+} from "../interfaces/interfaces";
+import MetricsService from "../services/MetricsService";
 
 
 class UserController {
@@ -35,15 +36,21 @@ class UserController {
   /**
     * @description Get all user info with metrics.
     * @param {string} username - req.params (string) the username;
-    * @returns A user object with status code.
+    * @returns A user object with metric status and status code.
     */
-  async getUserWithMetrics (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response<Model>> {
+  //TODO: Refactor
+  async getUserWithMetrics (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response<IUserWithMetrics>> {
     try{
       const { username } = req.params;
         
       const user = await UserServices.getUserAndMetrics(username);
-            
-      return res.status(200).send(user); 
+      const metricComparation = await MetricsService.metricsHistory(user.getDataValue("id"));
+
+      const result = {} as IUserWithMetrics;
+      result.user = user;
+      result.metricsInfo = metricComparation;
+      
+      return res.status(200).send(result);
     } catch(error){
       if (error instanceof Error) return res.status(400).send({message: error.message});
             

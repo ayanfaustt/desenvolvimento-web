@@ -1,4 +1,5 @@
 import MetricRepository from "../database/repositories/MetricRepository";
+import { MetricComparationModel } from "../interfaces/interfaces";
 
 class MetricsService{
 
@@ -45,11 +46,56 @@ class MetricsService{
     }
   };
 
-  // async scoreComparation(userId: string){
-  // 	const usermetrics = await MetricRepository.list(userId);
+  async metricsHistory(userId: string): Promise<MetricComparationModel> {
+    try {
+	    const metricsHistory = await this.metricsWeekCompiler(userId);
 
+	    return metricsHistory;
+    } catch (error) {
+      throw new Error();
+    }
 
-  // }
+  }
+
+  private async metricsWeekCompiler(userId: string): Promise<MetricComparationModel>{
+    try {
+		 	const usermetrics = await MetricRepository.list(userId);
+      const currentDate = new Date();
+      const oneWeekAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+		
+      const currentWeekScores = usermetrics.filter(
+        (score) => new Date(score.getDataValue("metrics_date")) >= oneWeekAgo && new Date(score.getDataValue("metrics_date")) <= currentDate
+      );
+		
+      const previousWeekScores = usermetrics.filter(
+        (score) => new Date(score.getDataValue("metrics_date")) >= new Date(oneWeekAgo.getTime() - 7 * 24 * 60 * 60 * 1000) && new Date(score.getDataValue("metrics_date")) <= oneWeekAgo
+      );
+		
+      const currentWeekSum = currentWeekScores.reduce((sum, score) => sum + score.getDataValue("reviews"), 0);
+      const previousWeekSum = previousWeekScores.reduce((sum, score) => sum + score.getDataValue("reviews"), 0);
+      const result = this.scoreComparation( currentWeekSum, previousWeekSum);
+	
+      return result;
+	 } catch (error) {
+      throw new Error();
+	 }
+  }
+
+  private scoreComparation(currentWeek: number, previousWeek: number): MetricComparationModel {
+    let isGrowth: boolean = false;
+    const percent = (currentWeek * 100) / previousWeek;
+
+    if (currentWeek > previousWeek) isGrowth = true;
+
+    const difference = Math.abs(percent - 100);
+    const result: MetricComparationModel = {
+      isGrowth: isGrowth,
+      percent: difference   
+    };
+
+    return result;
+
+  }
 }
 
 export default new MetricsService;
