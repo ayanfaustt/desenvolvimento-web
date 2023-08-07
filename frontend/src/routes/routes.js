@@ -8,7 +8,7 @@ import ConfigPage from '../pages/config';
 import SideBarWithBox from '../components/sidebarWithBox';
 import FlashcardPage from '../pages/flashcard';
 import SummariesPage from '../pages/summaries';
-import StudyPage from '../pages/study';
+import StudyMaterialPage from '../pages/study';
 
 export const routes = createBrowserRouter([
     {
@@ -37,6 +37,6 @@ export const routes = createBrowserRouter([
     },
     {
         path: "/study",
-        element: <StudyPage />
+        element: <StudyMaterialPage />
     },
 ])

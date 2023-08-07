@@ -11,7 +11,7 @@ export default function DashboardPage(props: DashboardPageProps) {
     return (
 
         <div className='content-inside'>
-            
+            {userId}
             <div className='text-inside'>
                 <p className='p welcome'>Welcome, userx! </p>
                 <p className='p view'>View an overview of your progress.</p>

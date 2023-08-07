@@ -1,12 +1,12 @@
-interface LoginPageProps {
+interface StudyMaterialPageProps {
     userName: string;
     password: string;
     data: Date;
     number: number;
 
 }
-export default function LoginPage(props : LoginPageProps){
+export default function StudyMaterialPage(props : StudyMaterialPageProps){
     return(
-        <>{props.password}</>
+        <div>TESTE</div>
     )
 }

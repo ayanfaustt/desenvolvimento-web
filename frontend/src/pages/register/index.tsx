@@ -7,6 +7,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CreateUser } from '../../hooks/userRegister';
 import * as Yup from 'yup';
 import { Form } from 'react-bootstrap'
+import { useUser } from '../../hooks/useContextUserId';
+import { UserId } from '../../hooks/useUser';
 
 interface FormValues {
     username: string;
@@ -24,6 +26,7 @@ export default function RegisterPage(props: RegisterPageProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [userData, setUserData] = useState<FormValues>({ username: "", email: "", password: "", repeatpassword: "" });
     const [errors, setErrors] = useState<FormValues>({ username: "", email: "", password: "", repeatpassword: "" });
+    const { setUserId } = useUser();
 
 
     const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +42,7 @@ export default function RegisterPage(props: RegisterPageProps) {
     };
 
     const handleSubmit = async () => {
-        const { email, password } = userData;
+        const { username, email, password } = userData;
         const data = {
             email,
             password
@@ -57,9 +60,13 @@ export default function RegisterPage(props: RegisterPageProps) {
 
             await validationSchema.validate(userData, { abortEarly: false });
             setIsLoading(true);
-            await CreateUser(userData.username, data);
+            await CreateUser(userData.username, data).then(() => {
+                UserId(username).then((response) => setUserId(response.data.id))
+                
+            }
+             );
             setIsLoading(false);
-            navigate('/dashboard');
+            navigate('/');
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
                 const newErrors: FormValues = {
@@ -91,13 +98,13 @@ export default function RegisterPage(props: RegisterPageProps) {
             <div className="container-inside-right-register">
 
                 <Form className='user-info'>
-                    <TextInput name="username" labelName='Username' onChange={handleInput} needValid={true} />
+                    <TextInput name="username" type='text' labelName='Username' onChange={handleInput} needValid={true} />
                     {errors.username && <div className='error-message'>{errors.username}</div>}
-                    <TextInput name="email" labelName='Email' onChange={handleInput} needValid={true} />
+                    <TextInput name="email" type='text' labelName='Email' onChange={handleInput} needValid={true} />
                     {errors.email && <div className='error-message'>{errors.email}</div>}
-                    <TextInput name="password" labelName='Password' onChange={handleInput} needValid={true} />
+                    <TextInput name="password" type='password' labelName='Password' onChange={handleInput} needValid={true} />
                     {errors.password && <div className='error-message'>{errors.password}</div>}
-                    <TextInput name="repeatpassword" labelName='Repeat Password' onChange={handleInput} needValid={true} />
+                    <TextInput name="repeatpassword" type='password' labelName='Repeat Password' onChange={handleInput} needValid={true} />
                     {errors.repeatpassword && <div className='error-message'>{errors.repeatpassword}</div>}
                 </Form>
 

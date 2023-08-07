@@ -7,7 +7,7 @@ import dashboard from '../../images/dashboard-slide.png'
 import flashcard from '../../images/flashcard-slide.png'
 import summaries from '../../images/summaries-slide.png'
 import studyMaterial from '../../images/study-slide.png'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LoginUser } from '../../hooks/useLogin';
 import { UserId } from '../../hooks/useUser';
 import { useUser } from '../../hooks/useContextUserId';
@@ -60,9 +60,7 @@ export default function LoginPage(props: LoginPageProps) {
         };
         try {
             setIsLoading(true);
-            await LoginUser(data).then(() => {
-                UserId(userData.username).then((response) => setUserId(response.data.id))
-            });
+            await LoginUser(data).then((response) => setUserId(response.data.userId));
             setIsLoading(false);
             navigate('/dashboard');
         } catch (error) {
@@ -98,8 +96,8 @@ export default function LoginPage(props: LoginPageProps) {
                             <div className='error-message'>Usuário não encontrado.</div>
                         </div>
                     )}
-                    <TextInput name='username' labelName='Username' onChange={handleInput} needValid={false} />
-                    <TextInput name='password' labelName='Password' onChange={handleInput} needValid={false} />
+                    <TextInput name='username' labelName='Username' type='text' onChange={handleInput} needValid={false} />
+                    <TextInput name='password' labelName='Password' type='password' onChange={handleInput} needValid={false} />
                 </form>
                 <div className='box-remember'>
                     <input
@@ -111,8 +109,8 @@ export default function LoginPage(props: LoginPageProps) {
                     <TextField name='Remember me' />
                 </div>
                 <div className='forgot-register'>
-                    <p className='p'>Forgot your password</p>
-                    <p className='p'>New? Register</p>
+                    <Link to="/register" className='plink'>Forgot your password</Link>
+                    <Link to="/register" className='plink'>New? <b>Register</b></Link>
                 </div>
 
                 <div className="login">
