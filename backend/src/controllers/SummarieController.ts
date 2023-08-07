@@ -5,66 +5,66 @@ import { Model } from "sequelize";
 
 class SummarieController {
     
-    /**
+  /**
     * @description Get a specific user's summarie.
     * @param {string} summarieId - req.params (string) the summarie id;
     * @returns A summarie object with status code.
     */
-    async getSummaries (req: Request, res: Response): Promise<Response> {
-        try {
-            const { summarieId: id } = req.params;
+  async get (req: Request, res: Response): Promise<Response> {
+    try {
+      const { summarieId: id } = req.params;
 
-            const summarie = await SummariesServices.getSummarie(id);
+      const summarie = await SummariesServices.getSummarie(id);
 
-            return res.status(200).send(summarie);
-        } catch (error) {
-            if(error instanceof Error ) return res.status(400).send({message: error.message});
+      return res.status(200).send(summarie);
+    } catch (error) {
+      if(error instanceof Error ) return res.status(400).send({message: error.message});
 
-            return res.status(400).send({message: error});
-        }
+      return res.status(400).send({message: error});
     }
+  }
 
-    /**
+  /**
     * @description List all user's summaries.
     * @param {string} userId - req.params (string) the user id;
     * @returns A list of summaries object with status code.
     */
-    async listSummaries (req: Request, res: Response): Promise<Response<Model[]>> {
-        try {
-            const { userId: id } = req.params;
+  async list (req: Request, res: Response): Promise<Response<Model[]>> {
+    try {
+      const { userId: id } = req.params;
 
-            const summaries = await SummariesServices.listSummaries(id);
+      const summaries = await SummariesServices.listSummaries(id);
 
-            return res.status(200).send(summaries);
-        } catch (error) {
-            if (error instanceof Error) return res.status(400).send({messege: error.message});
+      return res.status(200).send(summaries);
+    } catch (error) {
+      if (error instanceof Error) return res.status(400).send({messege: error.message});
 
-            return res.status(400).send({message: error});
-        }
+      return res.status(400).send({message: error});
     }
+  }
 
-    /**
+  /**
     * @description List all user's summaries filltering by a tag.
     * @param {string} userId - req.params (string) the user id;
     * @param {string} tagId - req.body (string) the tag id;
     * @returns A list of summaries object with status code.
     */
-    async listSummariesByTag(req: Request, res: Response): Promise<Response<Model[]>> {
-        try {
-            const { userId } = req.params;
-            const { tagId  } = req.body;
+  async listByTag(req: Request, res: Response): Promise<Response<Model[]>> {
+    try {
+      const { userId } = req.params;
+      const { tagId  } = req.body;
 
-            const summaries = SummariesServices.listSummariesByTag(userId, tagId);
+      const summaries = SummariesServices.listSummariesByTag(userId, tagId);
 
-            return res.status(200).send(summaries);
-        } catch (error) {
-            if(error instanceof Error ) return res.status(400).send({message: error.message});
+      return res.status(200).send(summaries);
+    } catch (error) {
+      if(error instanceof Error ) return res.status(400).send({message: error.message});
 
-            return res.status(400).send({message: error});
-        }
+      return res.status(400).send({message: error});
     }
+  }
 
-    /**
+  /**
     * @description Update an user's summarie.
     * @param {string} summarieId - req.params (string) the summarie id;
     * @param {string} summarieName - req.body (string) the summarie name;
@@ -74,22 +74,22 @@ class SummarieController {
     * @param {string} tagId - req.body (string) the tag id (optional);
     * @returns A message with status code.
     */
-    async updateSummarie (req: Request, res: Response): Promise<Response> {
-        try {
-            const {summarieId: id} = req.params;
-            const {summarieName, summarieContent, tagId, isGpt, maxLen } = req.body;
+  async update (req: Request, res: Response): Promise<Response> {
+    try {
+      const {summarieId: id} = req.params;
+      const {summarieName, summarieContent, tagId, isGpt, maxLen } = req.body;
 
-            await SummariesServices.updateSummarie(id, summarieName, summarieContent, maxLen, tagId, isGpt );
+      await SummariesServices.updateSummarie(id, summarieName, summarieContent, maxLen, tagId, isGpt );
 
-            return res.status(200).send({message: "Summarie updated !"});
-        } catch (error) {
-            if (error instanceof Error) return res.status(400).send({messege: error.message});
+      return res.status(200).send({message: "Summarie updated !"});
+    } catch (error) {
+      if (error instanceof Error) return res.status(400).send({messege: error.message});
 
-            return res.status(400).send({message: error});
-        }
+      return res.status(400).send({message: error});
     }
+  }
 
-    /**
+  /**
     * @description Create an user's summarie.
     * @param {string} userId - req.params (string) the user id;
     * @param {string} summarieName - req.body (string) the summarie name;
@@ -99,41 +99,41 @@ class SummarieController {
     * @param {string} tagId - req.body (string) the tag id (optional);
     * @returns A message with status code.
     */
-    async createSummarie (req: Request, res: Response): Promise<Response> {
-        try {
-            const { userId: id } = req.params;
+  async create (req: Request, res: Response): Promise<Response> {
+    try {
+      const { userId: id } = req.params;
 
-            const { summarieName, summarieContent, isGpt, maxLen, tagId } = req.body;
+      const { summarieName, summarieContent, isGpt, maxLen, tagId } = req.body;
 
-            await SummariesServices.createSummarie(id, summarieName, summarieContent, maxLen, tagId, isGpt); 
+      await SummariesServices.createSummarie(id, summarieName, summarieContent, maxLen, tagId, isGpt); 
 
-            return res.status(200).send({message: "Summarie created !"})
-        } catch (error) {
-            if (error instanceof Error) return res.status(400).send({messege: error.message});
+      return res.status(200).send({message: "Summarie created !"});
+    } catch (error) {
+      if (error instanceof Error) return res.status(400).send({messege: error.message});
 
-            return res.status(400).send({message: error});
+      return res.status(400).send({message: error});
             
-        }
     }
+  }
 
-    /**
+  /**
     * @description Delete an user's summarie.
     * @param {string} summarieId - req.params (string) the summarie id;
     * @returns A message with status code.
     */
-    async deleteSummarie (req: Request, res: Response): Promise<Response> {
-        try {
-            const { summarieId: id } = req.params;
+  async delete (req: Request, res: Response): Promise<Response> {
+    try {
+      const { summarieId: id } = req.params;
 
-            await SummariesServices.deleteSummarie(id);
+      await SummariesServices.deleteSummarie(id);
 
-            return res.status(200).send({message: "summarie deleted !"})
-        } catch (error) {
-            if (error instanceof Error) return res.status(400).send({message: error.message});
+      return res.status(200).send({message: "summarie deleted !"});
+    } catch (error) {
+      if (error instanceof Error) return res.status(400).send({message: error.message});
             
-            return res.status(400).send({message: error});
-        }
+      return res.status(400).send({message: error});
     }
+  }
 
 }
 

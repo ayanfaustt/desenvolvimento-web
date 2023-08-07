@@ -1,8 +1,8 @@
-import React from 'react';
-import './styles.css';
-import SideBar from '../../components/sidebar';
-import Cards from '../card';
-import PageNameAndButtons from '../pageNameAndButtons';
+import React from "react";
+import "./styles.css";
+import SideBar from "../../components/sidebar";
+import Cards from "../card";
+import PageNameAndButtons from "../pageNameAndButtons";
 
 interface CardInfo {
     cardName: string;
@@ -15,18 +15,18 @@ interface PageContentProps {
 };
 
 export default function PageContent(props: PageContentProps) {
-    return (
-        <main className='sidebar-content'>
-            <SideBar />
-            <div className='pageContent'>
-                <PageNameAndButtons name={props.pageName} />
-                <div className='cards'>
-                    {props.cardsContent.map((content) => (
-                        <Cards name={content.cardName} tag={content.cardTag} />
-                    )
-                    )}
-                </div>
-            </div>
-        </main>
-    );
+  return (
+    <main className='sidebar-content'>
+      <SideBar />
+      <div className='pageContent'>
+        <PageNameAndButtons name={props.pageName} />
+        <div className='cards'>
+          {props.cardsContent.map((content) => (
+            <Cards name={content.cardName} tag={content.cardTag} />
+          )
+          )}
+        </div>
+      </div>
+    </main>
+  );
 }

@@ -1,13 +1,13 @@
 import express from "express";
-import UserController from "./controllers/userController";
+import UserController from "./controllers/UserController";
 import TagController from "./controllers/TagController";
 import DeckController from "./controllers/DeckController";
 import SummarieController from "./controllers/SummarieController";
 import CardController from "./controllers/CardController";
 import SessionController from "./controllers/SessionController";
 import MetricsController from "./controllers/MetricsController";
-import userController from "./controllers/userController";
-import StudyMaterialController from "./controllers/StudyMaterialController";
+import userController from "./controllers/UserController";
+// import StudyMaterialController from "./controllers/StudyMaterialController";
 
 export const router = express.Router();
 
@@ -15,7 +15,7 @@ export const router = express.Router();
 
 router.get("/user/:username", UserController.getAllUserInfo);
 router.get("/user/metrics/:username", userController.getUserWithMetrics);
-router.post('/user/create/:username', UserController.createUser);
+router.post("/user/create/:username", UserController.createUser);
 router.post("/user/update/:userId", UserController.updateUser);
 
 // session
@@ -26,33 +26,33 @@ router.post("/metrics/update/decks/:userId", MetricsController.updateDecksMetric
 router.post("/metrics/update/summaries/:userId", MetricsController.updatedSummariesMetrics);
 
 //summaries
-router.get("/summaries/:userId", SummarieController.getSummaries);
-router.get("/summaries/list/:userId", SummarieController.listSummaries);
-router.get("/summaries/listByTag/:userId", SummarieController.listSummariesByTag);
-router.put("/summaries/update/:summarieId", SummarieController.updateSummarie);
-router.post("/summaries/create/:userId", SummarieController.createSummarie);
-router.delete("/summaries/delete/:summarieId", SummarieController.deleteSummarie);
+router.get("/summaries/:summarieId", SummarieController.get);
+router.get("/summaries/list/:userId", SummarieController.list);
+router.get("/summaries/listByTag/:userId", SummarieController.listByTag);
+router.put("/summaries/update/:summarieId", SummarieController.update);
+router.post("/summaries/create/:userId", SummarieController.create);
+router.delete("/summaries/delete/:summarieId", SummarieController.delete);
 
 //decks
-router.get("/decks/:deckId", DeckController.getDeck);
-router.get("/decks/list/:userId", DeckController.listDeck);
-router.get("/decks/listByTag/:userId", DeckController.listDecksByTag);
-router.post("/decks/create/:userId", DeckController.createDeck);
-router.put("/decks/update/:deckId", DeckController.updateDeck);
-router.delete("/decks/delete/:deckId", DeckController.deleteDeck);
+router.get("/decks/:deckId", DeckController.get);
+router.get("/decks/list/:userId", DeckController.list);
+router.get("/decks/listByTag/:userId", DeckController.listByTag);
+router.post("/decks/create/:userId", DeckController.create);
+router.put("/decks/update/:deckId", DeckController.update);
+router.delete("/decks/delete/:deckId", DeckController.delete);
 
 //Study Materials
-router.get("/studyMaterials/", StudyMaterialController.getStudyMaterial);
+// router.get("/studyMaterials/", StudyMaterialController.getStudyMaterial);
 
 //cards
-router.get("/cards/:deckId", CardController.getCard);
-router.get("/cards/list/:deckId", CardController.listCards);
-router.post("/cards/create/:deckId", CardController.createCard);
+router.get("/cards/:deckId", CardController.get);
+router.get("/cards/list/:deckId", CardController.list);
+router.post("/cards/create/:deckId", CardController.create);
 //for now the update card does not contains the Chatgpt option
-router.put("/cards/update/:deckId", CardController.updateCard);
-router.delete("/cards/delete/:deckId", CardController.deleteCard);
+router.put("/cards/update/:deckId", CardController.update);
+router.delete("/cards/delete/:deckId", CardController.delete);
 
 //Tags
-router.get("/tags/list/:userId", TagController.listTags);
-router.post("/tags/create/:userId", TagController.createTag);
-router.delete("/tags/delete/:tagId", TagController.deleteTag);
+router.get("/tags/list/:userId", TagController.list);
+router.post("/tags/create/:userId", TagController.create);
+router.delete("/tags/delete/:tagId", TagController.delete);
