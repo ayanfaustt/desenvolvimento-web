@@ -39,3 +39,8 @@
     background-color: #F5BF42;
     align-self: center;
 }
+
+.btn-card {
+	background-color: transparent;
+	border: none;
+}

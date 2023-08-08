@@ -1,26 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PageContent from "../../components/pageContent";
+import { ListSummaries } from "../../hooks/useSummarie";
+import { useUser } from "../../hooks/useContextUserId";
 
-// interface SummariesPageProps {
-// }
+interface ItemType {
+    id: number;
+}
 
-const teste = [
-  {
-    cardName: "Teste",
-    cardTag: "Mat"
-  },
-  {
-    cardName: "Teste2",
-    cardTag: "Port"
-  },
-  {
-    cardName: "Teste3",
-    cardTag: "Port"
-  },
-];
+export default function SummariesPage() {
+	const [listSummaries, setListSummaries] = useState([]);
 
-export default function SummariesPage(/*props: SummariesPageProps*/) {
+	const { userId } = useUser();
+	useEffect(() => {
+		const fetchListSummaries = async () =>{
+			if(14) {
+				await ListSummaries(14).then((res) => setListSummaries(res.data));
+			};
+		};
+		fetchListSummaries();
+	},[]);
+
+	const fetchUpdatedListSummaries = async () => {
+		if (userId) {
+			await ListSummaries(userId).then((res) => setListSummaries(res.data));
+		};
+	};
+
   return (
-    <PageContent pageName='Summaries' cardsContent={teste}/>
+    <PageContent pageName='Summaries' cardsContent={listSummaries} onItemUpdated={fetchUpdatedListSummaries} />
   );
 }
