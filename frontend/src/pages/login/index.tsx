@@ -99,8 +99,8 @@ export default function LoginPage(/*props: LoginPageProps*/) {
               <div className='error-message'>Usuário não encontrado.</div>
             </div>
           )}
-          <TextInput name='username' labelName='Username' onChange={handleInput} needValid={false} />
-          <TextInput name='password' labelName='Password' onChange={handleInput} needValid={false} />
+          <TextInput name='username' labelName='Username' type="text" onChange={handleInput} needValid={false} />
+          <TextInput name='password' labelName='Password' type="password" onChange={handleInput} needValid={false} />
         </form>
         <div className='box-remember'>
           <input

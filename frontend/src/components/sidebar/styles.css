@@ -4,6 +4,10 @@
     width: 240px;
     padding-top: 24px;
     padding-bottom: 64px;
+	position: fixed;
+	bottom: 0;
+	top: 0;
+	left: 0;
 }
 
 .logo {

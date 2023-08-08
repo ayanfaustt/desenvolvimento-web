@@ -22,6 +22,7 @@ const teste = [
 
 export default function FlashcardPage(/*props: FlashcardPageProps*/) {
   return (
-    <PageContent pageName='Decks' cardsContent={teste}/>
+    // <PageContent pageName='Decks' cardsContent={teste}/>
+	<div>3</div>
   );
 }

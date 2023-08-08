@@ -91,13 +91,13 @@ export default function RegisterPage(/*props: RegisterPageProps*/) {
       <div className="container-inside-right-register">
 
         <Form className='user-info'>
-          <TextInput name="username" labelName='Username' onChange={handleInput} needValid={true} />
+          <TextInput name="username" type="text" labelName='Username' onChange={handleInput} needValid={true} />
           {errors.username && <div className='error-message'>{errors.username}</div>}
-          <TextInput name="email" labelName='Email' onChange={handleInput} needValid={true} />
+          <TextInput name="email" type="text" labelName='Email' onChange={handleInput} needValid={true} />
           {errors.email && <div className='error-message'>{errors.email}</div>}
-          <TextInput name="password" labelName='Password' onChange={handleInput} needValid={true} />
+          <TextInput name="password" type="password" labelName='Password' onChange={handleInput} needValid={true} />
           {errors.password && <div className='error-message'>{errors.password}</div>}
-          <TextInput name="repeatpassword" labelName='Repeat Password' onChange={handleInput} needValid={true} />
+          <TextInput name="repeatpassword" type="password" labelName='Repeat Password' onChange={handleInput} needValid={true} />
           {errors.repeatpassword && <div className='error-message'>{errors.repeatpassword}</div>}
         </Form>
 
