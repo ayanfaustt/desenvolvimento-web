@@ -1,3 +1,4 @@
+import { Model } from "sequelize";
 import MetricRepository from "../database/repositories/MetricRepository";
 import { MetricComparationModel } from "../interfaces/interfaces";
 
@@ -34,12 +35,25 @@ class MetricsService{
   async imcrementSummariesReview (user_id: string): Promise<void> {
     try {
       const userMetrics = await MetricRepository.list(user_id);
-		
-      const id = userMetrics[userMetrics.length - 1].getDataValue("id");
-      const summaries_reviews = userMetrics[userMetrics.length - 1].getDataValue("summaries_reviews",) + 1;
-      const reviews = userMetrics[userMetrics.length - 1].getDataValue("reviews") + 1;
 
-      await MetricRepository.imcrementSummariesReview(user_id, id, reviews, summaries_reviews);
+      const currentMetric = userMetrics.find( x => new Date(x.getDataValue("metrics_date")));
+		
+      if(currentMetric){
+        const id = currentMetric.getDataValue("id");
+        const summaries_reviews = currentMetric.getDataValue("summaries_reviews",) + 1;
+        const reviews = currentMetric.getDataValue("reviews") + 1;
+
+        await MetricRepository.imcrementSummariesReview(user_id, id, reviews, summaries_reviews);
+
+      }else{
+        const id = userMetrics[userMetrics.length - 1].getDataValue("id");
+        const summaries_reviews = userMetrics[userMetrics.length - 1].getDataValue("summaries_reviews",) + 1;
+        const reviews = userMetrics[userMetrics.length - 1].getDataValue("reviews") + 1;
+
+        await MetricRepository.imcrementSummariesReview(user_id, id, reviews, summaries_reviews);
+
+      }
+
   
     } catch (error) {
 		  throw new Error();
@@ -57,18 +71,39 @@ class MetricsService{
 
   }
 
+  //TODO: create a similar method to previous week start
+  getLastMetric (userMetrics: Model[]): Model[]{
+    const currentDate = new Date();
+    const currentWeekStart = new Date(currentDate);
+    currentWeekStart.setDate(currentWeekStart.getDate() - currentDate.getDay());
+    currentWeekStart.setHours(0,0,0,0);
+		
+    const lastMetric = userMetrics.filter(
+      x => new Date(x.getDataValue("metrics_date")) >= currentWeekStart && new Date(x.getDataValue("metrics_date")) <= currentDate 
+    );
+
+    return lastMetric;
+  }
+
   private async metricsWeekCompiler(userId: string): Promise<MetricComparationModel>{
     try {
 		 	const usermetrics = await MetricRepository.list(userId);
       const currentDate = new Date();
-      const oneWeekAgo = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+      const currentWeekStart = new Date(currentDate);
+      currentWeekStart.setDate(currentWeekStart.getDate() - currentDate.getDay());
+      currentWeekStart.setHours(0,0,0,0);
+
+      const previousWeekStart = new Date(currentWeekStart);
+      previousWeekStart.setDate(previousWeekStart.getDate() - 7);
+      previousWeekStart.setHours(0,0,0,0);
 		
       const currentWeekScores = usermetrics.filter(
-        (score) => new Date(score.getDataValue("metrics_date")) >= oneWeekAgo && new Date(score.getDataValue("metrics_date")) <= currentDate
+        (score) => new Date(score.getDataValue("metrics_date")) >= currentWeekStart && new Date(score.getDataValue("metrics_date")) <= currentDate
       );
 		
       const previousWeekScores = usermetrics.filter(
-        (score) => new Date(score.getDataValue("metrics_date")) >= new Date(oneWeekAgo.getTime() - 7 * 24 * 60 * 60 * 1000) && new Date(score.getDataValue("metrics_date")) <= oneWeekAgo
+        (score) => new Date(score.getDataValue("metrics_date")) >= previousWeekStart && new Date(score.getDataValue("metrics_date")) <= currentWeekStart
       );
 		
       const currentWeekSum = currentWeekScores.reduce((sum, score) => sum + score.getDataValue("reviews"), 0);

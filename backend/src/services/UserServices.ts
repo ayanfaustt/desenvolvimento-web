@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { Model } from "sequelize";
 import UserRepository from "../database/repositories/UserRepository";
 import MetricRepository from "../database/repositories/MetricRepository";
+import MetricsService from "./MetricsService";
 
 class UserServices {
   private async hashPassword(password: string): Promise<string> {
@@ -75,6 +76,10 @@ class UserServices {
   async getUserAndMetrics(username: string): Promise<Model> {
     try {
       const userInfo = await UserRepository.getUserAndMetrics(username);
+      const metrics = userInfo.getDataValue("metrics") as Model[];
+      const result = MetricsService.getLastMetric(metrics);
+
+      userInfo.setDataValue("metrics", result);
 
       if (!userInfo) throw new Error("User not found !");
 
