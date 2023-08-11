@@ -72,6 +72,7 @@ class MetricsService{
   }
 
   //TODO: create a similar method to previous week start
+	//TODO: implemente the setHours in DateObserver
   getLastMetric (userMetrics: Model[]): Model[]{
     const currentDate = new Date();
     const currentWeekStart = new Date(currentDate);
