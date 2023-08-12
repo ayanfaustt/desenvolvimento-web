@@ -77,7 +77,7 @@ class UserServices {
     try {
       const userInfo = await UserRepository.getUserAndMetrics(username);
       const metrics = userInfo.getDataValue("metrics") as Model[];
-      const result = MetricsService.getLastMetric(metrics);
+      const result = MetricsService.getCurrentMetrics(metrics);
 
       userInfo.setDataValue("metrics", result);
 
