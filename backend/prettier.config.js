@@ -1,5 +1,5 @@
 module.exports = {
-	trailingComa: "all",
-	arrowParens: "avoid",
-	endOfLine: "auto",
+  trailingComa: "all",
+  arrowParens: "avoid",
+  endOfLine: "auto",
 };
