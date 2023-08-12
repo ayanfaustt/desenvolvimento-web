@@ -13,17 +13,18 @@ interface CardsProps {
 }
 
 export default function Cards(props: CardsProps) {
-	const handleClickDelete = async () => {
+	const handleClickDelete = async (event: React.MouseEvent) => {
+		event.stopPropagation();
 		props.handleDelete(props.summarieId);
 	};
 
 	return (
 		<div className='mainCard'>
 			<div className="insideCard">
-				<div className='name-tag'>
-					<p className='p'>{props.name}</p>
-					<div className='tag'><div className='blackbox' /><p className='p'>{props.tag}</p></div>
-				</div>
+					<div className='name-tag'>
+						<p className='p'>{props.name}</p>
+						<div className='tag'><div className='blackbox' /><p className='p'>{props.tag}</p></div>
+					</div>
 				<div className='icons'>
 					<button className="btn-card" onClick={handleClickDelete}>
 						<FontAwesomeIcon icon={faTrash} />
@@ -32,7 +33,6 @@ export default function Cards(props: CardsProps) {
 						<FontAwesomeIcon icon={faPen} />
 					</button>
 				</div>
-
 			</div>
 		</div>
 	);
