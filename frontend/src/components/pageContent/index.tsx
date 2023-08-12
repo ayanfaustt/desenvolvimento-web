@@ -5,6 +5,7 @@ import Cards from "../card";
 import PageNameAndButtons from "../pageNameAndButtons";
 import { Alert, Button, Col, Modal, Row } from "react-bootstrap";
 import { DeleteSummarie } from "../../hooks/useSummarie";
+import { Link, useLocation } from "react-router-dom";
 
 interface CardInfo {
 	id: number;
@@ -24,6 +25,7 @@ export default function PageContent(props: PageContentProps) {
 	const [showAlert, setShowAlert] = useState(false);
 	const [deleteVisible, setDeleteVisible] = useState(false);
 	const [summarieId, setSummarieId] = useState<number>(0);
+	const location = useLocation();
 
 	const handleVisible = (id: number) => {
 		setDeleteVisible(true);
@@ -38,6 +40,10 @@ export default function PageContent(props: PageContentProps) {
 			setDeleteVisible(false);
 		}, 2000);
 	};
+
+	const handleCardClick = () => {
+		console.log('aq')
+	}
 
 	return (
 		<main className='sidebar-content'>
@@ -74,7 +80,9 @@ export default function PageContent(props: PageContentProps) {
 				<PageNameAndButtons name={props.pageName} onItemUpdated={props.onItemUpdated} />
 				<div className='cards'>
 					{props.cardsContent.map((content) => (
-						<Cards name={content.summarie_name} tag={content.tag.tag_name} summarieId={content.id} handleDelete={handleVisible} />
+						<Link to={`${location.pathname}/resume`} onClick={handleCardClick}>
+							<Cards name={content.summarie_name} tag={content.tag.tag_name} summarieId={content.id} handleDelete={handleVisible} />
+						</Link>
 					)
 					)}
 				</div>

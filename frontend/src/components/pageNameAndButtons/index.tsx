@@ -64,14 +64,13 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 	const handleSubmitSummarie = async () => {
 		try {
 			if (userId) {
-
 				await CreateSummarie(userId, resumeData).then((response) => {
 					if (response.status === 200) {
 						setShowAlert(true);
 						setResumeData({ summarieName: "", tagId: "", summarieContent: "" });
 						if (props.onItemUpdated) {
 							props.onItemUpdated();
-						}
+						};
 						setTimeout(() => {
 							setShowAlert(false);
 							setSummariesVisible(false);
@@ -149,8 +148,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 			<Modal show={summariesVisible} onHide={() => {
 				setResumeData({ summarieName: "", tagId: "", summarieContent: "" });
 				setSummariesVisible(false);
-			}
-			}
+			}}
 				size='lg' centered>
 				<Modal.Header style={{ backgroundColor: "#DAE9F1", height: "50px" }} closeButton />
 				<Modal.Body style={{ backgroundColor: "#DAE9F1", paddingTop: "10px", paddingBottom: "30px", paddingRight: "150px", paddingLeft: "150px" }}>
