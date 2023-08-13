@@ -110,6 +110,12 @@ class DeckController {
       const { deckId} = req.params;
       const { deckName, tagId } = req.body;
 
+      if(!deckId)
+        throw new Error("Deck ID can not be null");
+
+      if(!deckName)
+        throw new Error("Deck name can not be null");
+
       await DeckService.update(deckId, deckName, tagId);
 
       return res.status(200).send({message: "Deck updated !"});
