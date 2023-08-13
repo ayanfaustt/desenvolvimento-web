@@ -8,8 +8,11 @@ import { CreateTag } from "../../hooks/useTag";
 import AsyncSelect from "react-select/async";
 import { TagList } from "../../hooks/useListTag";
 import { useUser } from "../../hooks/useContextUserId";
+import { CreateDeck } from "../../hooks/useFlashcard";
 
 interface PageNameAndButtonsProps {
+	summarie: boolean;
+	deck: boolean;
 	name: string;
 	onItemUpdated: () => void;
 };
@@ -29,14 +32,15 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 	const { userId } = useUser();
 	const [summariesVisible, setSummariesVisible] = useState(false);
 	const [tagVisible, setTagVisible] = useState(false);
-	const [cardsVisible, setCardsVisible] = useState(false);
+	const [deckVisible, setDeckVisible] = useState(false);
 	const [showAlert, setShowAlert] = useState(false);
 	const [resumeData, setResumeData] = useState({ summarieName: "", tagId: "", summarieContent: "" });
+	const [deckData, setDeckData] = useState({ deckName: "", tagId: "" });
 	const [tagData, setTagData] = useState({ tagName: "" });
 
-	const handleVisible = (cards: boolean, summaries: boolean, tag: boolean) => {
-		if (cards) {
-			setCardsVisible(true);
+	const handleVisible = (decks: boolean, summaries: boolean, tag: boolean) => {
+		if (decks) {
+			setDeckVisible(true);
 		};
 		if (summaries) {
 			setSummariesVisible(true);
@@ -53,8 +57,13 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 				...prevData,
 				[name]: value
 			}));
-		} else {
+		} else if (name === "summarieName" || name === "summarieContent") {
 			setResumeData((prevData) => ({
+				...prevData,
+				[name]: value
+			}));
+		} else if (name === "deckName") {
+			setDeckData((prevData) => ({
 				...prevData,
 				[name]: value
 			}));
@@ -74,6 +83,28 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 						setTimeout(() => {
 							setShowAlert(false);
 							setSummariesVisible(false);
+						}, 2000);
+					}
+				});
+			}
+		} catch (error) {
+			console.error("Erro:", error);
+		}
+	};
+
+	const handleSubmitDeck = async () => {
+		try {
+			if (userId) {
+				await CreateDeck(userId, deckData).then((response) => {
+					if (response.status === 200) {
+						setShowAlert(true);
+						setDeckData({ deckName: "", tagId: "" });
+						if (props.onItemUpdated) {
+							props.onItemUpdated();
+						};
+						setTimeout(() => {
+							setShowAlert(false);
+							setDeckVisible(false);
 						}, 2000);
 					}
 				});
@@ -113,7 +144,6 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 		}
 	};
 
-
 	const loadOptions = async (inputValue: string) => {
 		if (userId) {
 			try {
@@ -135,10 +165,17 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 
 	const handleAsyncSelection = (option: TagOption | null) => {
 		if (option) {
-			setResumeData((prevData) => ({
-				...prevData,
-				"tagId": option.value
-			}));
+			if (deckVisible){
+				setDeckData((prevData) => ({
+					...prevData,
+					"tagId": option.value
+				}))
+			} else if (summariesVisible) {
+				setResumeData((prevData) => ({
+					...prevData,
+					"tagId": option.value
+				}));
+			};
 		}
 	};
 
@@ -205,8 +242,51 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 				</Modal.Body>
 			</Modal>
 
-			<Modal show={cardsVisible} onHide={() => setCardsVisible(false)} >
-				card
+			<Modal show={deckVisible} onHide={() => {
+				setResumeData({ summarieName: "", tagId: "", summarieContent: "" });
+				setDeckVisible(false);
+			}}
+				size='lg' centered>
+				<Modal.Header style={{ backgroundColor: "#DAE9F1", height: "50px" }} closeButton />
+				<Modal.Body style={{ backgroundColor: "#DAE9F1", paddingTop: "10px", paddingBottom: "30px", paddingRight: "150px", paddingLeft: "150px" }}>
+					<Row className='mb-2'>
+						<Col>
+							<h1 className="text-center">Create deck</h1>
+						</Col>
+					</Row>
+					<Row className="justify-content-center align-items-center">
+						<Row>
+							<Col >
+								<FormLabel>Deck name</FormLabel>
+								<Form.Control name='deckName' type="text" value={deckData.deckName} onChange={handleInputChange} className='inputField'></Form.Control>
+							</Col>
+						</Row>
+						<Row className="mb-4">
+							<Col>
+								<FormLabel>Tags</FormLabel>
+								<AsyncSelect
+									loadOptions={loadOptions}
+									onChange={handleAsyncSelection}
+									defaultOptions
+									placeholder="Digite para buscar..."
+									isSearchable
+								/>
+							</Col>
+						</Row>
+						<Row >
+							<Col className="text-center" >
+								<Button onClick={handleSubmitDeck}>
+									Criar
+								</Button>
+								{showAlert && (
+									<Alert variant="success" className="mt-3" onClose={() => setShowAlert(false)} dismissible>
+										Created successfully!
+									</Alert>
+								)}
+							</Col>
+						</Row>
+					</Row>
+				</Modal.Body>
 			</Modal>
 
 			<Modal show={tagVisible} onHide={() => setTagVisible(false)} centered>
@@ -247,7 +327,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 					<FontAwesomeIcon icon={faFilter} />
 				</button>
 
-				<Dropdown hidden={false} onSelect={handleItemClick}>
+				<Dropdown hidden={!props.summarie} onSelect={handleItemClick}>
 					<Dropdown.Toggle as={Button} variant="primary" id="dropdown-basic" className='add-button'>
 						<FontAwesomeIcon icon={faCirclePlus} />
 					</Dropdown.Toggle>
@@ -257,13 +337,14 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 					</Dropdown.Menu>
 				</Dropdown>
 
-				<Dropdown hidden={true}>
+				<Dropdown hidden={!props.deck} onSelect={handleItemClick}>
 					<Dropdown.Toggle as={Button} variant="primary" id="dropdown-basic">
 						<FontAwesomeIcon icon={faCirclePlus} />
 					</Dropdown.Toggle>
 					<Dropdown.Menu>
 						<Dropdown.Item eventKey="deck" >Adicionar deck</Dropdown.Item>
-						<Dropdown.Item eventKey="tag" >Adicionar card</Dropdown.Item>
+						<Dropdown.Item eventKey="card" >Adicionar card</Dropdown.Item>
+						<Dropdown.Item eventKey="tag" >Add a tag</Dropdown.Item>
 					</Dropdown.Menu>
 				</Dropdown>
 			</div>
