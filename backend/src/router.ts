@@ -7,6 +7,7 @@ import CardController from "./controllers/CardController";
 import SessionController from "./controllers/SessionController";
 import MetricsController from "./controllers/MetricsController";
 import userController from "./controllers/UserController";
+import OpenAIController from "./controllers/OpenAIController";
 // import StudyMaterialController from "./controllers/StudyMaterialController";
 
 export const router = express.Router();
@@ -56,3 +57,8 @@ router.delete("/cards/delete/:cardId", CardController.delete);
 router.get("/tags/list/:userId", TagController.list);
 router.post("/tags/create/:userId", TagController.create);
 router.delete("/tags/delete/:tagId", TagController.delete);
+
+//OpenAi
+router.post("/openai/create/card", OpenAIController.createCard);
+router.post("/openai/create/summarie", OpenAIController.createSummarie);
+router.post("/openai/create/materials", OpenAIController.createMaterial);

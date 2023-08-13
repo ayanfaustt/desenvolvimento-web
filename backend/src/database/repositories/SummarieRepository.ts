@@ -13,14 +13,13 @@ class SummarieRepository{
   ): Promise<void>  {
     //TODO confirm if a summarie name can be duplicated
 
-    const isSummarieCreated = await SummariesModel.create({
+    await SummariesModel.create({
       userId: userId,
       summarie_name: summarieName,
       summarie_content: summarieContent,
       tagId: tagId
     });
     
-    if(!isSummarieCreated) throw new Error("Summarie can not be created !");
   }
     
   async listSummaries (userId: string): Promise<Model[]>  {
@@ -68,7 +67,7 @@ class SummarieRepository{
         
   }
     
-  async getSummarie (summarieId: string): Promise<Model>  {
+  async getSummarie (summarieId: string): Promise<Model | null>  {
 
     const summarie = await SummariesModel.findOne({
       where: {
@@ -76,8 +75,6 @@ class SummarieRepository{
       },
       include: [TagsModel]
     });
-        
-    if(!summarie) throw new Error("Summarie not found !");
         
     return summarie;
   }
