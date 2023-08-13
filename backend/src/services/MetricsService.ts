@@ -1,98 +1,83 @@
 import { Model } from "sequelize";
 import MetricRepository from "../database/repositories/MetricRepository";
-import { MetricComparationModel } from "../interfaces/interfaces";
+
+export interface MetricComparationModel {
+	isGrowth: boolean;
+	percent: number;
+	}
 
 class MetricsService {
+
   async create(
-    user_id: string,
+    userId: string,
     reviews: number,
-    decks_reviews: number,
-    summaries_reviews: number,
-    metrics_date: string,
+    decksReviews: number,
+    summariesReviews: number,
+    metricsDate: string,
   ): Promise<void> {
-    try {
-      await MetricRepository.createMetrics(
-        user_id,
-        reviews,
-        decks_reviews,
-        summaries_reviews,
-        metrics_date,
-      );
-    } catch (error) {
-      throw new Error();
-    }
+    await MetricRepository.createMetrics(
+      userId,
+      reviews,
+      decksReviews,
+      summariesReviews,
+      metricsDate,
+    );
   }
 
-  async imcrementDeckReview(user_id: string): Promise<void> {
-    try {
-      const userMetrics = await MetricRepository.list(user_id);
+  async incrementDeckReview(userId: string): Promise<void> {
+    const currentDate = new Date();
+    currentDate.setHours(0,0,0,0);
+    const userMetrics = await MetricRepository.list(userId);
+    let currentMetric = userMetrics.find(
+      x => new Date(x.getDataValue("metrics_date")).getTime() === currentDate.getTime(),
+    );
 
-      const id = userMetrics[userMetrics.length - 1].getDataValue("id");
-      const decks_reviews =
-				userMetrics[userMetrics.length - 1].getDataValue("decks_reviews") + 1;
-      const reviews =
-				userMetrics[userMetrics.length - 1].getDataValue("reviews") + 1;
-
-      await MetricRepository.imcrementDeckReview(
-        user_id,
-        id,
-        reviews,
-        decks_reviews,
-      );
-    } catch (error) {
-      throw new Error();
+    if(!currentMetric){
+      const newMetric = await MetricRepository.createMetrics(userId, 0, 0, 0, currentDate.toDateString());
+      currentMetric = newMetric;
     }
+			
+    const id = currentMetric.getDataValue("id");
+    const decksReviews = currentMetric.getDataValue("decks_reviews") + 1;
+    const reviews = currentMetric.getDataValue("reviews") + 1;
+
+    await MetricRepository.imcrementDeckReview(
+      userId,
+      id,
+      reviews,
+      decksReviews,
+    );
   }
 
-  async imcrementSummariesReview(user_id: string): Promise<void> {
-    try {
-      const userMetrics = await MetricRepository.list(user_id);
+  async incrementSummariesReview(userId: string): Promise<void> {
+    const currentDate = new Date();
+    currentDate.setHours(0,0,0,0);
+    const userMetrics = await MetricRepository.list(userId);
+    let currentMetric = userMetrics.find(
+      x => new Date(x.getDataValue("metrics_date")).getTime() === currentDate.getTime(),
+    );
 
-      const currentMetric = userMetrics.find(
-        x => new Date(x.getDataValue("metrics_date")),
-      );
-
-      if (currentMetric) {
-        const id = currentMetric.getDataValue("id");
-        const summaries_reviews =
-					currentMetric.getDataValue("summaries_reviews") + 1;
-        const reviews = currentMetric.getDataValue("reviews") + 1;
-
-        await MetricRepository.imcrementSummariesReview(
-          user_id,
-          id,
-          reviews,
-          summaries_reviews,
-        );
-      } else {
-        const id = userMetrics[userMetrics.length - 1].getDataValue("id");
-        const summaries_reviews =
-					userMetrics[userMetrics.length - 1].getDataValue(
-					  "summaries_reviews",
-					) + 1;
-        const reviews =
-					userMetrics[userMetrics.length - 1].getDataValue("reviews") + 1;
-
-        await MetricRepository.imcrementSummariesReview(
-          user_id,
-          id,
-          reviews,
-          summaries_reviews,
-        );
-      }
-    } catch (error) {
-      throw new Error();
+    if(!currentMetric){
+      const newMetric = await MetricRepository.createMetrics(userId, 0, 0, 0, currentDate.toDateString());
+      currentMetric = newMetric;
     }
+
+    const id = currentMetric?.getDataValue("id");
+    const summariesReviews = currentMetric?.getDataValue("summaries_reviews") + 1;
+    const reviews = currentMetric?.getDataValue("reviews") + 1;
+
+    await MetricRepository.imcrementSummariesReview(
+      userId,
+      id,
+      reviews,
+      summariesReviews,
+    );
   }
 
   async metricsHistory(userId: string): Promise<MetricComparationModel> {
-    try {
-      const metricsHistory = await this.metricsWeekCompiler(userId);
+    const metricsHistory = await this.metricsWeekCompiler(userId);
 
-      return metricsHistory;
-    } catch (error) {
-      throw new Error();
-    }
+    return metricsHistory;
   }
 
   private getCurrentWeekStart(): Date {
@@ -134,35 +119,26 @@ class MetricsService {
     return previousWeekScores;
   }
 
-  private async metricsWeekCompiler(
-    userId: string,
-  ): Promise<MetricComparationModel> {
-    try {
-      const usermetrics = await MetricRepository.list(userId);
+  private async metricsWeekCompiler(userId: string): Promise<MetricComparationModel> {
+    const usermetrics = await MetricRepository.list(userId);
 
-      const currentWeekScores = this.getCurrentMetrics(usermetrics);
-      const previousWeekScores = this.getLastMetrics(usermetrics);
+    const currentWeekScores = this.getCurrentMetrics(usermetrics);
+    const previousWeekScores = this.getLastMetrics(usermetrics);
 
-      const currentWeekSum = currentWeekScores.reduce(
-        (sum, score) => sum + score.getDataValue("reviews"),
-        0,
-      );
-      const previousWeekSum = previousWeekScores.reduce(
-        (sum, score) => sum + score.getDataValue("reviews"),
-        0,
-      );
-      const result = this.scoreComparation(currentWeekSum, previousWeekSum);
+    const currentWeekSum = currentWeekScores.reduce(
+      (sum, score) => sum + score.getDataValue("reviews"),
+      0,
+    );
+    const previousWeekSum = previousWeekScores.reduce(
+      (sum, score) => sum + score.getDataValue("reviews"),
+      0,
+    );
+    const result = this.scoreComparation(currentWeekSum, previousWeekSum);
 
-      return result;
-    } catch (error) {
-      throw new Error();
-    }
+    return result;
   }
 
-  private scoreComparation(
-    currentWeek: number,
-    previousWeek: number,
-  ): MetricComparationModel {
+  private scoreComparation(currentWeek: number, previousWeek: number): MetricComparationModel {
     let isGrowth: boolean = false;
     const percent = (currentWeek * 100) / previousWeek;
 

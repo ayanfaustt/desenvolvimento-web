@@ -3,6 +3,8 @@ import { Model } from "sequelize";
 import UserRepository from "../database/repositories/UserRepository";
 import MetricRepository from "../database/repositories/MetricRepository";
 import MetricsService from "./MetricsService";
+import { NotFoundError } from "../expcetions/NotFound";
+import { AlreadyExistError } from "../expcetions/AlreadyExistError";
 
 class UserServices {
   private async hashPassword(password: string): Promise<string> {
@@ -11,6 +13,28 @@ class UserServices {
 
     if (!hashedPassword) throw new Error("Internal error");
     return hashedPassword as string;
+  }
+
+  private async userCheck(username?: string, email?: string): Promise<boolean>{
+
+    if(username){
+      const isAlreadyExistByUsername = await UserRepository
+        .getOnlyUserByUsername(username);
+	
+      if (isAlreadyExistByUsername) 
+        throw new AlreadyExistError("There are an user with this username");
+    }
+
+    if(email){
+      const isAlreadyExistByEmail = await UserRepository
+        .getAllUserInfoByUserEmail(email);
+
+      if(isAlreadyExistByEmail)
+        throw new AlreadyExistError("There are an user with this email");
+    }
+
+    return true;
+
   }
 
   async comparePassword(input: string, hash: string): Promise<boolean> {
@@ -23,11 +47,8 @@ class UserServices {
     email: string,
     password: string,
   ): Promise<void> {
-    const isAlreadyExist = await UserRepository.getOnlyUserByUsername(
-      username,
-    );
 
-    if (!isAlreadyExist) throw new Error("User already exist !");
+    this.userCheck(username, email);
 
     const hash = await this.hashPassword(password);
     const isUserCreated = await UserRepository.createUser(
@@ -53,96 +74,77 @@ class UserServices {
     email: string,
     password: string,
   ): Promise<void> {
-    try {
-      const isAlreadyExist = await UserRepository.getOnlyUserByUsername(
-        username,
-      );
+	
+    this.userCheck(username, email);
 
-      if (!isAlreadyExist) throw new Error("User not found !");
+    const hash = await this.hashPassword(password);
+    const isUserUpdated = UserRepository.createUser(
+      username,
+      email,
+      hash,
+    );
 
-      const hash = await this.hashPassword(password);
-      const isUserUpdated = UserRepository.createUser(
-        username,
-        email,
-        hash,
-      );
+    if (!isUserUpdated) throw new Error("User not created !");
 
-      if (!isUserUpdated) throw new Error("User not created !");
-    } catch (error) {
-      throw new Error();
-    }
   }
 
   async getUserAndMetrics(username: string): Promise<Model> {
-    try {
-      const userInfo = await UserRepository.getUserAndMetrics(username);
-      const metrics = userInfo.getDataValue("metrics") as Model[];
-      const result = MetricsService.getCurrentMetrics(metrics);
+    const userInfo = await UserRepository.getUserAndMetrics(username);
+    const metrics = userInfo.getDataValue("metrics") as Model[];
+    const result = MetricsService.getCurrentMetrics(metrics);
 
-      userInfo.setDataValue("metrics", result);
+    userInfo.setDataValue("metrics", result);
 
-      if (!userInfo) throw new Error("User not found !");
+    if (!userInfo) throw new Error("User not found !");
 
-      return userInfo;
-    } catch (error) {
-      throw new Error();
-    }
+    return userInfo;
+
   }
 
-  getAllUserInfoByUserName = async (username: string): Promise<Model> => {
-    try {
-      const userInfo = await UserRepository.getAllUserInfoByUserName(
-        username,
-      );
+  async getUserById(userId: string): Promise<Model>{
+    
+    const user = await UserRepository.getUserById(userId);
 
-      if (!userInfo) throw new Error("User not found !");
+    if(!user) 
+      throw new NotFoundError("User not found");
 
-      return userInfo;
-    } catch (error) {
-      throw new Error();
-    }
+    return user;
+  }
+
+  async getAllUserInfoByUserName (username: string): Promise<Model> {
+    const userInfo = await UserRepository.getAllUserInfoByUserName(
+      username,
+    );
+
+    if (!userInfo) throw new Error("User not found !");
+
+    return userInfo;
   };
 
   async getAllUserInfoByUserEmail(email: string): Promise<Model> {
-    try {
-      const userInfo = await UserRepository.getAllUserInfoByUserEmail(
-        email,
-      );
+    const userInfo = await UserRepository.getAllUserInfoByUserEmail(
+      email,
+    );
 
-      if (!userInfo) throw new Error("User not found !");
+    if (!userInfo) throw new Error("User not found !");
 
-      return userInfo;
-    } catch (error) {
-      throw new Error();
-    }
+    return userInfo;
   }
 
   async getOnlyUsersByUsername(username: string): Promise<Model[]> {
-    try {
-      const users = await UserRepository.getOnlyUserByUsername(username);
+    const users = await UserRepository.getOnlyUserByUsername(username);
 
-      return users;
-    } catch (error) {
-      throw new Error();
-    }
+    return users;
   }
 
   async getOnlyUsers(): Promise<Model[]> {
-    try {
-      const users = await UserRepository.getOnlyUser();
+    const users = await UserRepository.getOnlyUser();
 
-      return users;
-    } catch (error) {
-      throw new Error();
-    }
+    return users;
   }
 
   async deleteUser(username: string): Promise<void> {
-    try {
-      await UserRepository.deleteUser(username);
-    } catch (error) {
-      throw new Error("The operation can not be completed !");
-    }
+    await UserRepository.deleteUser(username);
   }
 }
 

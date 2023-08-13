@@ -13,29 +13,24 @@ class TagRepository{
   };
 	  
   async list (userId: string): Promise<Model[]> {
-    try{
-      const deck = await TagsModel.findAll({
-        where: {
-          userId : userId
-        }
-      });
+  
+    const deck = await TagsModel.findAll({
+      where: {
+        userId : userId
+      }
+    });
 		
-      return deck;
-    } catch (error) {
-      throw new Error("The operation can not be completed !");
-    }
+    return deck;
+
   };
 	  
   async delete (tagId: string): Promise<void> {
-    try {
-		  await TagsModel.destroy({
-        where: {
-			  id: tagId
-        },
-		  });
-    } catch (error) {
-		  throw new Error("The operation can not be completed !");
-    }
+		
+    await TagsModel.destroy({
+      where: {
+        id: tagId
+      },
+    });
   };
 }
 

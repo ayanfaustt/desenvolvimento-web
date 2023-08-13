@@ -1,6 +1,8 @@
 import CardService from "../services/CardService";
 import { Response, Request } from "express";
+import { DatabaseError } from "sequelize";
 import { Model } from "sequelize";
+import { NotFoundError } from "../expcetions/NotFound";
 
 class CardController {
     
@@ -11,15 +13,20 @@ class CardController {
     */
   async get (req: Request, res: Response): Promise<Response<Model>> {
     try {
+			
       const { cardId: id } = req.params;
 
+      if(!id)
+        throw new Error("The card ID can not be null");
+				
       const card = await CardService.get(id);
 
       return res.status(200).send(card);
+    
     } catch (error) {
-      if(error instanceof Error ) return res.status(400).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      if(error instanceof DatabaseError ) return res.status(500).send({message: error.message});
+      
+      return res.status(404).send({message: error});
     }
   }
 
@@ -32,11 +39,16 @@ class CardController {
     try {
       const { deckId: id } = req.params;
 
+      if(!id)
+        throw new Error("The deck ID can not be null");
+
       const cards = await CardService.list(id);
 
       return res.status(200).send(cards);
     } catch (error) {
-      if(error instanceof Error ) return res.status(400).send({message: error.message});
+      if(error instanceof DatabaseError ) return res.status(500).send({message: error.message});
+			
+      if(error instanceof NotFoundError) return res.status(404).send({message: error.message});
 
       return res.status(400).send({message: error});
     }
@@ -44,21 +56,30 @@ class CardController {
 
   /**
     * @description Uptade a deck's card.
-    * @param {string} deckId - req.params (string) the deck id;
+    * @param {string} cardId - req.params (string) the card id;
     * @param {string} cardName - req.body (string) the card name;
     * @param {string} cardContent - req.body (string) the card content;
     * @returns A message with status code.
     */
   async update (req: Request, res: Response): Promise<Response> {
     try {
-      const { deckId: id } = req.params;
-      const { cardName: name, cardContent: content } = req.body;
+      const { cardId } = req.params;
+      const { cardName, cardContent } = req.body;
 
-      await CardService.update(id, name, content);
+      if(!cardId)
+        throw new Error("The deck ID can not be null");
+		
+      if(!cardName)
+        throw new Error("The card name can not be null");
+			
+			
+      await CardService.update(cardId, cardName, cardContent);
 
       return res.status(200).send({message: "Card updated"});
     } catch (error) {
-      if(error instanceof Error ) return res.status(400).send({message: error.message});
+      if(error instanceof DatabaseError ) return res.status(500).send({message: error.message});
+
+      if(error instanceof NotFoundError) return res.status(404).send({message: error.message});
 
       return res.status(400).send({message: error});
     }
@@ -74,14 +95,22 @@ class CardController {
     */
   async create (req: Request, res: Response): Promise<Response> {
     try {
-      const { deckId: id } = req.params;
+      const { deckId } = req.params;
       const { cardName, cardContent, isGpt } = req.body;
 
-      await CardService.create(id, cardName, cardContent, isGpt); 
+      if(!deckId)
+        throw new Error("The deck ID can not be null");
+	
+      if(!cardName)
+        throw new Error("The card name can not be null");
+
+      await CardService.create(deckId, cardName, cardContent, isGpt); 
 
       return res.status(200).send({message: "Card created !"});
     } catch (error) {
-      if (error instanceof Error) return res.status(400).send({messege: error.message});
+      if (error instanceof DatabaseError) return res.status(500).send({messege: error.message});
+
+      if(error instanceof NotFoundError) return res.status(404).send({message: error.message});
 
       return res.status(400).send({message: error});
             
@@ -95,13 +124,16 @@ class CardController {
     */
   async delete (req: Request, res: Response): Promise<Response> {
     try {
-      const { cardId: id } = req.params;
+      const { cardId } = req.params;
 
-      await CardService.delete(id);
+      if(!cardId)
+        throw new Error("The card ID can not be null");
+
+      await CardService.delete(cardId);
 
       return res.status(200).send({message: "Card deleted !"});
     } catch (error) {
-      if (error instanceof Error) return res.status(400).send({message: error.message});
+      if (error instanceof DatabaseError) return res.status(500).send({message: error.message});
             
       return res.status(400).send({message: error});
     }

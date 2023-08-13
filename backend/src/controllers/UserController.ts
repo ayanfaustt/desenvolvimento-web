@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { Model } from "sequelize";
 import UserServices from "../services/UserServices";
-
+import { MetricComparationModel} from "../services/MetricsService";
 import { createSession } from "../database/repositories/sessionRepository";
-import {
-  IGetUser, IUserWithMetrics
-} from "../interfaces/interfaces";
 import MetricsService from "../services/MetricsService";
 
+interface IUserWithMetrics{
+	user: Model;
+	metricsInfo: MetricComparationModel
+}
 
 class UserController {
     
@@ -18,7 +19,7 @@ class UserController {
     * @param {string} username - req.params (string) the username;
     * @returns A user object with status code.
     */
-  async getAllUserInfo (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response<Model>> {
+  async getAllUserInfo (req: Request, res: Response): Promise<Response<Model>> {
     try{
       const { username } = req.params;
         
@@ -39,7 +40,7 @@ class UserController {
     * @returns A user object with metric status and status code.
     */
   //TODO: Refactor
-  async getUserWithMetrics (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response<IUserWithMetrics>> {
+  async getUserWithMetrics (req: Request, res: Response): Promise<Response<IUserWithMetrics>> {
     try{
       const { username } = req.params;
         
@@ -66,7 +67,7 @@ class UserController {
     * @param {string} password - req.params (string) the user's password;
     * @returns A message with status code.
     */
-  async createUser (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response>{
+  async createUser (req: Request, res: Response): Promise<Response>{
     try{
       const { username } = req.params;
       const { email, password }  = req.body;
@@ -90,7 +91,7 @@ class UserController {
     * @param {string} password - req.params (string) the user's password;
     * @returns A message with status code.
     */
-  async updateUser (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response> {
+  async updateUser (req: Request, res: Response): Promise<Response> {
     try {
       const { username } = req.params;
       const { email, password }  = req.body;
@@ -111,7 +112,7 @@ class UserController {
     * @param {string} username - req.params (string) the username;
     * @returns A message with status code.
     */
-  async deleteUser (req: Request<IGetUser, unknown, IGetUser>, res: Response): Promise<Response> {
+  async deleteUser (req: Request, res: Response): Promise<Response> {
     try {
       const { username } = req.body;
 

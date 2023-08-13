@@ -34,7 +34,8 @@ class DateObserver {
         0,
         0,
         0,
-        newDate.toDateString(),
+        newDate
+          .toDateString(),
       );
     }
     console.log("mudei");

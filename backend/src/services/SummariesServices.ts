@@ -1,6 +1,6 @@
 import { Model } from "sequelize";
 import SummarieRepository from "../database/repositories/SummarieRepository";
-import { gpt } from "./external/openai";
+import { gpt } from "./external/clients/openai";
 
 class SummariesServices {
   private systemPrompt =
@@ -23,74 +23,62 @@ class SummariesServices {
   ): Promise<void> {
     // TODO confirm if a summarie name can be duplicated
 
-    try {
-      if (isGpt) {
-        const content = await gpt.createChatCompletion({
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "system",
-              content: this.systemPrompt,
-            },
-            {
-              role: "user",
-              content: this.userSamplePrompt,
-            },
-            {
-              role: "assistant",
-              content: this.systemResponseSamplePrompt,
-            },
-            {
-              role: "user",
-              content: `${summarieName}? responder em ${maxLen} palavras`,
-            },
-          ],
-        });
+    if (isGpt) {
+      const content = await gpt.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: this.systemPrompt,
+          },
+          {
+            role: "user",
+            content: this.userSamplePrompt,
+          },
+          {
+            role: "assistant",
+            content: this.systemResponseSamplePrompt,
+          },
+          {
+            role: "user",
+            content: `${summarieName}? responder em ${maxLen} palavras`,
+          },
+        ],
+      });
 
-        if (content.data.choices[0].message?.content) {
-          const parser = content.data.choices[0].message.content.replace(
-            /'/g,
-            "\"",
-          );
-          const summarie = JSON.parse(parser);
-          await SummarieRepository.createSummarie(
-            userId,
-            summarieName,
-            summarie.resumo,
-            tagId,
-          );
-        }
-      } else {
+      if (content.data.choices[0].message?.content) {
+        const parser = content.data.choices[0].message.content.replace(
+          /'/g,
+          "\"",
+        );
+        const summarie = JSON.parse(parser);
         await SummarieRepository.createSummarie(
           userId,
           summarieName,
-          summarieContent,
+          summarie.resumo,
           tagId,
         );
       }
-    } catch (error) {
-      throw new Error();
+    } else {
+      await SummarieRepository.createSummarie(
+        userId,
+        summarieName,
+        summarieContent,
+        tagId,
+      );
     }
   }
 
   async listSummaries(userId: string): Promise<Model[]> {
-    try {
-      const summaries = SummarieRepository.listSummaries(userId);
+    const summaries = SummarieRepository.listSummaries(userId);
 
-      return summaries;
-    } catch (error) {
-      throw new Error("The operation can not be completed !");
-    }
+    return summaries;
   }
 
   async listSummariesByTag(userId: string, tagId: string): Promise<Model[]> {
-    try {
-      const summaries = SummarieRepository.listSummariesByTag(userId, tagId);
+    const summaries = SummarieRepository.listSummariesByTag(userId, tagId);
 
-      return summaries;
-    } catch (error) {
-      throw new Error("The operation can not be completed !");
-    }
+    return summaries;
   }
 
   async updateSummarie(
@@ -101,74 +89,64 @@ class SummariesServices {
     tagId?: string,
     isGpt?: boolean,
   ): Promise<void> {
-    try {
-      if (isGpt) {
-        const content = await gpt.createChatCompletion({
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "system",
-              content: this.systemPrompt,
-            },
-            {
-              role: "user",
-              content: this.userSamplePrompt,
-            },
-            {
-              role: "assistant",
-              content: this.systemResponseSamplePrompt,
-            },
-            {
-              role: "user",
-              content: `${summarieName}? responder em ${maxLen} palavras`,
-            },
-          ],
-        });
 
-        if (content.data.choices[0].message?.content) {
-          const parser = content.data.choices[0].message.content.replace(
-            /'/g,
-            "\"",
-          );
-          const summarie = JSON.parse(parser);
-          await SummarieRepository.updateSummarie(
-            id,
-            summarieName,
-            summarie.resumo,
-            tagId,
-          );
-        }
-      } else {
+    if (isGpt) {
+      const content = await gpt.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: this.systemPrompt,
+          },
+          {
+            role: "user",
+            content: this.userSamplePrompt,
+          },
+          {
+            role: "assistant",
+            content: this.systemResponseSamplePrompt,
+          },
+          {
+            role: "user",
+            content: `${summarieName}? responder em ${maxLen} palavras`,
+          },
+        ],
+      });
+
+      if (content.data.choices[0].message?.content) {
+        const parser = content.data.choices[0].message.content.replace(
+          /'/g,
+          "\"",
+        );
+        const summarie = JSON.parse(parser);
         await SummarieRepository.updateSummarie(
           id,
           summarieName,
-          summarieContent,
+          summarie.resumo,
           tagId,
         );
       }
-    } catch (error) {
-      throw new Error("The operation can not be completed !");
+    } else {
+      await SummarieRepository.updateSummarie(
+        id,
+        summarieName,
+        summarieContent,
+        tagId,
+      );
     }
   }
 
   async getSummarie(summarieId: string): Promise<Model> {
-    try {
-      const summarie = await SummarieRepository.getSummarie(summarieId);
+    const summarie = await SummarieRepository.getSummarie(summarieId);
 
-      if (!summarie) throw new Error("Summarie not found !");
+    if (!summarie) throw new Error("Summarie not found !");
 
-      return summarie;
-    } catch (error) {
-      throw new Error("The operation can not be completed !");
-    }
+    return summarie;
   }
 
   async deleteSummarie(summarieId: string): Promise<void> {
-    try {
-      await SummarieRepository.deleteSummarie(summarieId);
-    } catch (error) {
-      throw new Error("The operation can not be completed !");
-    }
+    await SummarieRepository.deleteSummarie(summarieId);
+
   }
 }
 

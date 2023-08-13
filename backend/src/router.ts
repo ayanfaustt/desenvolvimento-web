@@ -45,12 +45,12 @@ router.delete("/decks/delete/:deckId", DeckController.delete);
 // router.get("/studyMaterials/", StudyMaterialController.getStudyMaterial);
 
 //cards
-router.get("/cards/:deckId", CardController.get);
+router.get("/cards/:cardId", CardController.get);
 router.get("/cards/list/:deckId", CardController.list);
 router.post("/cards/create/:deckId", CardController.create);
 //for now the update card does not contains the Chatgpt option
-router.put("/cards/update/:deckId", CardController.update);
-router.delete("/cards/delete/:deckId", CardController.delete);
+router.put("/cards/update/:cardId", CardController.update);
+router.delete("/cards/delete/:cardId", CardController.delete);
 
 //Tags
 router.get("/tags/list/:userId", TagController.list);

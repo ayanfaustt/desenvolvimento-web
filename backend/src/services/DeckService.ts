@@ -1,71 +1,50 @@
 import { Model } from "sequelize/types/model";
 import DeckRepository from "../database/repositories/DeckRepository";
+import { NotFoundError } from "../expcetions/NotFound";
+import UserServices from "./UserServices";
 
 
 class DeckService {
   
   async create(userId: string, deckName: string, tagId?: string): Promise<void> {
-    try {
-
-      await DeckRepository.create(userId, deckName, tagId);
-
-    } catch (error) {
-      throw new Error();
-    }
-    
+    await UserServices.getUserById(userId);
+    await DeckRepository.create(userId, deckName, tagId);
   };
 
   async get(deckId: string): Promise<Model> {
-    try {
 
-      const deck = await DeckRepository.get(deckId);
+    const deck = await DeckRepository.get(deckId);
+
+    if(!deck)
+      throw new NotFoundError("Deck not Found !");
 		
-      return deck;
-    } catch (error) {
-      throw new Error();
-    }
+    return deck;
   }
 	
   async list (userId: string): Promise<Model[]> {
-    try{
-
-		  const decks = await DeckRepository.list(userId);
 		
-		  return decks;
-    } catch (error) {
-		  throw new Error();
-    }
+    await UserServices.getUserById(userId);
+    
+    const decks = await DeckRepository.list(userId);
+		
+    return decks;
   };
 	
   async listByTag (userId: string, tagId: string): Promise<Model[]> {
-    try {
 
-		  const decks = await DeckRepository.listByTag(userId, tagId);
+    const decks = await DeckRepository.listByTag(userId, tagId);
 		
-		  return decks;
-    } catch (error) {
-		  throw new Error();
-    }
+    return decks;
   };
 		
   async update (deckId: string, deckName: string, tagId?: string): Promise<void> {
-    try {
 
-		  await DeckRepository.update(deckId, deckName, tagId);
-    
-    } catch (error) {
-		  throw new Error();
-    }
+    await DeckRepository.update(deckId, deckName, tagId);    
   };
 		
-	  async delete (deckId: string): Promise<void> {
-    try {
+  async delete (deckId: string): Promise<void> {
 
-      await DeckRepository.delete(deckId);
-		  
-    } catch (error) {
-		  throw new Error("The operation can not be completed !");
-    }
+    await DeckRepository.delete(deckId);
   };
 }
 
