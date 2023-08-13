@@ -120,3 +120,9 @@
 .error-message {
     color: #721c24;
 }
+
+.plink {
+    margin-bottom: 0;
+    text-decoration: none;
+    color: #006699;
+}

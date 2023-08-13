@@ -2,24 +2,40 @@
     display: flex;
     border-radius: 10px;
     background-color: #DAE9F1;
-    padding: 8px;
+    padding: 12px;
+}
+
+.mainCard a{
+	width: 90%;
+	text-decoration: none;
+	color: inherit;
 }
 
 .insideCard {
     display: flex;
     flex-direction: row;
-    border-radius: 10px;
-    border: 1px solid #004257;
-    background-color: #DAE9F1;
     justify-content: space-between;
     padding: 25px 30px;
     flex-grow: 1;
+	width: 100%;
+}
+
+.borderDiv {
+	display: flex;
+	flex-direction: row;
+	background-color: #DAE9F1;
+    border: 1px solid #004257;
+	border-radius: 10px;
+	flex-grow: 1;
 }
 
 .icons {
     display: flex;
     flex-direction: column;
+	justify-content: center;
+	align-items: center;
     gap: 10px;
+	width: 10%;
 }
 
 .tag {
@@ -38,4 +54,9 @@
     border-radius: 50%;
     background-color: #F5BF42;
     align-self: center;
+}
+
+.btn-card {
+	background-color: transparent;
+	border: none;
 }

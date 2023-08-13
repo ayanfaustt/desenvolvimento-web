@@ -1,12 +1,12 @@
 .sidebar-content {
     display: flex;
     justify-content: left;
-
 }
 
 .pageContent {
     padding: 80px 160px;
     flex-grow: .75;
+	margin-left: 300px;
 }
 
 

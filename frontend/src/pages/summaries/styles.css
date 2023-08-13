@@ -1,0 +1,12 @@
+.resume {
+	display: flex;
+	align-items: center;
+	padding-left: 300px;
+	padding-top: 100px;
+}
+
+.resume-content {
+	display: flex;
+	flex-direction: column;
+	gap: 36;
+}

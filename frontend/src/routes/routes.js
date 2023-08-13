@@ -9,6 +9,7 @@ import SideBarWithBox from "../components/sidebarWithBox";
 import FlashcardPage from "../pages/flashcard";
 import SummariesPage from "../pages/summaries";
 import StudyPage from "../pages/study";
+import SummariesInsidePage from "../pages/summaries/pageInside";
 
 export const routes = createBrowserRouter([
   {
@@ -33,7 +34,11 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/summaries",
-    element: <SummariesPage />
+    element: <SummariesPage />,
+  },
+  {
+    path: "/summaries/resume",
+    element: <SummariesInsidePage />
   },
   {
     path: "/study",

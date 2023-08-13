@@ -1,29 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import { Button, Modal } from "react-bootstrap";
+import { DeleteSummarie } from "../../hooks/useSummarie";
+import { Link, useLocation } from "react-router-dom";
 
 interface CardsProps {
-    name: string;
-    tag: string;
+	handleDelete: (id: number) => void;
+	itemId: number;
+	name: string;
+	tag: string;
 }
 
 export default function Cards(props: CardsProps) {
-  return (
-    <div className='mainCard'>
-      <div className="insideCard">
+	const location = useLocation();
 
-        <div className='name-tag'>
-          <p className='p'>{props.name}</p>
-          <div className='tag'><div className='blackbox' /><p className='p'>{props.tag}</p></div>
-        </div>
+	const handleClickDelete = (event: React.MouseEvent) => {
+		event.stopPropagation();
+		props.handleDelete(props.itemId);
+	};
 
-        <div className='icons'>
-          <FontAwesomeIcon icon={faTrash} />
-          <FontAwesomeIcon icon={faPen} />
-        </div>
 
-      </div>
-    </div>
-  );
+	const handleCardClick = () => {
+		console.log('aq')
+	}
+
+	return (
+		<div className='mainCard'>
+			<div className="borderDiv">
+				<Link to={`${location.pathname}/resume`} onClick={handleCardClick}>
+					<div className="insideCard">
+						<div className='name-tag'>
+							<p className='p'>{props.name}</p>
+							<div className='tag'><div className='blackbox' /><p className='p'>{props.tag}</p></div>
+						</div>
+					</div>
+				</Link>
+				<div className='icons'>
+					<button className="btn-card" onClick={handleClickDelete}>
+						<FontAwesomeIcon icon={faTrash} />
+					</button>
+					<button className="btn-card" onClick={handleClickDelete}>
+						<FontAwesomeIcon icon={faPen} />
+					</button>
+				</div>
+			</div>
+		</div>
+	);
 }

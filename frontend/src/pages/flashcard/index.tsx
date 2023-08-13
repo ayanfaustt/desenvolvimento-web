@@ -1,27 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
-import PageContent from "../../components/pageContent";
+import { useUser } from "../../hooks/useContextUserId";
+import { ListDecks } from "../../hooks/useFlashcard";
+import PageFlashcardContent from "../../components/pageFlashcardContent";
 
-// interface FlashcardPageProps {
-// }
+export default function FlashcardPage() {
+	const [listFlashcards, setListFlashcards] = useState([]);
+	const { userId } = useUser();
 
-const teste = [
-  {
-    cardName: "caneco",
-    cardTag: "Mat"
-  },
-  {
-    cardName: "Teste2",
-    cardTag: "Port"
-  },
-  {
-    cardName: "Teste3",
-    cardTag: "Port"
-  },
-];
+	useEffect(() => {
+		const fetchListDecks = async () => {
+			if (14) {
+				await ListDecks(14).then((res) => setListFlashcards(res.data));
+			};
+		};
+		fetchListDecks();
+	}, []);
 
-export default function FlashcardPage(/*props: FlashcardPageProps*/) {
-  return (
-    <PageContent pageName='Decks' cardsContent={teste}/>
-  );
+	const fetchUpdatedListDecks = async () => {
+		if (userId) {
+			await ListDecks(userId).then((res) => setListFlashcards(res.data));
+		};
+	};
+
+	return (
+		<PageFlashcardContent pageName='Decks' cardsContent={listFlashcards} onItemChanged={fetchUpdatedListDecks}/>
+	);
 }
