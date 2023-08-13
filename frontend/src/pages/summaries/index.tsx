@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-import PageContent from "../../components/pageContent";
+import PageSummariesContent from "../../components/pageSummarieContent";
 import { ListSummaries } from "../../hooks/useSummarie";
 import { useUser } from "../../hooks/useContextUserId";
-
-interface ItemType {
-    id: number;
-}
 
 export default function SummariesPage() {
 	const [listSummaries, setListSummaries] = useState([]);
@@ -27,6 +23,6 @@ export default function SummariesPage() {
 	};
 
   return (
-    <PageContent pageName='Summaries' cardsContent={listSummaries} onItemUpdated={fetchUpdatedListSummaries} />
+    <PageSummariesContent pageName='Summaries' cardsContent={listSummaries} onItemChanged={fetchUpdatedListSummaries} />
   );
 }
