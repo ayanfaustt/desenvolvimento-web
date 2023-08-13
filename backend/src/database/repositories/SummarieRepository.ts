@@ -13,45 +13,40 @@ class SummarieRepository{
   ): Promise<void>  {
     //TODO confirm if a summarie name can be duplicated
 
-    const isSummarieCreated = await SummariesModel.create({
+    await SummariesModel.create({
       userId: userId,
       summarie_name: summarieName,
       summarie_content: summarieContent,
       tagId: tagId
     });
     
-    if(!isSummarieCreated) throw new Error("Summarie can not be created !");
   }
     
   async listSummaries (userId: string): Promise<Model[]>  {
-    try {
-      const summaries = await SummariesModel.findAll({
-        where: {
-          userId: userId
-        },
-        include: [TagsModel]
-      });
+
+    const summaries = await SummariesModel.findAll({
+      where: {
+        userId: userId
+      },
+      include: [TagsModel]
+    });
     
-      return summaries;
-    } catch (error) {
-      throw new Error("The operation can not be completed !");
-    }
+    return summaries;
+
   }
 
   async listSummariesByTag (userId: string, tagId: string): Promise<Model[]>  {
-    try {
-      const summaries = await SummariesModel.findAll({
-        where: {
-          userId: userId,
-          tagId: tagId
-        },
-        include: [TagsModel]
-      });
+
+    const summaries = await SummariesModel.findAll({
+      where: {
+        userId: userId,
+        tagId: tagId
+      },
+      include: [TagsModel]
+    });
     
-      return summaries;
-    } catch (error) {
-      throw new Error("The operation can not be completed !");
-    }
+    return summaries;
+
   }
     
   async updateSummarie (
@@ -60,49 +55,38 @@ class SummarieRepository{
     summarieContent?: string, 
     tagId?: string
   ): Promise<void>  {
-    try {
-      await SummariesModel.update({
-        summarie_name: summarieName,
-        summarie_content: summarieContent,
-        tagId: tagId
-      },{
-        where:{
-          id: id,
-        }
-      });
-    } catch (error) {
-      throw new Error("The operation can not be completed !");
-    }
+    await SummariesModel.update({
+      summarie_name: summarieName,
+      summarie_content: summarieContent,
+      tagId: tagId
+    },{
+      where:{
+        id: id,
+      }
+    });
         
   }
     
-  async getSummarie (summarieId: string): Promise<Model>  {
-    try {
-      const summarie = await SummariesModel.findOne({
-        where: {
-          id : summarieId
-        },
-        include: [TagsModel]
-      });
+  async getSummarie (summarieId: string): Promise<Model | null>  {
+
+    const summarie = await SummariesModel.findOne({
+      where: {
+        id : summarieId
+      },
+      include: [TagsModel]
+    });
         
-      if(!summarie) throw new Error("Summarie not found !");
-        
-      return summarie;
-    } catch (error) {
-      throw new Error("The operation can not be completed !");
-    }
+    return summarie;
   }
     
   async deleteSummarie (summarieId: string): Promise<void> {
-    try {
-      await SummariesModel.destroy({
-        where: {
-          id: summarieId
-        }
-      });
-    } catch (error) {
-      throw new Error("The operation can not be completed !");
-    }
+
+    await SummariesModel.destroy({
+      where: {
+        id: summarieId
+      }
+    });
+
   }
 }
 

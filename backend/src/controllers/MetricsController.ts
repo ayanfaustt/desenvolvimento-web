@@ -12,7 +12,7 @@ class MetricsController {
     try {
       const { userId: id } = req.params;
 
-      await MetricsService.imcrementDeckReview(id);
+      await MetricsService.incrementDeckReview(id);
 
       return res.status(200).send({ message: "User metrics updated !" });
     } catch (error) {
@@ -35,7 +35,7 @@ class MetricsController {
     try {
       const { userId: id } = req.params;
 
-      await MetricsService.imcrementSummariesReview(id);
+      await MetricsService.incrementSummariesReview(id);
 
       return res.status(200).send({ message: "User metrics updated !" });
     } catch (error) {

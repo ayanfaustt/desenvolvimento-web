@@ -7,6 +7,7 @@ import CardController from "./controllers/CardController";
 import SessionController from "./controllers/SessionController";
 import MetricsController from "./controllers/MetricsController";
 import userController from "./controllers/UserController";
+import OpenAIController from "./controllers/OpenAIController";
 // import StudyMaterialController from "./controllers/StudyMaterialController";
 
 export const router = express.Router();
@@ -45,14 +46,19 @@ router.delete("/decks/delete/:deckId", DeckController.delete);
 // router.get("/studyMaterials/", StudyMaterialController.getStudyMaterial);
 
 //cards
-router.get("/cards/:deckId", CardController.get);
+router.get("/cards/:cardId", CardController.get);
 router.get("/cards/list/:deckId", CardController.list);
 router.post("/cards/create/:deckId", CardController.create);
 //for now the update card does not contains the Chatgpt option
-router.put("/cards/update/:deckId", CardController.update);
-router.delete("/cards/delete/:deckId", CardController.delete);
+router.put("/cards/update/:cardId", CardController.update);
+router.delete("/cards/delete/:cardId", CardController.delete);
 
 //Tags
 router.get("/tags/list/:userId", TagController.list);
 router.post("/tags/create/:userId", TagController.create);
 router.delete("/tags/delete/:tagId", TagController.delete);
+
+//OpenAi
+router.post("/openai/create/card", OpenAIController.createCard);
+router.post("/openai/create/summarie", OpenAIController.createSummarie);
+router.post("/openai/create/materials", OpenAIController.createMaterial);
