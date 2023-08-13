@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles.css";
 import { Button, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { CreateUser } from "../../hooks/userRegister";
+import { CreateUser } from "../../hooks/useUser";
 import * as Yup from "yup";
 import { Form } from "react-bootstrap";
 

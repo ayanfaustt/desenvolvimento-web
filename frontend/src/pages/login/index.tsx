@@ -8,13 +8,9 @@ import flashcard from "../../images/flashcard-slide.png";
 import summaries from "../../images/summaries-slide.png";
 import studyMaterial from "../../images/study-slide.png";
 import { useNavigate } from "react-router-dom";
-import { LoginUser } from "../../hooks/useLogin";
+import { LoginUser } from "../../hooks/useUser";
 import { UserId } from "../../hooks/useUser";
 import { useUser } from "../../hooks/useContextUserId";
-
-// interface LoginPageProps {
-
-// }
 
 type eventType = {
     target: {
@@ -24,7 +20,7 @@ type eventType = {
 
 const sliderImgs = [dashboard, flashcard, summaries, studyMaterial];
 
-export default function LoginPage(/*props: LoginPageProps*/) {
+export default function LoginPage() {
   const navigate = useNavigate();
   const [check, setCheck] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
