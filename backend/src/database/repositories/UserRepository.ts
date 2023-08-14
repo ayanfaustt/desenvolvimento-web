@@ -144,7 +144,7 @@ class UserRepository {
         let defaultClient = SibApiV3Sdk.ApiClient.instance;
 
         let apiKey = defaultClient.authentications['api-key'];
-        apiKey.apiKey = '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';
+        apiKey.apiKey = 'api-key';
 
         let apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
