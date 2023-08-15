@@ -42,14 +42,10 @@ router.post("/decks/create/:userId", DeckController.create);
 router.put("/decks/update/:deckId", DeckController.update);
 router.delete("/decks/delete/:deckId", DeckController.delete);
 
-//Study Materials
-// router.get("/studyMaterials/", StudyMaterialController.getStudyMaterial);
-
 //cards
 router.get("/cards/:cardId", CardController.get);
 router.get("/cards/list/:deckId", CardController.list);
 router.post("/cards/create/:deckId", CardController.create);
-//for now the update card does not contains the Chatgpt option
 router.put("/cards/update/:cardId", CardController.update);
 router.delete("/cards/delete/:cardId", CardController.delete);
 
@@ -62,3 +58,6 @@ router.delete("/tags/delete/:tagId", TagController.delete);
 router.post("/openai/create/card", OpenAIController.createCard);
 router.post("/openai/create/summarie", OpenAIController.createSummarie);
 router.post("/openai/create/materials", OpenAIController.createMaterial);
+router.post("/openai/favorite/create", OpenAIController.favorite);
+router.get("/openai/favorite/list/:userId", OpenAIController.list);
+router.delete("/openai/favorite/delete/:favoriteId", OpenAIController.removeFavorite);
