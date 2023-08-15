@@ -98,7 +98,6 @@ class UserServices {
     if (!userInfo) throw new Error("User not found !");
 
     return userInfo;
-
   }
 
   async getUserById(userId: string): Promise<Model>{

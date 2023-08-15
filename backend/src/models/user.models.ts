@@ -8,26 +8,26 @@ import { FavoriteModel } from "./favorite.model";
 import { SessionModel } from "./session.model";
 
 export const UserModel = db.define("user", {
-    id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
-    },
-    email:{
-        type: DataTypes.STRING(100),
-        allowNull: false,
-        unique: true,
-    },
-    username: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-        unique: true
-    } ,
-    password: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-    }
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  },
+  email:{
+    type: DataTypes.STRING(100),
+    allowNull: false,
+    unique: true,
+  },
+  username: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+    unique: true
+  } ,
+  password: {
+    type: DataTypes.STRING(100),
+    allowNull: false,
+  }
 });
 
 UserModel.hasMany(DecksModel);
