@@ -46,19 +46,22 @@ class SummarieController {
   /**
     * @description List all user's summaries filltering by a tag.
     * @param {string} userId - req.params (string) the user id;
-    * @param {string} tagId - req.body (string) the tag id;
+    * @param {string} tagId - req.query (string) :userId?TagId=...  the tag id;
     * @returns A list of summaries object with status code.
     */
   async listByTag(req: Request, res: Response): Promise<Response<Model[]>> {
     try {
       const { userId } = req.params;
-      const { tagId  } = req.body;
+      const { tagId } = req.query;
 
-      const summaries = await SummariesServices.listSummariesByTag(userId, tagId);
+      if(!tagId)
+        throw new Error("Tag ID can not be null");
+
+      const summaries = await SummariesServices.listSummariesByTag(userId, tagId.toString());
 
       return res.status(200).send(summaries);
     } catch (error) {
-      if(error instanceof Error ) return res.status(400).send({message: error.message});
+      if(error instanceof Error ) return res.status(500).send({message: error.message});
 
       return res.status(400).send({message: error});
     }
