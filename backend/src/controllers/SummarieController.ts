@@ -54,7 +54,7 @@ class SummarieController {
       const { userId } = req.params;
       const { tagId  } = req.body;
 
-      const summaries = SummariesServices.listSummariesByTag(userId, tagId);
+      const summaries = await SummariesServices.listSummariesByTag(userId, tagId);
 
       return res.status(200).send(summaries);
     } catch (error) {
@@ -75,9 +75,9 @@ class SummarieController {
   async update (req: Request, res: Response): Promise<Response> {
     try {
       const {summarieId: id} = req.params;
-      const {summarieName, summarieContent } = req.body;
+      const {summarieName, summarieContent, tagId } = req.body;
 
-      await SummariesServices.updateSummarie(id, summarieName, summarieContent);
+      await SummariesServices.updateSummarie(id, summarieName, summarieContent, tagId);
 
       return res.status(200).send({message: "Summarie updated !"});
     } catch (error) {
