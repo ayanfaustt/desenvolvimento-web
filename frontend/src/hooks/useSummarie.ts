@@ -5,6 +5,11 @@ export const ListSummaries = (userId: number) => {
 	return axios.get(url);
 };
 
+export const ListSummarie = (summarieId: number) => {
+	const url = `http://localhost:8000/summaries/${summarieId}`;
+	return axios.get(url);
+};
+
 export const CreateSummarie = (userId: number, data: object) => {
 	const url = `http://localhost:8000/summaries/create/${userId}`;
 	return axios.post(url, data);
