@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faFilter, faPen } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Modal, Button, Row, Col, FormLabel, Alert, Form } from "react-bootstrap";
 import { CreateSummarie } from "../../hooks/useSummarie";
 import { CreateTag } from "../../hooks/useTag";
@@ -9,6 +9,7 @@ import AsyncSelect from "react-select/async";
 import { TagList } from "../../hooks/useListTag";
 import { useUser } from "../../hooks/useContextUserId";
 import { CreateDeck } from "../../hooks/useFlashcard";
+import { GenerateSummarie } from "../../hooks/useOpenAI";
 
 interface PageNameAndButtonsProps {
 	summarie: boolean;
@@ -37,6 +38,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 	const [resumeData, setResumeData] = useState({ summarieName: "", tagId: "", summarieContent: "" });
 	const [deckData, setDeckData] = useState({ deckName: "", tagId: "" });
 	const [tagData, setTagData] = useState({ tagName: "" });
+	const [loading, setLoading] = useState(false);
 
 	const handleVisible = (decks: boolean, summaries: boolean, tag: boolean) => {
 		if (decks) {
@@ -165,7 +167,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 
 	const handleAsyncSelection = (option: TagOption | null) => {
 		if (option) {
-			if (deckVisible){
+			if (deckVisible) {
 				setDeckData((prevData) => ({
 					...prevData,
 					"tagId": option.value
@@ -176,6 +178,22 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 					"tagId": option.value
 				}));
 			};
+		}
+	};
+
+	const generateResume = async () => {
+		try {
+			setLoading(true);
+			const summarieTitle = { "summarieTitle": resumeData.summarieName }
+			await GenerateSummarie(summarieTitle).then((res) => {
+				setResumeData((prevData) => ({
+					...prevData,
+					"summarieContent": res.data.content
+				}));
+			})
+			setLoading(false);
+		} catch (error) {
+			console.log(error)
 		}
 	};
 
@@ -201,7 +219,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 								<Form.Control name='summarieName' type="text" value={resumeData.summarieName} onChange={handleInputChange} className='inputField'></Form.Control>
 							</Col>
 						</Row>
-						<Row>
+						<Row className="mb-4">
 							<Col >
 								<FormLabel>Tags</FormLabel>
 								<AsyncSelect
@@ -213,19 +231,27 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 								/>
 							</Col>
 						</Row>
+						<Row>
+							<Col>
+								<Form.Group className="mb-3" controlId="formBasicCheckbox">
+									<Button onClick={generateResume}>
+										Generate resume by chat GPT
+									</Button>
+								</Form.Group>
+							</Col>
+						</Row>
+						<Row>
+							<Col>
+								{loading ? "Please wait, GPT is generating your summary...." : <></>}
+							</Col>
+						</Row>
 						<Row className='mb-4'>
 							<Col >
 								<FormLabel>Resume</FormLabel>
 								<Form.Control as="textarea" rows={4} name='summarieContent' type="text" value={resumeData.summarieContent} onChange={handleInputChange} className='inputField resume-text' ></Form.Control>
 							</Col>
 						</Row>
-						<Row>
-							<Col>
-								<Form.Group className="mb-3" controlId="formBasicCheckbox">
-									<Form.Check type="checkbox" label="Generate by chat GPT" />
-								</Form.Group>
-							</Col>
-						</Row>
+
 						<Row >
 							<Col className="text-center" >
 								<Button onClick={handleSubmitSummarie}>
@@ -323,9 +349,21 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 
 			<h1>{props.name}</h1>
 			<div className="icons2">
-				<button className='filter-button' >
-					<FontAwesomeIcon icon={faFilter} />
-				</button>
+				<Dropdown hidden={!props.summarie} className='filter-button' >
+					<Dropdown.Toggle as={Button} variant="primary" id="dropdown-basic" className='add-button'>
+						<FontAwesomeIcon icon={faFilter} />
+					</Dropdown.Toggle>
+					<Dropdown.Menu>
+						<FormLabel>Tags</FormLabel>
+						<AsyncSelect
+							loadOptions={loadOptions}
+							onChange={handleAsyncSelection}
+							defaultOptions
+							placeholder="Digite para buscar..."
+							isSearchable
+						/>
+					</Dropdown.Menu>
+				</Dropdown>
 
 				<Dropdown hidden={!props.summarie} onSelect={handleItemClick}>
 					<Dropdown.Toggle as={Button} variant="primary" id="dropdown-basic" className='add-button'>
