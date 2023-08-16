@@ -5,6 +5,7 @@ import Cards from "../card";
 import PageNameAndButtons from "../pageNameAndButtons";
 import { Alert, Button, Col, Modal, Row } from "react-bootstrap";
 import { DeleteDeck } from "../../hooks/useFlashcard";
+import { DeleteSummarie } from "../../hooks/useSummarie";
 
 interface CardInfo {
 	id: number;
@@ -32,7 +33,7 @@ export default function PageSummariesContent(props: PageContentProps) {
 	};
 
 	const handleDelete = async () => {
-		await DeleteDeck(deckId).then(() => props.onItemChanged());
+		await DeleteSummarie(deckId).then(() => props.onItemChanged());
 		setShowAlert(true);
 		setTimeout(() => {
 			setShowAlert(false);

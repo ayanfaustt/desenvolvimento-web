@@ -10,6 +10,7 @@ import FlashcardPage from "../pages/flashcard";
 import SummariesPage from "../pages/summaries";
 import StudyPage from "../pages/study";
 import SummariesInsidePage from "../pages/summaries/pageInside";
+import EditSummarie from "../pages/summaries/editSummariePage";
 
 export const routes = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ export const routes = createBrowserRouter([
   {
     path: "/summaries/resume",
     element: <SummariesInsidePage />
+  },
+  {
+    path: "/summaries/resume/edit",
+    element: <EditSummarie />
   },
   {
     path: "/study",

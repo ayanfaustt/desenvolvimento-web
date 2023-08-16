@@ -20,8 +20,8 @@ export const DeleteSummarie = (summarieId: number) => {
 	return axios.delete(url);
 };
 
-export const UpdateSummarie = (userId: number, data: object) => {
-	const url = `http://localhost:8000/summaries/create/${userId}`;
+export const UpdateSummarie = (summarieId: number, data: object) => {
+	const url = `http://localhost:8000/summaries/update/${summarieId}`;
 	return axios.post(url, data);
 };
 

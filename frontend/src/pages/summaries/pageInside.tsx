@@ -6,13 +6,15 @@ import { ListSummarie } from "../../hooks/useSummarie";
 
 export default function SummariesInsidePage() {
 	const location = useLocation();
-	const { itemId, name } = location.state;
-	const [resumeContent, setResumeContent] = useState();
+	const { itemId } = location.state;
+	const [resumeContent, setResumeContent] = useState({ summarieName: "", summarieContent: "" });
 
 	useEffect(() => {
 		const fetchResumeContent = async () => {
 			try {
-				await ListSummarie(itemId).then(res => setResumeContent(res.data.summarie_content))
+				await ListSummarie(itemId).then((res) => {
+					setResumeContent({ summarieName: res.data.summarie_name, summarieContent: res.data.summarie_content })
+				})
 			} catch (err) {
 				console.log(err)
 			}
@@ -25,8 +27,8 @@ export default function SummariesInsidePage() {
 		<main className="resume">
 			<SideBar />
 			<div className="resume-content">
-				<h1>{name}</h1>
-				<p>{resumeContent}</p>
+				<h1>{resumeContent.summarieName}</h1>
+				<p>{resumeContent.summarieContent}</p>
 			</div>
 		</main>
 	);
