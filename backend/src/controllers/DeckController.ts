@@ -67,13 +67,13 @@ class DeckController {
   /**
     * @description List all user's decks filltering by a tag.
     * @param {string} userId - req.params (string) the user id;
-    * @param {string} tagId - req.body (string) the tag id;
+    * @param {string} tagId - req.query (string) :userId?TagId=...  the tag id;
     * @returns A list of deck objects with status code.
     */
   async listByTag (req: Request, res: Response): Promise<Response<Model[]>> {
     try {
       const { userId } = req.params;
-      const { tagId } = req.body;
+      const { tagId } = req.query;
 
       if(!userId)
         throw new Error("User ID can not be null");
@@ -81,7 +81,7 @@ class DeckController {
       if(!tagId)
         throw new Error("Tag ID can not be null");
 
-      const decks = await DeckService.listByTag(userId, tagId);
+      const decks = await DeckService.listByTag(userId, tagId.toString());
 
       return res.status(200).send(decks);
     } catch (error) {
