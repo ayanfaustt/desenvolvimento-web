@@ -16,6 +16,7 @@ interface PageNameAndButtonsProps {
 	deck: boolean;
 	name: string;
 	onItemUpdated: () => void;
+	onFilter: (data: object) => void;
 };
 
 interface TagOption {
@@ -180,6 +181,12 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 			};
 		}
 	};
+
+	const handleFilterSelection = (option: TagOption | null) => {
+		if(userId && option) {
+			props.onFilter({ "tagId" : option.value });
+		}
+	}
 
 	const generateResume = async () => {
 		try {
@@ -357,7 +364,23 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 						<FormLabel>Tags</FormLabel>
 						<AsyncSelect
 							loadOptions={loadOptions}
-							onChange={handleAsyncSelection}
+							onChange={handleFilterSelection}
+							defaultOptions
+							placeholder="Digite para buscar..."
+							isSearchable
+						/>
+					</Dropdown.Menu>
+				</Dropdown>
+
+				<Dropdown hidden={!props.deck} className='filter-button' >
+					<Dropdown.Toggle as={Button} variant="primary" id="dropdown-basic" className='add-button'>
+						<FontAwesomeIcon icon={faFilter} />
+					</Dropdown.Toggle>
+					<Dropdown.Menu>
+						<FormLabel>Tags</FormLabel>
+						<AsyncSelect
+							loadOptions={loadOptions}
+							onChange={handleFilterSelection}
 							defaultOptions
 							placeholder="Digite para buscar..."
 							isSearchable

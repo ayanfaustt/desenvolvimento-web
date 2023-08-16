@@ -18,6 +18,7 @@ interface PageContentProps {
 	pageName: string;
 	cardsContent: CardInfo[];
 	onItemChanged: () => void;
+	onFilter: (data: object) => void;
 };
 
 export default function PageSummariesContent(props: PageContentProps) {
@@ -71,7 +72,7 @@ export default function PageSummariesContent(props: PageContentProps) {
 
 			<SideBar />
 			<div className='pageContent'>
-				<PageNameAndButtons name={props.pageName} onItemUpdated={props.onItemChanged} deck={false} summarie={true} />
+				<PageNameAndButtons name={props.pageName} onItemUpdated={props.onItemChanged} onFilter={props.onFilter} deck={false} summarie={true} />
 				<div className='cards'>
 					{props.cardsContent.map((content) => (
 						<Cards name={content.summarie_name} tag={content.tag.tag_name} itemId={content.id} handleDelete={handleVisible} />
