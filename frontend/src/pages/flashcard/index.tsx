@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { useUser } from "../../hooks/useContextUserId";
-import { ListDecks } from "../../hooks/useFlashcard";
+import { FilterTagDecks, ListDecks } from "../../hooks/useFlashcard";
 import PageFlashcardContent from "../../components/pageFlashcardContent";
 
 export default function FlashcardPage() {
@@ -23,7 +23,14 @@ export default function FlashcardPage() {
 		};
 	};
 
+	const fetchFilteredDecks = async (data: object) => {
+		console.log(data)
+		if (userId) {
+			await FilterTagDecks(userId, {"tagId": 3}).then((res) => setListFlashcards(res.data)).catch((err) => console.log(err) );
+		};
+	};
+
 	return (
-		<PageFlashcardContent pageName='Decks' cardsContent={listFlashcards} onItemChanged={fetchUpdatedListDecks}/>
+		<PageFlashcardContent pageName='Decks' cardsContent={listFlashcards} onItemChanged={fetchUpdatedListDecks} onFilter={fetchFilteredDecks} />
 	);
 }

@@ -3,10 +3,27 @@
 	align-items: center;
 	padding-left: 300px;
 	padding-top: 100px;
+	height: 100vh;
+	width: 100vw;
 }
 
 .resume-content {
 	display: flex;
+	height: 100%;
+	width: 100%;
 	flex-direction: column;
 	gap: 36;
+	padding: 20px 150px 0 40px;
+	text-align: justify;
+}
+
+.formEdit{
+	/* width: 100vw; */
+}
+
+textarea {
+	width: 100vw;
+	resize: none;
+	height: auto;
+	/* overflow: hidden; */
 }
