@@ -16,7 +16,7 @@ interface PageNameAndButtonsProps {
 	deck: boolean;
 	name: string;
 	onItemUpdated: () => void;
-	onFilter: (tagId: number) => void;
+	onFilter: (tagId: number | null) => void;
 };
 
 interface TagOption {
@@ -185,6 +185,9 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 	const handleFilterSelection = (option: TagOption | null) => {
 		if (userId && option) {
 			props.onFilter(parseInt(option.value));
+		} else if (option === null) {
+			props.onFilter(null);
+			console.log(option)
 		}
 	}
 
@@ -368,6 +371,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 							defaultOptions
 							placeholder="Digite para buscar..."
 							isSearchable
+							isClearable
 						/>
 					</Dropdown.Menu>
 				</Dropdown>
@@ -384,6 +388,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 							defaultOptions
 							placeholder="Digite para buscar..."
 							isSearchable
+							isClearable={true}
 						/>
 					</Dropdown.Menu>
 				</Dropdown>

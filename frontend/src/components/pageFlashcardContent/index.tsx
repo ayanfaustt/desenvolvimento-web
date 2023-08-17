@@ -19,7 +19,7 @@ interface PageContentProps {
 	pageName: string;
 	cardsContent: CardInfo[];
 	onItemChanged: () => void;
-	onFilter: (tagId: number) => void;
+	onFilter: (tagId: number  | null) => void;
 };
 
 export default function PageFlashcardContent(props: PageContentProps) {

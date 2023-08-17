@@ -22,11 +22,14 @@ export default function SummariesPage() {
 		};
 	};
 
-	const fetchFilteredSummaries = async (tagId: number) => {
+	const fetchFilteredSummaries = async (tagId: number | null) => {
 		if (userId) {
-			console.log(tagId)
-			await FilterTagSummaries(userId, tagId).then((res) => setListSummaries(res.data)).catch(err => console.log(err));
-		};
+			if (tagId) {
+				await FilterTagSummaries(userId, tagId).then((res) => setListSummaries(res.data)).catch(err => console.log(err));
+			} else if (tagId === null) {
+				await ListSummaries(userId).then((res) => setListSummaries(res.data));
+			}
+		}
 	};
 
 	return (
