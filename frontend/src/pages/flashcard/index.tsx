@@ -23,10 +23,12 @@ export default function FlashcardPage() {
 		};
 	};
 
-	const fetchFilteredDecks = async (tagId: number) => {
+	const fetchFilteredDecks = async (tagId: number | null) => {
 		console.log(tagId)
 		if (userId) {
-			await FilterTagDecks(userId, tagId).then((res) => setListFlashcards(res.data)).catch((err) => console.log(err) );
+			if (tagId) {
+				await FilterTagDecks(userId, tagId).then((res) => setListFlashcards(res.data)).catch((err) => console.log(err));
+			}
 		};
 	};
 
