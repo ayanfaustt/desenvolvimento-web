@@ -19,7 +19,7 @@ interface PageContentProps {
 	pageName: string;
 	cardsContent: CardInfo[];
 	onItemChanged: () => void;
-	onFilter: (data: object) => void;
+	onFilter: (tagId: number) => void;
 };
 
 export default function PageSummariesContent(props: PageContentProps) {

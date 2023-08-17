@@ -16,7 +16,7 @@ interface PageNameAndButtonsProps {
 	deck: boolean;
 	name: string;
 	onItemUpdated: () => void;
-	onFilter: (data: object) => void;
+	onFilter: (tagId: number) => void;
 };
 
 interface TagOption {
@@ -183,8 +183,8 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 	};
 
 	const handleFilterSelection = (option: TagOption | null) => {
-		if(userId && option) {
-			props.onFilter({ "tagId" : option.value });
+		if (userId && option) {
+			props.onFilter(parseInt(option.value));
 		}
 	}
 

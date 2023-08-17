@@ -25,7 +25,7 @@ export const UpdateSummarie = (summarieId: number, data: object) => {
 	return axios.post(url, data);
 };
 
-export const FilterTagSummaries = (userId: number, data: object) => {
-	const url = `http://localhost:8000/summaries/listByTag/${userId}`;
-	return axios.get(url, data);
+export const FilterTagSummaries = (userId: number, tagId: number) => {
+	const url = `http://localhost:8000/summaries/listByTag/${userId}?tagId=${tagId}`;
+	return axios.get(url);
 };

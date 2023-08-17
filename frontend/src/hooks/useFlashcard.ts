@@ -20,7 +20,7 @@ export const UpdateDeck = (deckId: number, data: object) => {
 	return axios.post(url, data);
 };
 
-export const FilterTagDecks = (userId: number, data: object) => {
-	const url = `http://localhost:8000/decks/listByTag/${userId}`;
-	return axios.get(url, data);
+export const FilterTagDecks = (userId: number, tagId: number) => {
+	const url = `http://localhost:8000/decks/listByTag/${userId}?tagId=${tagId}`;
+	return axios.get(url);
 };

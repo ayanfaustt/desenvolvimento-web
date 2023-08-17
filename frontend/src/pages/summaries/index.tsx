@@ -22,10 +22,10 @@ export default function SummariesPage() {
 		};
 	};
 
-	const fetchFilteredSummaries = async (data: object) => {
+	const fetchFilteredSummaries = async (tagId: number) => {
 		if (userId) {
-			console.log(data)
-			await FilterTagSummaries(userId, data).then((res) => setListSummaries(res.data)).catch(err => console.log(err));
+			console.log(tagId)
+			await FilterTagSummaries(userId, tagId).then((res) => setListSummaries(res.data)).catch(err => console.log(err));
 		};
 	};
 
