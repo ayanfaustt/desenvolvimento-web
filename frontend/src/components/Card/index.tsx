@@ -24,7 +24,7 @@ export default function Cards(props: CardsProps) {
 		navigation(`${location.pathname}/resume/edit`, {
 			state: {
 				itemId: props.itemId,
-				name: props.name,
+				tagName: props.tag
 			},
 		});
 	};
