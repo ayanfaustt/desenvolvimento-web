@@ -150,7 +150,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 	const loadOptions = async (inputValue: string) => {
 		if (userId) {
 			try {
-				const response = await TagList(userId);
+				const response = await TagList(userId)
 				const options: TagOption[] = response.data.map((tag: Tag) => ({
 					value: tag.id,
 					label: tag.tag_name,

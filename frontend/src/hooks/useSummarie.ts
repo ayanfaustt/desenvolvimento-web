@@ -22,7 +22,7 @@ export const DeleteSummarie = (summarieId: number) => {
 
 export const UpdateSummarie = (summarieId: number, data: object) => {
 	const url = `http://localhost:8000/summaries/update/${summarieId}`;
-	return axios.post(url, data);
+	return axios.put(url, data);
 };
 
 export const FilterTagSummaries = (userId: number, tagId: number) => {
