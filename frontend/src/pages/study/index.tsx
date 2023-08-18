@@ -1,3 +1,5 @@
+import React, { useState, ChangeEvent } from "react";
+
 interface StudyMaterialPageProps {
     userName: string;
     password: string;

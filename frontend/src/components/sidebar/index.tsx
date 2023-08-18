@@ -3,16 +3,7 @@ import "./styles.css";
 import { Link } from "react-router-dom";
 import logo from '../../images/logo.png';
 
-// interface SideBarProps {
-
-// }
-export default function SideBar(/*props: SideBarProps*/) {
-
-	const dashboardPage = () => { };
-	const flashcardPage = () => { };
-	const studyMaterialPage = () => { };
-	const summariesPage = () => { };
-	
+export default function SideBar() {
 
 	return (
 		<div className='sidebar'>
@@ -30,7 +21,7 @@ export default function SideBar(/*props: SideBarProps*/) {
 			<div className='content'>
 				<div className='centered-content'>
 
-					<Link to="/dashboard" className='icon-text' onClick={dashboardPage} >
+					<Link to="/dashboard" className='icon-text'  >
 						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g clip-path="url(#clip0_419_4639)">
 								<path d="M23 22H3C2.73478 22 2.48043 21.8946 2.29289 21.7071C2.10536 21.5196 2 21.2652 2 21V1C2 0.734784 1.89464 0.48043 1.70711 0.292893C1.51957 0.105357 1.26522 0 1 0C0.734784 0 0.48043 0.105357 0.292893 0.292893C0.105357 0.48043 0 0.734784 0 1L0 21C0 21.7956 0.31607 22.5587 0.87868 23.1213C1.44129 23.6839 2.20435 24 3 24H23C23.2652 24 23.5196 23.8946 23.7071 23.7071C23.8946 23.5196 24 23.2652 24 23C24 22.7348 23.8946 22.4804 23.7071 22.2929C23.5196 22.1054 23.2652 22 23 22Z" fill="#DAE9F1" />
@@ -48,14 +39,14 @@ export default function SideBar(/*props: SideBarProps*/) {
 						<p className='p text'>Dashboard</p>
 					</Link>
 
-					<Link to="/flashcard" className="icon-text" onClick={flashcardPage} >
+					<Link to="/flashcard" className="icon-text"  >
 						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M13 4.00007H3C2.20435 4.00007 1.44129 4.31614 0.87868 4.87875C0.31607 5.44136 0 6.20442 0 7.00007L0 24.0001H16V7.00007C16 6.20442 15.6839 5.44136 15.1213 4.87875C14.5587 4.31614 13.7956 4.00007 13 4.00007ZM8 18.0001C8 18.0001 4 15.3331 4 13.0001C4 12.4696 4.21071 11.9609 4.58579 11.5859C4.96086 11.2108 5.46957 11.0001 6 11.0001C6.53043 11.0001 7.03914 11.2108 7.41421 11.5859C7.78929 11.9609 8 12.4696 8 13.0001C8 12.4696 8.21071 11.9609 8.58579 11.5859C8.96086 11.2108 9.46957 11.0001 10 11.0001C10.5304 11.0001 11.0391 11.2108 11.4142 11.5859C11.7893 11.9609 12 12.4696 12 13.0001C12 15.3331 8 18.0001 8 18.0001ZM23.88 6.69307L19.1 23.1071L18 22.7001V7.00007C17.9984 5.67448 17.4711 4.40363 16.5338 3.46629C15.5964 2.52896 14.3256 2.00166 13 2.00007H8.757C9.00816 1.27683 9.52823 0.678109 10.2092 0.328215C10.8902 -0.021679 11.6798 -0.0958603 12.414 0.121074L21.85 2.97707C22.6111 3.20201 23.252 3.71934 23.6325 4.41581C24.013 5.11228 24.102 5.93113 23.88 6.69307Z" fill="#DAE9F1" />
 						</svg>
 						<p className='p text'>Flashcards</p>
 					</Link>
 
-					<Link to="/study" className="icon-text" onClick={studyMaterialPage} >
+					<Link to="/study" className="icon-text"  >
 						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g clip-path="url(#clip0_419_4631)">
 								<path d="M23.98 21.5661L16.756 1.96711C16.48 1.21511 15.928 0.615106 15.2 0.279106C14.473 -0.0588936 13.658 -0.0918936 12.906 0.185106L11.967 0.530106C11.684 0.634106 11.423 0.776106 11.189 0.953106C10.641 0.368106 9.863 0.00110644 9 0.00110644H3C1.346 0.000106436 0 1.34611 0 3.00011V24.0001H12V9.30511L17.408 23.9771L23.98 21.5661ZM18.593 21.4121L17.628 18.7931L20.444 17.7601L21.409 20.3791L18.593 21.4121ZM16.936 16.9171L13.447 7.45111L16.263 6.41711L19.752 15.8831L16.936 16.9171ZM12.093 2.92511C12.205 2.68311 12.405 2.49811 12.656 2.40611L13.595 2.06111C13.707 2.02011 13.824 1.99911 13.94 1.99911C14.083 1.99911 14.225 2.03011 14.359 2.09211C14.602 2.20411 14.786 2.40411 14.879 2.65611L15.573 4.54011L12.757 5.57411L12.062 3.68911C11.97 3.43811 11.981 3.16811 12.093 2.92511ZM10 3.00011V5.00011H7V2.00011H9C9.551 2.00011 10 2.44811 10 3.00011ZM7 7.00011H10V17.0001H7V7.00011ZM5 17.0001H2V7.00011H5V17.0001ZM3 2.00011H5V5.00011H2V3.00011C2 2.44811 2.449 2.00011 3 2.00011ZM2 19.0001H5V22.0001H2V19.0001ZM7 22.0001V19.0001H10V22.0001H7Z" fill="#DAE9F1" />
@@ -69,7 +60,7 @@ export default function SideBar(/*props: SideBarProps*/) {
 						<p className='p text'>Study material</p>
 					</Link>
 
-					<Link to="/summaries" className="icon-text" onClick={summariesPage} >
+					<Link to="/summaries" className="icon-text" >
 						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g clip-path="url(#clip0_419_4627)">
 								<path d="M16 18H12C11.448 18 11 17.553 11 17C11 16.447 11.448 16 12 16H16C16.552 16 17 16.447 17 17C17 17.553 16.552 18 16 18ZM21 19V7C21 4.243 18.757 2 16 2H15.829C15.416 0.836 14.304 0 13 0H11C9.696 0 8.584 0.836 8.171 2H8C5.243 2 3 4.243 3 7V19C3 21.757 5.243 24 8 24H16C18.757 24 21 21.757 21 19ZM9 4C9.552 4 10 3.553 10 3C10 2.447 10.449 2 11 2H13C13.551 2 14 2.448 14 3C14 3.552 14.448 4 15 4H16C17.654 4 19 5.346 19 7V19C19 20.654 17.654 22 16 22H8C6.346 22 5 20.654 5 19V7C5 5.346 6.346 4 8 4H9ZM8 16C7.448 16 7 16.448 7 17C7 17.552 7.448 18 8 18C8.552 18 9 17.552 9 17C9 16.448 8.552 16 8 16ZM17 13C17 12.447 16.552 12 16 12H12C11.448 12 11 12.447 11 13C11 13.553 11.448 14 12 14H16C16.552 14 17 13.553 17 13ZM8 12C7.448 12 7 12.448 7 13C7 13.552 7.448 14 8 14C8.552 14 9 13.552 9 13C9 12.448 8.552 12 8 12ZM17 9C17 8.447 16.552 8 16 8H12C11.448 8 11 8.447 11 9C11 9.553 11.448 10 12 10H16C16.552 10 17 9.553 17 9ZM8 8C7.448 8 7 8.448 7 9C7 9.552 7.448 10 8 10C8.552 10 9 9.552 9 9C9 8.448 8.552 8 8 8Z" fill="#DAE9F1" />
@@ -87,7 +78,7 @@ export default function SideBar(/*props: SideBarProps*/) {
 			</div>
 
 			<div className="logout">
-				<Link to="/login" className='icon-text'>
+				<Link to="/" className='icon-text'>
 					<p className='p logout-text'>Logout</p>
 					<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M6 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H6" stroke="#F25C54" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
