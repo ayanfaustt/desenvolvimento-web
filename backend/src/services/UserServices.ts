@@ -84,12 +84,14 @@ class UserServices {
 
   async getUserAndMetrics(username: string): Promise<Model> {
     const userInfo = await UserRepository.getUserAndMetrics(username);
+    if (!userInfo)
+      throw new NotFoundError("User not found !");
+    
     const metrics = userInfo.getDataValue("metrics") as Model[];
     const result = MetricsService.getCurrentMetrics(metrics);
 
     userInfo.setDataValue("metrics", result);
 
-    if (!userInfo) throw new Error("User not found !");
 
     return userInfo;
   }
