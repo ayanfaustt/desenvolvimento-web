@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import SideBar from "../../components/sidebar";
 import "./styles.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ListSummarie, UpdateSummarie } from "../../hooks/useSummarie";
-import { Button, Form } from "react-bootstrap";
+import { Alert, Button, Form } from "react-bootstrap";
 import AsyncSelect from "react-select/async";
 import { useUser } from "../../hooks/useContextUserId";
 import { TagList } from "../../hooks/useListTag";
@@ -19,6 +19,8 @@ interface Tag {
 };
 
 export default function EditSummarie() {
+	const navigate = useNavigate();
+	const [showAlert, setShowAlert] = useState(false);
 	const { userId } = useUser();
 	const location = useLocation();
 	const { itemId, tagName } = location.state;
@@ -32,8 +34,8 @@ export default function EditSummarie() {
 				await ListSummarie(itemId).then((res) => {
 					setResumeContent({ summarieName: res.data.summarie_name, tagId: res.data.tagId, summarieContent: res.data.summarie_content })
 				})
-				setInitialTag({value: resumeContent.tagId, label: tagName })
-				setOldTag({value: resumeContent.tagId, label: tagName })
+				setInitialTag({ value: resumeContent.tagId, label: tagName })
+				setOldTag({ value: resumeContent.tagId, label: tagName })
 			} catch (err) {
 				console.log(err)
 			}
@@ -67,7 +69,7 @@ export default function EditSummarie() {
 				...prevData,
 				"tagId": option.value
 			}))
-			setInitialTag({value: option.value, label: option.label })
+			setInitialTag({ value: option.value, label: option.label })
 		} else {
 			setInitialTag(oldTag)
 		}
@@ -88,7 +90,14 @@ export default function EditSummarie() {
 	};
 
 	const handleEditSummarie = () => {
-		UpdateSummarie(itemId, resumeContent).then(res => console.log(res))
+		UpdateSummarie(itemId, resumeContent).then(res => {
+			setShowAlert(true);
+
+			setTimeout(() => {
+				navigate("/summaries")
+			}, 2000);
+
+		})
 	};
 
 	return (
@@ -106,6 +115,7 @@ export default function EditSummarie() {
 						as="textarea"
 						type="text"
 						value={resumeContent.summarieContent}
+						rows={10}
 						onChange={handleContentChange}
 					/>
 					<AsyncSelect
@@ -123,6 +133,11 @@ export default function EditSummarie() {
 					<Button onClick={handleEditSummarie}>
 						Save changes
 					</Button>
+					{showAlert && (
+						<Alert variant="success" className="mt-3" onClose={() => setShowAlert(false)} dismissible>
+							Summary changed!
+						</Alert>
+					)}
 				</div>
 			</div>
 		</main>
