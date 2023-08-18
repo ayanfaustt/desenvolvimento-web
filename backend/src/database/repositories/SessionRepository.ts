@@ -36,17 +36,17 @@ class SessionRepository{
     else { throw new Error("The token can not be refreshed!"); };
   };
 	
-  async checkSession(userId: string, token: string, session_type: number) : Promise<boolean>{
+  async checkSession(userId: string, token: string, sessionType: number) : Promise<boolean>{
     const session = await SessionModel.findOne({
       where: {
         userId: userId
       }
     });
     if(session){
-      if(session_type == 0 && token === session.get("web_session")){
+      if(sessionType == 0 && token === session.get("web_session")){
         return true;
       }
-      else if(session_type == 1 && token === session.get("mob_session")){
+      else if(sessionType == 1 && token === session.get("mob_session")){
         return true;
       }
     }
