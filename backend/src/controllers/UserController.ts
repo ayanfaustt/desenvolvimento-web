@@ -4,6 +4,8 @@ import UserServices from "../services/UserServices";
 import { MetricComparationModel} from "../services/MetricsService";
 import { createSession } from "../database/repositories/sessionRepository";
 import MetricsService from "../services/MetricsService";
+import { NotFoundError } from "../expcetions/NotFound";
+import { AlreadyExistError } from "../expcetions/AlreadyExistError";
 
 interface IUserWithMetrics{
 	user: Model;
@@ -27,8 +29,14 @@ class UserController {
             
       return res.status(200).send(user); 
     } catch(error){
-      if (error instanceof Error) return res.status(400).send({message: error.message});
+      if (error instanceof DatabaseError) return res.status(500).send({message: error.message});
             
+      if(error instanceof NotFoundError ) 
+        return res.status(404).send({message: error.message});
+
+      if(error instanceof AlreadyExistError ) 
+        return res.status(409).send({message: error.message});
+
       return res.status(400).send({message: error});
     }
        
@@ -53,8 +61,14 @@ class UserController {
       
       return res.status(200).send(result);
     } catch(error){
-      if (error instanceof Error) return res.status(400).send({message: error.message});
+      if (error instanceof DatabaseError) return res.status(500).send({message: error.message});
             
+      if(error instanceof NotFoundError ) 
+        return res.status(404).send({message: error.message});
+
+      if(error instanceof AlreadyExistError ) 
+        return res.status(409).send({message: error.message});
+
       return res.status(400).send({message: error});
     }
        
@@ -89,6 +103,12 @@ class UserController {
     }catch(error ){
       if (error instanceof DatabaseError) return res.status(500).send({message: error.message});
             
+      if(error instanceof NotFoundError ) 
+        return res.status(404).send({message: error.message});
+
+      if(error instanceof AlreadyExistError ) 
+        return res.status(409).send({message: error.message});
+
       return res.status(400).send({message: error});
     }
   }
@@ -109,8 +129,14 @@ class UserController {
 
       return res.status(200).send({message: "User updated !"});
     } catch (error) {
-      if (error instanceof Error) return res.status(400).send({message: error.message});
+      if (error instanceof DatabaseError) return res.status(500).send({message: error.message});
             
+      if(error instanceof NotFoundError ) 
+        return res.status(404).send({message: error.message});
+
+      if(error instanceof AlreadyExistError ) 
+        return res.status(409).send({message: error.message});
+
       return res.status(400).send({message: error});
     }
 
@@ -129,8 +155,14 @@ class UserController {
 
       return res.status(200).send({message: "User deleted !"});
     } catch (error) {
-      if (error instanceof Error) return res.status(400).send({message: error.message});
+      if (error instanceof DatabaseError) return res.status(500).send({message: error.message});
             
+      if(error instanceof NotFoundError ) 
+        return res.status(404).send({message: error.message});
+
+      if(error instanceof AlreadyExistError ) 
+        return res.status(409).send({message: error.message});
+
       return res.status(400).send({message: error});
     }
   }

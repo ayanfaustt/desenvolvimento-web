@@ -55,8 +55,6 @@ class UserServices {
       hash,
     );
 
-    if (!isUserCreated) throw new Error("User not created !");
-
     const date = new Date();
     await MetricRepository.createMetrics(
       isUserCreated.getDataValue("id"),
@@ -76,13 +74,11 @@ class UserServices {
     this.userCheck(username, email);
 
     const hash = await this.hashPassword(password);
-    const isUserUpdated = UserRepository.createUser(
+    await UserRepository.createUser(
       username,
       email,
       hash,
     );
-
-    if (!isUserUpdated) throw new Error("User not created !");
 
   }
 
