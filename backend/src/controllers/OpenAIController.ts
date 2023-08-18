@@ -70,7 +70,6 @@ class OpenAIController {
   async createMaterial(req: CustomRequest, res: Response): Promise<Response<Material[]>>{
     try {
       const {material} = req.body;
-
       if(!material)
         throw new Error("Material can not be null");
 

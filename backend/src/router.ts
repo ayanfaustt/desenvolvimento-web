@@ -18,6 +18,7 @@ router.get("/user/:username", UserController.getAllUserInfo);
 router.get("/user/metrics/:username", userController.getUserWithMetrics);
 router.post("/user/create/:username", UserController.createUser);
 router.post("/user/update/:userId", UserController.updateUser);
+router.post("/user/resetpass:email", UserController.resetPassword),
 
 // session
 router.post("/session/login", SessionController.login);

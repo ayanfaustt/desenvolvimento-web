@@ -1,6 +1,7 @@
 import SummariesServices from "../services/SummariesServices";
 import { Response, Request } from "express";
 import { Model } from "sequelize";
+import SessionRepository from "../database/repositories/SessionRepository";
 
 
 class SummarieController {
@@ -13,10 +14,14 @@ class SummarieController {
   async get (req: Request, res: Response): Promise<Response> {
     try {
       const { summarieId: id } = req.params;
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        const summarie = await SummariesServices.getSummarie(id);
 
-      const summarie = await SummariesServices.getSummarie(id);
-
-      return res.status(200).send(summarie);
+        return res.status(200).send(summarie);}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if(error instanceof Error ) return res.status(400).send({message: error.message});
 
@@ -32,10 +37,14 @@ class SummarieController {
   async list (req: Request, res: Response): Promise<Response<Model[]>> {
     try {
       const { userId: id } = req.params;
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        const summaries = await SummariesServices.listSummaries(id);
 
-      const summaries = await SummariesServices.listSummaries(id);
-
-      return res.status(200).send(summaries);
+        return res.status(200).send(summaries);}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if (error instanceof Error) return res.status(400).send({messege: error.message});
 
@@ -52,11 +61,14 @@ class SummarieController {
   async listByTag(req: Request, res: Response): Promise<Response<Model[]>> {
     try {
       const { userId } = req.params;
-      const { tagId  } = req.body;
+      const { userID , token, sessionType, tagId} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        const summaries = SummariesServices.listSummariesByTag(userId, tagId);
 
-      const summaries = SummariesServices.listSummariesByTag(userId, tagId);
-
-      return res.status(200).send(summaries);
+        return res.status(200).send(summaries);}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if(error instanceof Error ) return res.status(400).send({message: error.message});
 
@@ -75,11 +87,14 @@ class SummarieController {
   async update (req: Request, res: Response): Promise<Response> {
     try {
       const {summarieId: id} = req.params;
-      const {summarieName, summarieContent } = req.body;
+      const { userID , token, sessionType, summarieName, summarieContent} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        await SummariesServices.updateSummarie(id, summarieName, summarieContent);
 
-      await SummariesServices.updateSummarie(id, summarieName, summarieContent);
-
-      return res.status(200).send({message: "Summarie updated !"});
+        return res.status(200).send({message: "Summarie updated !"});}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if (error instanceof Error) return res.status(400).send({messege: error.message});
 
@@ -98,12 +113,14 @@ class SummarieController {
   async create (req: Request, res: Response): Promise<Response> {
     try {
       const { userId: id } = req.params;
+      const { userID , token, sessionType, summarieName, summarieContent, tagId} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        await SummariesServices.createSummarie(id, summarieName, summarieContent, tagId); 
 
-      const { summarieName, summarieContent, tagId } = req.body;
-
-      await SummariesServices.createSummarie(id, summarieName, summarieContent, tagId); 
-
-      return res.status(200).send({message: "Summarie created !"});
+        return res.status(200).send({message: "Summarie created !"});}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if (error instanceof Error) return res.status(400).send({messege: error.message});
 
@@ -120,10 +137,14 @@ class SummarieController {
   async delete (req: Request, res: Response): Promise<Response> {
     try {
       const { summarieId: id } = req.params;
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        await SummariesServices.deleteSummarie(id);
 
-      await SummariesServices.deleteSummarie(id);
-
-      return res.status(200).send({message: "summarie deleted !"});
+        return res.status(200).send({message: "summarie deleted !"});}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if (error instanceof Error) return res.status(400).send({message: error.message});
             

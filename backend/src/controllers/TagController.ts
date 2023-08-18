@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 import { Model } from "sequelize";
 import TagService from "../services/TagService";
+import SessionRepository from "../database/repositories/SessionRepository";
 
 class TagController {
   /**
@@ -11,10 +12,14 @@ class TagController {
   async list(req: Request, res: Response): Promise<Response<Model[]>> {
     try {
       const { userId: id } = req.params;
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        const deck = await TagService.list(id);
 
-      const deck = await TagService.list(id);
-
-      return res.status(200).send(deck);
+        return res.status(200).send(deck);}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if (error instanceof Error)
         return res.status(400).send({ message: error.message });
@@ -31,11 +36,14 @@ class TagController {
   async create(req: Request, res: Response): Promise<Response> {
     try {
       const { userId: id } = req.params;
-      const { tagName } = req.body;
+      const { userID , token, sessionType, tagName} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        await TagService.create(id, tagName);
 
-      await TagService.create(id, tagName);
-
-      return res.status(200).send({ message: "Tag created !" });
+        return res.status(200).send({ message: "Tag created !" });}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if (error instanceof Error)
         return res.status(400).send({ messege: error.message });
@@ -52,10 +60,14 @@ class TagController {
   async delete(req: Request, res: Response): Promise<Response> {
     try {
       const { tagId: id } = req.params;
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        await TagService.delete(id);
 
-      await TagService.delete(id);
-
-      return res.status(200).send({ message: "Tag deleted !" });
+        return res.status(200).send({ message: "Tag deleted !" });}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if (error instanceof Error)
         return res.status(400).send({ message: error.message });

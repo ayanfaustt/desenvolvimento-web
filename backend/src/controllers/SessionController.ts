@@ -1,8 +1,6 @@
 import { Response, Request } from "express";
 import { Model } from "sequelize";
-import {
-  refreshSession,
-} from "../database/repositories/sessionRepository";
+import SessionRepository from "../database/repositories/SessionRepository";
 
 import UserServices from "../services/UserServices";
 
@@ -30,7 +28,7 @@ class SessionController {
 
       const id  = user.get("id") as string;
       if(await UserServices.comparePassword(pw, user.get("password") as string)){
-        const loctoken = await refreshSession(id,+st);
+        const loctoken = await SessionRepository.refreshSession(id,+st);
         return res.status(200).send({userId: id, token: loctoken});
       }
 

@@ -3,6 +3,7 @@ import { Response, Request } from "express";
 import { DatabaseError, Model } from "sequelize";
 import { NotFoundError } from "../expcetions/NotFound";
 import { AlreadyExistError } from "../expcetions/AlreadyExistError";
+import SessionRepository from "../database/repositories/SessionRepository";
 
 class DeckController {
     
@@ -14,13 +15,17 @@ class DeckController {
   async get (req: Request, res: Response): Promise<Response<Model>> {
     try {
       const { deckId } = req.params;
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        if(!deckId)
+          throw new Error("Deck ID can not be null");
 
-      if(!deckId)
-        throw new Error("Deck ID can not be null");
+        const deck = await DeckService.get(deckId);
 
-      const deck = await DeckService.get(deckId);
-
-      return res.status(200).send(deck);
+        return res.status(200).send(deck);}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if(error instanceof DatabaseError ) 
         return res.status(500).send({message: error.message});
@@ -43,13 +48,17 @@ class DeckController {
   async list (req: Request, res: Response): Promise<Response<Model[]>> {
     try {
       const { userId } = req.params;
+      const {token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userId, token, sessionType)){
+        if(!userId)
+          throw new Error("User ID can not be null");
 
-      if(!userId)
-        throw new Error("User ID can not be null");
+        const deck = await DeckService.list(userId);
 
-      const deck = await DeckService.list(userId);
-
-      return res.status(200).send(deck);
+        return res.status(200).send(deck);}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if(error instanceof DatabaseError ) 
         return res.status(500).send({message: error.message});
@@ -74,16 +83,20 @@ class DeckController {
     try {
       const { userId } = req.params;
       const { tagId } = req.body;
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        if(!userId)
+          throw new Error("User ID can not be null");
 
-      if(!userId)
-        throw new Error("User ID can not be null");
+        if(!tagId)
+          throw new Error("Tag ID can not be null");
 
-      if(!tagId)
-        throw new Error("Tag ID can not be null");
+        const decks = await DeckService.listByTag(userId, tagId);
 
-      const decks = await DeckService.listByTag(userId, tagId);
-
-      return res.status(200).send(decks);
+        return res.status(200).send(decks);}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if(error instanceof DatabaseError ) 
         return res.status(500).send({message: error.message});
@@ -109,16 +122,20 @@ class DeckController {
     try {
       const { deckId} = req.params;
       const { deckName, tagId } = req.body;
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        if(!deckId)
+          throw new Error("Deck ID can not be null");
 
-      if(!deckId)
-        throw new Error("Deck ID can not be null");
+        if(!deckName)
+          throw new Error("Deck name can not be null");
 
-      if(!deckName)
-        throw new Error("Deck name can not be null");
+        await DeckService.update(deckId, deckName, tagId);
 
-      await DeckService.update(deckId, deckName, tagId);
-
-      return res.status(200).send({message: "Deck updated !"});
+        return res.status(200).send({message: "Deck updated !"});}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if(error instanceof DatabaseError ) 
         return res.status(500).send({message: error.message});
@@ -143,17 +160,20 @@ class DeckController {
   async create (req: Request, res: Response): Promise<Response> {
     try {
       const { userId } = req.params;
-      const { deckName, tagId } = req.body;
+      const { userID , token, sessionType, deckName, tagId} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        if(!userId)
+          throw new Error("User ID can not be null");
 
-      if(!userId)
-        throw new Error("User ID can not be null");
+        if(!deckName)
+          throw new Error("Deck name can not be null");
 
-      if(!deckName)
-        throw new Error("Deck name can not be null");
+        await DeckService.create(userId, deckName, tagId); 
 
-      await DeckService.create(userId, deckName, tagId); 
-
-      return res.status(200).send({message: "Deck created !"});
+        return res.status(200).send({message: "Deck created !"});}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if(error instanceof DatabaseError ) 
         return res.status(500).send({message: error.message});
@@ -177,13 +197,17 @@ class DeckController {
   async delete (req: Request, res: Response): Promise<Response> {
     try {
       const { deckId } = req.params;
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        if(!deckId)
+          throw new Error("Deck ID can not be null");
 
-      if(!deckId)
-        throw new Error("Deck ID can not be null");
+        await DeckService.delete(deckId);
 
-      await DeckService.delete(deckId);
-
-      return res.status(204).send({message: "Deck deleted !"});
+        return res.status(204).send({message: "Deck deleted !"});}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if(error instanceof DatabaseError ) 
         return res.status(500).send({message: error.message});

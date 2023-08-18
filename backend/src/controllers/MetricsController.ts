@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import MetricsService from "../services/MetricsService";
+import SessionRepository from "../database/repositories/SessionRepository";
 
 class MetricsController {
   /**
@@ -11,10 +12,14 @@ class MetricsController {
   async updateDecksMetrics(req: Request, res: Response): Promise<Response> {
     try {
       const { userId: id } = req.params;
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        await MetricsService.incrementDeckReview(id);
 
-      await MetricsService.incrementDeckReview(id);
-
-      return res.status(200).send({ message: "User metrics updated !" });
+        return res.status(200).send({ message: "User metrics updated !" });}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if (error instanceof Error)
         return res.status(400).send({ message: error.message });
@@ -34,10 +39,14 @@ class MetricsController {
   ): Promise<Response> {
     try {
       const { userId: id } = req.params;
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        await MetricsService.incrementSummariesReview(id);
 
-      await MetricsService.incrementSummariesReview(id);
-
-      return res.status(200).send({ message: "User metrics updated !" });
+        return res.status(200).send({ message: "User metrics updated !" });}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if (error instanceof Error)
         return res.status(400).send({ message: error.message });

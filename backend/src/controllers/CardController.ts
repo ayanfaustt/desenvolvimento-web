@@ -3,6 +3,7 @@ import { Response, Request } from "express";
 import { DatabaseError } from "sequelize";
 import { Model } from "sequelize";
 import { NotFoundError } from "../expcetions/NotFound";
+import SessionRepository from "../database/repositories/SessionRepository";
 
 class CardController {
     
@@ -15,13 +16,17 @@ class CardController {
     try {
 			
       const { cardId: id } = req.params;
-
-      if(!id)
-        throw new Error("The card ID can not be null");
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        if(!id)
+          throw new Error("The card ID can not be null");
 				
-      const card = await CardService.get(id);
+        const card = await CardService.get(id);
 
-      return res.status(200).send(card);
+        return res.status(200).send(card);}
+      else{
+        return res.status(489).send();
+      }
     
     } catch (error) {
       if(error instanceof DatabaseError ) return res.status(500).send({message: error.message});
@@ -38,13 +43,17 @@ class CardController {
   async list (req: Request, res: Response): Promise<Response<Model[]>> {
     try {
       const { deckId: id } = req.params;
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        if(!id)
+          throw new Error("The deck ID can not be null");
 
-      if(!id)
-        throw new Error("The deck ID can not be null");
+        const cards = await CardService.list(id);
 
-      const cards = await CardService.list(id);
-
-      return res.status(200).send(cards);
+        return res.status(200).send(cards);}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if(error instanceof DatabaseError ) return res.status(500).send({message: error.message});
 			
@@ -65,17 +74,21 @@ class CardController {
     try {
       const { cardId } = req.params;
       const { cardName, cardContent } = req.body;
-
-      if(!cardId)
-        throw new Error("The deck ID can not be null");
+      const { userID , token, sessionType} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        if(!cardId)
+          throw new Error("The deck ID can not be null");
 		
-      if(!cardName)
-        throw new Error("The card name can not be null");
+        if(!cardName)
+          throw new Error("The card name can not be null");
 			
 			
-      await CardService.update(cardId, cardName, cardContent);
+        await CardService.update(cardId, cardName, cardContent);
 
-      return res.status(200).send({message: "Card updated"});
+        return res.status(200).send({message: "Card updated"});}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if(error instanceof DatabaseError ) return res.status(500).send({message: error.message});
 
@@ -95,17 +108,20 @@ class CardController {
   async create (req: Request, res: Response): Promise<Response> {
     try {
       const { deckId } = req.params;
-      const { cardName, cardContent } = req.body;
-
-      if(!deckId)
-        throw new Error("The deck ID can not be null");
+      const { userID , token, sessionType, cardName, cardContent} = req.body;
+      if(await SessionRepository.checkSession(userID, token, sessionType)){
+        if(!deckId)
+          throw new Error("The deck ID can not be null");
 	
-      if(!cardName)
-        throw new Error("The card name can not be null");
+        if(!cardName)
+          throw new Error("The card name can not be null");
 
-      await CardService.create(deckId, cardName, cardContent); 
+        await CardService.create(deckId, cardName, cardContent); 
 
-      return res.status(200).send({message: "Card created !"});
+        return res.status(200).send({message: "Card created !"});}
+      else{
+        return res.status(489).send();
+      }
     } catch (error) {
       if (error instanceof DatabaseError) return res.status(500).send({messege: error.message});
 

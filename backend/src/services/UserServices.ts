@@ -5,6 +5,7 @@ import MetricRepository from "../database/repositories/MetricRepository";
 import MetricsService from "./MetricsService";
 import { NotFoundError } from "../expcetions/NotFound";
 import { AlreadyExistError } from "../expcetions/AlreadyExistError";
+import BrevoService from "./external/services/BrevoService";
 
 class UserServices {
   private async hashPassword(password: string): Promise<string> {
@@ -145,6 +146,11 @@ class UserServices {
 
   async deleteUser(username: string): Promise<void> {
     await UserRepository.deleteUser(username);
+  }
+
+  async resetPass(email: string){
+    const user = await UserRepository.getAllUserInfoByUserEmail(email);
+    await BrevoService.sendResetPassword(user, UserRepository.genPassword());
   }
 }
 
