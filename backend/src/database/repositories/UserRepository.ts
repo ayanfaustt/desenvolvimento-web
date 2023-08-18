@@ -59,7 +59,7 @@ class UserRepository {
     return userInfo;
   }
 
-  async getAllUserInfoByUserName (username: string): Promise<Model> {
+  async getAllUserInfoByUserName (username: string): Promise<Model | null> {
     const userInfo = await UserModel.findOne({
       where: {
         username: username
@@ -67,20 +67,16 @@ class UserRepository {
       include: [SessionModel, MetricsModel, DecksModel, SummariesModel]
     });
      
-    if (!userInfo) throw new Error("User not found !");
-     
     return userInfo;
   };
 
-  async getAllUserInfoByUserEmail (email: string): Promise<Model> {
+  async getAllUserInfoByUserEmail (email: string): Promise<Model | null> {
     const userInfo = await UserModel.findOne({
       where: {
         email: email
       },
       include: [SessionModel, MetricsModel, DecksModel, SummariesModel]
     });
-        
-    if (!userInfo) throw new Error("User not found !");
         
     return userInfo;
   };

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Model } from "sequelize";
+import { DatabaseError, Model } from "sequelize";
 import UserServices from "../services/UserServices";
 import { MetricComparationModel} from "../services/MetricsService";
 import { createSession } from "../database/repositories/sessionRepository";
@@ -73,12 +73,21 @@ class UserController {
       const { email, password }  = req.body;
       await UserServices.createUser(username, email, password);
 
+      if(!username)
+        throw new Error("Username can not be null");
+
+      if(!email)
+        throw new Error("Email can not be null");
+			
+      if(!password)
+        throw new Error("Password can not be null");
+			
       const userId = (await UserServices.getAllUserInfoByUserName(username)).get("id");
       await createSession(userId as string);
 
       return res.status(200).send({message: "User created !"});
     }catch(error ){
-      if (error instanceof Error) return res.status(400).send({message: error.message});
+      if (error instanceof DatabaseError) return res.status(500).send({message: error.message});
             
       return res.status(400).send({message: error});
     }

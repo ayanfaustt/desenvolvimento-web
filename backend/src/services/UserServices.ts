@@ -18,16 +18,14 @@ class UserServices {
   private async userCheck(username?: string, email?: string): Promise<boolean>{
 
     if(username){
-      const isAlreadyExistByUsername = await UserRepository
-        .getOnlyUserByUsername(username);
+      const isAlreadyExistByUsername = await UserRepository.getAllUserInfoByUserName(username);
 	
       if (isAlreadyExistByUsername) 
         throw new AlreadyExistError("There are an user with this username");
     }
 
     if(email){
-      const isAlreadyExistByEmail = await UserRepository
-        .getAllUserInfoByUserEmail(email);
+      const isAlreadyExistByEmail = await UserRepository.getAllUserInfoByUserEmail(email);
 
       if(isAlreadyExistByEmail)
         throw new AlreadyExistError("There are an user with this email");
@@ -48,7 +46,7 @@ class UserServices {
     password: string,
   ): Promise<void> {
 
-    this.userCheck(username, email);
+    await this.userCheck(username, email);
 
     const hash = await this.hashPassword(password);
     const isUserCreated = await UserRepository.createUser(
