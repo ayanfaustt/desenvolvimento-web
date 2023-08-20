@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PageSummariesContent from "../../components/pageSummarieContent";
-import { ListSummaries } from "../../hooks/useSummarie";
+import { FilterTagSummaries, ListSummaries } from "../../hooks/useSummarie";
 import { useUser } from "../../hooks/useContextUserId";
 
 export default function SummariesPage() {
@@ -8,13 +8,13 @@ export default function SummariesPage() {
 
 	const { userId } = useUser();
 	useEffect(() => {
-		const fetchListSummaries = async () =>{
-			if(14) {
+		const fetchListSummaries = async () => {
+			if (14) {
 				await ListSummaries(14).then((res) => setListSummaries(res.data));
 			};
 		};
 		fetchListSummaries();
-	},[]);
+	}, []);
 
 	const fetchUpdatedListSummaries = async () => {
 		if (userId) {
@@ -22,7 +22,17 @@ export default function SummariesPage() {
 		};
 	};
 
-  return (
-    <PageSummariesContent pageName='Summaries' cardsContent={listSummaries} onItemChanged={fetchUpdatedListSummaries} />
-  );
+	const fetchFilteredSummaries = async (tagId: number | null) => {
+		if (userId) {
+			if (tagId) {
+				await FilterTagSummaries(userId, tagId).then((res) => setListSummaries(res.data)).catch(err => console.log(err));
+			} else if (tagId === null) {
+				await ListSummaries(userId).then((res) => setListSummaries(res.data));
+			}
+		}
+	};
+
+	return (
+		<PageSummariesContent pageName='Summaries' cardsContent={listSummaries} onItemChanged={fetchUpdatedListSummaries} onFilter={fetchFilteredSummaries} />
+	);
 }

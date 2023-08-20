@@ -20,30 +20,37 @@ export default function Cards(props: CardsProps) {
 		props.handleDelete(props.itemId);
 	};
 
+	const handleClickEdit = (event: React.MouseEvent) => {
+		navigation(`${location.pathname}/resume/edit`, {
+			state: {
+				itemId: props.itemId,
+				tagName: props.tag
+			},
+		});
+	};
 
 	const handleCardClick = () => {
 		navigation(`${location.pathname}/resume`, {
 			state: {
-			  itemId: props.itemId,
-			  name: props.name,
+				itemId: props.itemId,
 			},
-		  });
+		});
 	}
 
 	return (
 		<div className='mainCard'>
 			<div className="borderDiv">
-					<button className="insideCard" onClick={handleCardClick}>
-						<div className='name-tag'>
-							<p className='p'>{props.name}</p>
-							<div className='tag'><div className='blackbox' /><p className='p'>{props.tag}</p></div>
-						</div>
-					</button>
+				<button className="insideCard" onClick={handleCardClick}>
+					<div className='name-tag'>
+						<p className='p'>{props.name}</p>
+						<div className='tag'><div className='blackbox' /><p className='p'>{props.tag}</p></div>
+					</div>
+				</button>
 				<div className='icons'>
 					<button className="btn-card" onClick={handleClickDelete}>
 						<FontAwesomeIcon icon={faTrash} />
 					</button>
-					<button className="btn-card" onClick={handleClickDelete}>
+					<button className="btn-card" onClick={handleClickEdit}>
 						<FontAwesomeIcon icon={faPen} />
 					</button>
 				</div>

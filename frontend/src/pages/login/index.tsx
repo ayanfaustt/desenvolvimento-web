@@ -7,7 +7,7 @@ import dashboard from "../../images/dashboard-slide.png";
 import flashcard from "../../images/flashcard-slide.png";
 import summaries from "../../images/summaries-slide.png";
 import studyMaterial from "../../images/study-slide.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../../hooks/useUser";
 import { UserId } from "../../hooks/useUser";
 import { useUser } from "../../hooks/useContextUserId";
@@ -108,8 +108,8 @@ export default function LoginPage() {
           <TextField name='Remember me' />
         </div>
         <div className='forgot-register'>
-          <p className='p'>Forgot your password</p>
-          <p className='p'>New? Register</p>
+          <p className='plink'>Forgot your password</p>
+          <Link to="/register" className='plink'>New? Register</Link>
         </div>
 
         <div className="login">

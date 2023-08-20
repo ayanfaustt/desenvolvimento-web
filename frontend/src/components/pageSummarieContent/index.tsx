@@ -5,6 +5,7 @@ import Cards from "../card";
 import PageNameAndButtons from "../pageNameAndButtons";
 import { Alert, Button, Col, Modal, Row } from "react-bootstrap";
 import { DeleteDeck } from "../../hooks/useFlashcard";
+import { DeleteSummarie } from "../../hooks/useSummarie";
 
 interface CardInfo {
 	id: number;
@@ -18,6 +19,7 @@ interface PageContentProps {
 	pageName: string;
 	cardsContent: CardInfo[];
 	onItemChanged: () => void;
+	onFilter: (tagId: number | null) => void;
 };
 
 export default function PageSummariesContent(props: PageContentProps) {
@@ -31,7 +33,7 @@ export default function PageSummariesContent(props: PageContentProps) {
 	};
 
 	const handleDelete = async () => {
-		await DeleteDeck(deckId).then(() => props.onItemChanged());
+		await DeleteSummarie(deckId).then(() => props.onItemChanged());
 		setShowAlert(true);
 		setTimeout(() => {
 			setShowAlert(false);
@@ -71,7 +73,7 @@ export default function PageSummariesContent(props: PageContentProps) {
 
 			<SideBar />
 			<div className='pageContent'>
-				<PageNameAndButtons name={props.pageName} onItemUpdated={props.onItemChanged} deck={false} summarie={true} />
+				<PageNameAndButtons name={props.pageName} onItemUpdated={props.onItemChanged} onFilter={props.onFilter} deck={false} summarie={true} />
 				<div className='cards'>
 					{props.cardsContent.map((content) => (
 						<Cards name={content.summarie_name} tag={content.tag.tag_name} itemId={content.id} handleDelete={handleVisible} />
