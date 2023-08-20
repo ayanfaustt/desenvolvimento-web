@@ -68,13 +68,13 @@ class UserController {
     * @param {string} username - req.params (string) the username;
     * @param {string} email - req.body (string) the user's email;
     * @param {string} password - req.params (string) the user's password;
+		* @param {string} image - req.body (string) user image reference;
     * @returns A message with status code.
     */
   async createUser (req: Request, res: Response): Promise<Response>{
     try{
       const { username } = req.params;
-      const { email, password }  = req.body;
-      await UserServices.createUser(username, email, password);
+      const { email, password, image }  = req.body;
 
       if(!username)
         throw new Error(UserErrorMessages.USER_USERNAME_NULL);
@@ -84,6 +84,8 @@ class UserController {
 			
       if(!password)
         throw new Error(UserErrorMessages.USER_PASSWORD_NULL);
+
+      await UserServices.createUser(username, email, password, image);
 			
       const userId = (await UserServices.getAllUserInfoByUserName(username)).get("id");
       await createSession(userId as string);
@@ -99,12 +101,13 @@ class UserController {
     * @param {string} username - req.params (string) the username;
     * @param {string} email - req.body (string) the user's email;
     * @param {string} password - req.params (string) the user's password;
+		* @param {string} image - req.body (string) user image reference;
     * @returns A message with status code.
     */
   async updateUser (req: Request, res: Response): Promise<Response> {
     try {
       const { username } = req.params;
-      const { email, password }  = req.body;
+      const { email, password, image }  = req.body;
 
       if(!username)
         throw new Error(UserErrorMessages.USER_USERNAME_NULL);
@@ -115,7 +118,7 @@ class UserController {
       if(!password)
         throw new Error(UserErrorMessages.USER_PASSWORD_NULL);
 
-      await UserServices.updateUser(username, email, password);
+      await UserServices.updateUser(username, email, password, image);
 
       return res.status(200).send({message: "User updated !"});
     } catch (error) {

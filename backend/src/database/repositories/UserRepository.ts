@@ -6,21 +6,23 @@ import { SummariesModel } from "../../models/summaries.model";
 import { UserModel } from "../../models/user.models";
 
 class UserRepository {
-  async createUser (username: string, email: string, password: string): Promise<Model> {
+  async createUser (username: string, email: string, password: string, image?: string): Promise<Model> {
     const isUserCreated = await UserModel.create({
       username: username,
       email: email,
-      password: password
+      password: password,
+      image: image
     });
 
     return isUserCreated;
   };
     
-  async updateUser (username: string, email: string, password: string): Promise<void> {
+  async updateUser (username: string, email: string, password: string, image?: string): Promise<void> {
     await UserModel.create({
       username: username,
       email: email,
-      password: password
+      password: password,
+      image: image
     });
 
   };
