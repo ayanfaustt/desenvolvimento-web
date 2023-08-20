@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
-import { DatabaseError, Model } from "sequelize";
-import UserServices from "../services/UserServices";
-import { MetricComparationModel} from "../services/MetricsService";
+import { Model } from "sequelize";
 import { createSession } from "../database/repositories/sessionRepository";
-import MetricsService from "../services/MetricsService";
-import { NotFoundError } from "../expcetions/NotFound";
-import { AlreadyExistError } from "../expcetions/AlreadyExistError";
+import MetricsService, { MetricComparationModel } from "../services/MetricsService";
+import UserServices from "../services/UserServices";
+import errorHandler from "../expcetions/returnError";
+import { UserErrorMessages } from "../expcetions/messages";
 
 interface IUserWithMetrics{
 	user: Model;
@@ -24,20 +23,15 @@ class UserController {
   async getAllUserInfo (req: Request, res: Response): Promise<Response<Model>> {
     try{
       const { username } = req.params;
-        
+
+      if(!username)
+        throw new Error(UserErrorMessages.USER_USERNAME_NULL);
+
       const user = await UserServices.getAllUserInfoByUserName(username);
             
       return res.status(200).send(user); 
     } catch(error){
-      if (error instanceof DatabaseError) return res.status(500).send({message: error.message});
-            
-      if(error instanceof NotFoundError ) 
-        return res.status(404).send({message: error.message});
-
-      if(error instanceof AlreadyExistError ) 
-        return res.status(409).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
        
   };
@@ -51,6 +45,9 @@ class UserController {
   async getUserWithMetrics (req: Request, res: Response): Promise<Response<IUserWithMetrics>> {
     try{
       const { username } = req.params;
+
+      if(!username)
+        throw new Error(UserErrorMessages.USER_USERNAME_NULL);
         
       const user = await UserServices.getUserAndMetrics(username);
       const metricComparation = await MetricsService.metricsHistory(user.getDataValue("id"));
@@ -61,15 +58,7 @@ class UserController {
       
       return res.status(200).send(result);
     } catch(error){
-      if (error instanceof DatabaseError) return res.status(500).send({message: error.message});
-            
-      if(error instanceof NotFoundError ) 
-        return res.status(404).send({message: error.message});
-
-      if(error instanceof AlreadyExistError ) 
-        return res.status(409).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
        
   };
@@ -88,28 +77,20 @@ class UserController {
       await UserServices.createUser(username, email, password);
 
       if(!username)
-        throw new Error("Username can not be null");
+        throw new Error(UserErrorMessages.USER_USERNAME_NULL);
 
       if(!email)
-        throw new Error("Email can not be null");
+        throw new Error(UserErrorMessages.USER_EMAIL_NULL);
 			
       if(!password)
-        throw new Error("Password can not be null");
+        throw new Error(UserErrorMessages.USER_PASSWORD_NULL);
 			
       const userId = (await UserServices.getAllUserInfoByUserName(username)).get("id");
       await createSession(userId as string);
 
       return res.status(200).send({message: "User created !"});
     }catch(error ){
-      if (error instanceof DatabaseError) return res.status(500).send({message: error.message});
-            
-      if(error instanceof NotFoundError ) 
-        return res.status(404).send({message: error.message});
-
-      if(error instanceof AlreadyExistError ) 
-        return res.status(409).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -125,19 +106,20 @@ class UserController {
       const { username } = req.params;
       const { email, password }  = req.body;
 
+      if(!username)
+        throw new Error(UserErrorMessages.USER_USERNAME_NULL);
+
+      if(!email)
+        throw new Error(UserErrorMessages.USER_EMAIL_NULL);
+		
+      if(!password)
+        throw new Error(UserErrorMessages.USER_PASSWORD_NULL);
+
       await UserServices.updateUser(username, email, password);
 
       return res.status(200).send({message: "User updated !"});
     } catch (error) {
-      if (error instanceof DatabaseError) return res.status(500).send({message: error.message});
-            
-      if(error instanceof NotFoundError ) 
-        return res.status(404).send({message: error.message});
-
-      if(error instanceof AlreadyExistError ) 
-        return res.status(409).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
 
   }
@@ -151,19 +133,14 @@ class UserController {
     try {
       const { username } = req.body;
 
+      if(!username)
+        throw new Error(UserErrorMessages.USER_USERNAME_NULL);
+
       await UserServices.deleteUser(username);
 
       return res.status(200).send({message: "User deleted !"});
     } catch (error) {
-      if (error instanceof DatabaseError) return res.status(500).send({message: error.message});
-            
-      if(error instanceof NotFoundError ) 
-        return res.status(404).send({message: error.message});
-
-      if(error instanceof AlreadyExistError ) 
-        return res.status(409).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 };

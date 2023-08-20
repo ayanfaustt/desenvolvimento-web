@@ -1,8 +1,8 @@
-import CardService from "../services/CardService";
-import { Response, Request } from "express";
-import { DatabaseError } from "sequelize";
+import { Request, Response } from "express";
 import { Model } from "sequelize";
-import { NotFoundError } from "../expcetions/NotFound";
+import { CardErrorMessages, DeckErrorMessages } from "../expcetions/messages";
+import CardService from "../services/CardService";
+import errorHandler from "../expcetions/returnError";
 
 class CardController {
     
@@ -14,19 +14,17 @@ class CardController {
   async get (req: Request, res: Response): Promise<Response<Model>> {
     try {
 			
-      const { cardId: id } = req.params;
+      const { cardId } = req.params;
 
-      if(!id)
-        throw new Error("The card ID can not be null");
+      if(!cardId)
+        throw new Error(CardErrorMessages.CARD_ID_NULL);
 				
-      const card = await CardService.get(id);
+      const card = await CardService.get(cardId);
 
       return res.status(200).send(card);
     
     } catch (error) {
-      if(error instanceof DatabaseError ) return res.status(500).send({message: error.message});
-      
-      return res.status(404).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -37,20 +35,16 @@ class CardController {
     */
   async list (req: Request, res: Response): Promise<Response<Model[]>> {
     try {
-      const { deckId: id } = req.params;
+      const { deckId } = req.params;
 
-      if(!id)
-        throw new Error("The deck ID can not be null");
+      if(!deckId)
+        throw new Error(DeckErrorMessages.DECK_ID_NULL);
 
-      const cards = await CardService.list(id);
+      const cards = await CardService.list(deckId);
 
       return res.status(200).send(cards);
     } catch (error) {
-      if(error instanceof DatabaseError ) return res.status(500).send({message: error.message});
-			
-      if(error instanceof NotFoundError) return res.status(404).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -67,21 +61,17 @@ class CardController {
       const { cardName, cardContent } = req.body;
 
       if(!cardId)
-        throw new Error("The deck ID can not be null");
+        throw new Error(CardErrorMessages.CARD_ID_NULL);
 		
       if(!cardName)
-        throw new Error("The card name can not be null");
+        throw new Error(CardErrorMessages.CARD_NAME_NULL);
 			
 			
       await CardService.update(cardId, cardName, cardContent);
 
       return res.status(200).send({message: "Card updated"});
     } catch (error) {
-      if(error instanceof DatabaseError ) return res.status(500).send({message: error.message});
-
-      if(error instanceof NotFoundError) return res.status(404).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -98,21 +88,16 @@ class CardController {
       const { cardName, cardContent } = req.body;
 
       if(!deckId)
-        throw new Error("The deck ID can not be null");
+        throw new Error(DeckErrorMessages.DECK_ID_NULL);
 	
       if(!cardName)
-        throw new Error("The card name can not be null");
+        throw new Error(CardErrorMessages.CARD_NAME_NULL);
 
       await CardService.create(deckId, cardName, cardContent); 
 
       return res.status(200).send({message: "Card created !"});
     } catch (error) {
-      if (error instanceof DatabaseError) return res.status(500).send({messege: error.message});
-
-      if(error instanceof NotFoundError) return res.status(404).send({message: error.message});
-
-      return res.status(400).send({message: error});
-            
+      return errorHandler(error, res);
     }
   }
 
@@ -126,15 +111,13 @@ class CardController {
       const { cardId } = req.params;
 
       if(!cardId)
-        throw new Error("The card ID can not be null");
+        throw new Error(CardErrorMessages.CARD_ID_NULL);
 
       await CardService.delete(cardId);
 
-      return res.status(200).send({message: "Card deleted !"});
+      return res.status(204).send({message: "Card deleted !"});
     } catch (error) {
-      if (error instanceof DatabaseError) return res.status(500).send({message: error.message});
-            
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 }
