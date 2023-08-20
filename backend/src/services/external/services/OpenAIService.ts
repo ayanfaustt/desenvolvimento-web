@@ -1,4 +1,5 @@
 import { ServiceUnavailableError } from "../../../expcetions/ServiceUnavailableError";
+import { GptErrorMessages } from "../../../expcetions/messages";
 import { gpt as gptClient } from "../clients/openai";
 
 
@@ -110,7 +111,7 @@ class OpenAIService{
       return response;
     }
 
-    throw new ServiceUnavailableError("ChatGPT services are unavailable");
+    throw new ServiceUnavailableError(GptErrorMessages.UNAVAILABLE);
   }
 
   async createSummarieContent(summarieTitle: string): Promise<string>{
@@ -144,7 +145,7 @@ class OpenAIService{
       return response;
     }
 
-    throw new ServiceUnavailableError("ChatGPT services are unavailable");
+    throw new ServiceUnavailableError(GptErrorMessages.UNAVAILABLE);
   }
 
   async createStudyMaterials(materialName: string): Promise<Material[]>{
@@ -178,7 +179,7 @@ class OpenAIService{
       return response;
     }
 
-    throw new ServiceUnavailableError("ChatGPT services are unavailable");
+    throw new ServiceUnavailableError(GptErrorMessages.UNAVAILABLE);
   }
 
 }

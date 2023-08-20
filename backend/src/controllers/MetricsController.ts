@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-
+import { UserErrorMessages } from "../expcetions/messages";
+import errorHandler from "../expcetions/returnError";
 import MetricsService from "../services/MetricsService";
 
 class MetricsController {
@@ -10,16 +11,16 @@ class MetricsController {
 	 */
   async updateDecksMetrics(req: Request, res: Response): Promise<Response> {
     try {
-      const { userId: id } = req.params;
+      const { userId } = req.params;
 
-      await MetricsService.incrementDeckReview(id);
+      if(!userId)
+        throw new Error(UserErrorMessages.USER_ID_NULL);
+
+      await MetricsService.incrementDeckReview(userId);
 
       return res.status(200).send({ message: "User metrics updated !" });
     } catch (error) {
-      if (error instanceof Error)
-        return res.status(400).send({ message: error.message });
-
-      return res.status(400).send({ message: error });
+      return errorHandler(error, res);
     }
   }
 
@@ -33,16 +34,16 @@ class MetricsController {
     res: Response,
   ): Promise<Response> {
     try {
-      const { userId: id } = req.params;
+      const { userId } = req.params;
 
-      await MetricsService.incrementSummariesReview(id);
+      if(!userId)
+        throw new Error(UserErrorMessages.USER_ID_NULL);
+
+      await MetricsService.incrementSummariesReview(userId);
 
       return res.status(200).send({ message: "User metrics updated !" });
     } catch (error) {
-      if (error instanceof Error)
-        return res.status(400).send({ message: error.message });
-
-      return res.status(400).send({ message: error });
+      return errorHandler(error, res);
     }
   }
 }

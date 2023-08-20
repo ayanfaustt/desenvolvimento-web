@@ -1,8 +1,8 @@
+import { Request, Response } from "express";
+import { Model } from "sequelize";
+import { DeckErrorMessages, TagErrorMessages, UserErrorMessages } from "../expcetions/messages";
+import errorHandler from "../expcetions/returnError";
 import DeckService from "../services/DeckService";
-import { Response, Request } from "express";
-import { DatabaseError, Model } from "sequelize";
-import { NotFoundError } from "../expcetions/NotFound";
-import { AlreadyExistError } from "../expcetions/AlreadyExistError";
 
 class DeckController {
     
@@ -16,22 +16,14 @@ class DeckController {
       const { deckId } = req.params;
 
       if(!deckId)
-        throw new Error("Deck ID can not be null");
+        throw new Error(DeckErrorMessages.DECK_ID_NULL);
 
       const deck = await DeckService.get(deckId);
 
       return res.status(200).send(deck);
     } catch (error) {
-      if(error instanceof DatabaseError ) 
-        return res.status(500).send({message: error.message});
+      return errorHandler(error, res);
 
-      if(error instanceof NotFoundError ) 
-        return res.status(404).send({message: error.message});
-
-      if(error instanceof AlreadyExistError ) 
-        return res.status(409).send({message: error.message});
-
-      return res.status(400).send({message: error});
     }
   }
 
@@ -45,22 +37,13 @@ class DeckController {
       const { userId } = req.params;
 
       if(!userId)
-        throw new Error("User ID can not be null");
+        throw new Error(UserErrorMessages.USER_ID_NULL);
 
       const deck = await DeckService.list(userId);
 
       return res.status(200).send(deck);
     } catch (error) {
-      if(error instanceof DatabaseError ) 
-        return res.status(500).send({message: error.message});
-
-      if(error instanceof NotFoundError ) 
-        return res.status(404).send({message: error.message});
-
-      if(error instanceof AlreadyExistError ) 
-        return res.status(409).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -76,25 +59,16 @@ class DeckController {
       const { tagId } = req.query;
 
       if(!userId)
-        throw new Error("User ID can not be null");
+        throw new Error(UserErrorMessages.USER_ID_NULL);
 
       if(!tagId)
-        throw new Error("Tag ID can not be null");
+        throw new Error(TagErrorMessages.TAG_ID_NULL);
 
       const decks = await DeckService.listByTag(userId, tagId.toString());
 
       return res.status(200).send(decks);
     } catch (error) {
-      if(error instanceof DatabaseError ) 
-        return res.status(500).send({message: error.message});
-
-      if(error instanceof NotFoundError ) 
-        return res.status(404).send({message: error.message});
-
-      if(error instanceof AlreadyExistError ) 
-        return res.status(409).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -111,25 +85,16 @@ class DeckController {
       const { deckName, tagId } = req.body;
 
       if(!deckId)
-        throw new Error("Deck ID can not be null");
+        throw new Error(DeckErrorMessages.DECK_ID_NULL);
 
       if(!deckName)
-        throw new Error("Deck name can not be null");
+        throw new Error(DeckErrorMessages.DECK_NAME_NUll);
 
       await DeckService.update(deckId, deckName, tagId);
 
       return res.status(200).send({message: "Deck updated !"});
     } catch (error) {
-      if(error instanceof DatabaseError ) 
-        return res.status(500).send({message: error.message});
-
-      if(error instanceof NotFoundError ) 
-        return res.status(404).send({message: error.message});
-
-      if(error instanceof AlreadyExistError ) 
-        return res.status(409).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -146,25 +111,16 @@ class DeckController {
       const { deckName, tagId } = req.body;
 
       if(!userId)
-        throw new Error("User ID can not be null");
+        throw new Error(UserErrorMessages.USER_ID_NULL);
 
       if(!deckName)
-        throw new Error("Deck name can not be null");
+        throw new Error(DeckErrorMessages.DECK_NAME_NUll);
 
       await DeckService.create(userId, deckName, tagId); 
 
       return res.status(200).send({message: "Deck created !"});
     } catch (error) {
-      if(error instanceof DatabaseError ) 
-        return res.status(500).send({message: error.message});
-
-      if(error instanceof NotFoundError ) 
-        return res.status(404).send({message: error.message});
-
-      if(error instanceof AlreadyExistError ) 
-        return res.status(409).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
             
     }
   }
@@ -179,22 +135,13 @@ class DeckController {
       const { deckId } = req.params;
 
       if(!deckId)
-        throw new Error("Deck ID can not be null");
+        throw new Error(DeckErrorMessages.DECK_ID_NULL);
 
       await DeckService.delete(deckId);
 
       return res.status(204).send({message: "Deck deleted !"});
     } catch (error) {
-      if(error instanceof DatabaseError ) 
-        return res.status(500).send({message: error.message});
-
-      if(error instanceof NotFoundError ) 
-        return res.status(404).send({message: error.message});
-
-      if(error instanceof AlreadyExistError ) 
-        return res.status(409).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 

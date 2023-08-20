@@ -5,13 +5,14 @@ import MetricRepository from "../database/repositories/MetricRepository";
 import MetricsService from "./MetricsService";
 import { NotFoundError } from "../expcetions/NotFound";
 import { AlreadyExistError } from "../expcetions/AlreadyExistError";
+import { UserErrorMessages } from "../expcetions/messages";
 
 class UserServices {
   private async hashPassword(password: string): Promise<string> {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    if (!hashedPassword) throw new Error("Internal error");
+    if (!hashedPassword) throw new Error(UserErrorMessages.USER_PASSWORD);
     return hashedPassword as string;
   }
 
@@ -21,14 +22,14 @@ class UserServices {
       const isAlreadyExistByUsername = await UserRepository.getAllUserInfoByUserName(username);
 	
       if (isAlreadyExistByUsername) 
-        throw new AlreadyExistError("There are an user with this username");
+        throw new AlreadyExistError(UserErrorMessages.USER_USERNAME_USED);
     }
 
     if(email){
       const isAlreadyExistByEmail = await UserRepository.getAllUserInfoByUserEmail(email);
 
       if(isAlreadyExistByEmail)
-        throw new AlreadyExistError("There are an user with this email");
+        throw new AlreadyExistError(UserErrorMessages.USER_EMAIL_USED);
     }
 
     return true;
@@ -84,12 +85,14 @@ class UserServices {
 
   async getUserAndMetrics(username: string): Promise<Model> {
     const userInfo = await UserRepository.getUserAndMetrics(username);
+    if (!userInfo)
+      throw new NotFoundError(UserErrorMessages.USER_NOT_FOUND);
+    
     const metrics = userInfo.getDataValue("metrics") as Model[];
     const result = MetricsService.getCurrentMetrics(metrics);
 
     userInfo.setDataValue("metrics", result);
 
-    if (!userInfo) throw new Error("User not found !");
 
     return userInfo;
   }
@@ -99,7 +102,7 @@ class UserServices {
     const user = await UserRepository.getUserById(userId);
 
     if(!user) 
-      throw new NotFoundError("User not found");
+      throw new NotFoundError(UserErrorMessages.USER_NOT_FOUND);
 
     return user;
   }
@@ -109,7 +112,7 @@ class UserServices {
       username,
     );
 
-    if (!userInfo) throw new Error("User not found !");
+    if (!userInfo) throw new Error(UserErrorMessages.USER_NOT_FOUND);
 
     return userInfo;
   };
@@ -119,7 +122,7 @@ class UserServices {
       email,
     );
 
-    if (!userInfo) throw new Error("User not found !");
+    if (!userInfo) throw new Error(UserErrorMessages.USER_NOT_FOUND);
 
     return userInfo;
   }

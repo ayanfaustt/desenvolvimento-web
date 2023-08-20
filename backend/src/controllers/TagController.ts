@@ -1,6 +1,8 @@
-import { Response, Request } from "express";
+import { Request, Response } from "express";
 import { Model } from "sequelize";
+import { TagErrorMessages, UserErrorMessages } from "../expcetions/messages";
 import TagService from "../services/TagService";
+import errorHandler from "../expcetions/returnError";
 
 class TagController {
   /**
@@ -10,16 +12,16 @@ class TagController {
 	 */
   async list(req: Request, res: Response): Promise<Response<Model[]>> {
     try {
-      const { userId: id } = req.params;
+      const { userId } = req.params;
 
-      const deck = await TagService.list(id);
+      if(!userId)
+        throw new Error(UserErrorMessages.USER_ID_NULL);
+
+      const deck = await TagService.list(userId);
 
       return res.status(200).send(deck);
     } catch (error) {
-      if (error instanceof Error)
-        return res.status(400).send({ message: error.message });
-
-      return res.status(400).send({ message: error });
+      return errorHandler(error, res);
     }
   }
   /**
@@ -30,17 +32,20 @@ class TagController {
 	 */
   async create(req: Request, res: Response): Promise<Response> {
     try {
-      const { userId: id } = req.params;
+      const { userId } = req.params;
       const { tagName } = req.body;
 
-      await TagService.create(id, tagName);
+      if(!userId)
+        throw new Error(UserErrorMessages.USER_ID_NULL);
+
+      if(!tagName)
+        throw new Error(TagErrorMessages.TAG_NAME_NULL);
+
+      await TagService.create(userId, tagName);
 
       return res.status(200).send({ message: "Tag created !" });
     } catch (error) {
-      if (error instanceof Error)
-        return res.status(400).send({ messege: error.message });
-
-      return res.status(400).send({ message: error });
+      return errorHandler(error, res);
     }
   }
 
@@ -51,16 +56,16 @@ class TagController {
 	 */
   async delete(req: Request, res: Response): Promise<Response> {
     try {
-      const { tagId: id } = req.params;
+      const { tagId } = req.params;
 
-      await TagService.delete(id);
+      if(!tagId)
+        throw new Error(TagErrorMessages.TAG_ID_NULL);
+
+      await TagService.delete(tagId);
 
       return res.status(200).send({ message: "Tag deleted !" });
     } catch (error) {
-      if (error instanceof Error)
-        return res.status(400).send({ message: error.message });
-
-      return res.status(400).send({ message: error });
+      return errorHandler(error, res);
     }
   }
 }

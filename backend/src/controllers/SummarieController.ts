@@ -1,6 +1,8 @@
-import SummariesServices from "../services/SummariesServices";
-import { Response, Request } from "express";
+import { Request, Response } from "express";
 import { Model } from "sequelize";
+import { SummarieErrorMessages, TagErrorMessages, UserErrorMessages } from "../expcetions/messages";
+import errorHandler from "../expcetions/returnError";
+import SummariesServices from "../services/SummariesServices";
 
 
 class SummarieController {
@@ -12,15 +14,16 @@ class SummarieController {
     */
   async get (req: Request, res: Response): Promise<Response> {
     try {
-      const { summarieId: id } = req.params;
+      const { summarieId } = req.params;
 
-      const summarie = await SummariesServices.getSummarie(id);
+      if(!summarieId)
+        throw new Error(SummarieErrorMessages.SUMMARIE_ID_NULL);
+
+      const summarie = await SummariesServices.getSummarie(summarieId);
 
       return res.status(200).send(summarie);
     } catch (error) {
-      if(error instanceof Error ) return res.status(400).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -31,15 +34,16 @@ class SummarieController {
     */
   async list (req: Request, res: Response): Promise<Response<Model[]>> {
     try {
-      const { userId: id } = req.params;
+      const { userId } = req.params;
 
-      const summaries = await SummariesServices.listSummaries(id);
+      if(!userId)
+        throw new Error(UserErrorMessages.USER_ID_NULL);
+
+      const summaries = await SummariesServices.listSummaries(userId);
 
       return res.status(200).send(summaries);
     } catch (error) {
-      if (error instanceof Error) return res.status(400).send({messege: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -55,15 +59,17 @@ class SummarieController {
       const { tagId } = req.query;
 
       if(!tagId)
-        throw new Error("Tag ID can not be null");
+        throw new Error(TagErrorMessages.TAG_ID_NULL);
+
+      if(!userId)
+        throw new Error(UserErrorMessages.USER_ID_NULL);
 
       const summaries = await SummariesServices.listSummariesByTag(userId, tagId.toString());
 
       return res.status(200).send(summaries);
     } catch (error) {
-      if(error instanceof Error ) return res.status(500).send({message: error.message});
+      return errorHandler(error, res);
 
-      return res.status(400).send({message: error});
     }
   }
 
@@ -77,16 +83,24 @@ class SummarieController {
     */
   async update (req: Request, res: Response): Promise<Response> {
     try {
-      const {summarieId: id} = req.params;
+      const {summarieId} = req.params;
       const {summarieName, summarieContent, tagId } = req.body;
 
-      await SummariesServices.updateSummarie(id, summarieName, summarieContent, tagId);
+      if(!summarieId)
+        throw new Error(SummarieErrorMessages.SUMMARIE_ID_NULL);
+
+      if(!summarieName)
+        throw new Error(SummarieErrorMessages.SUMMARIE_NAME_NULL);
+
+      if(!summarieContent)
+        throw new Error(SummarieErrorMessages.SUMMARIE_CONTENT_NULL);
+
+      await SummariesServices.updateSummarie(summarieId, summarieName, summarieContent, tagId);
 
       return res.status(200).send({message: "Summarie updated !"});
     } catch (error) {
-      if (error instanceof Error) return res.status(400).send({messege: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
+			
     }
   }
 
@@ -100,17 +114,24 @@ class SummarieController {
     */
   async create (req: Request, res: Response): Promise<Response> {
     try {
-      const { userId: id } = req.params;
+      const { userId } = req.params;
 
       const { summarieName, summarieContent, tagId } = req.body;
 
-      await SummariesServices.createSummarie(id, summarieName, summarieContent, tagId); 
+      if(!userId)
+        throw new Error(UserErrorMessages.USER_ID_NULL);
+
+      if(!summarieName)
+        throw new Error(SummarieErrorMessages.SUMMARIE_NAME_NULL);
+
+      if(!summarieContent)
+        throw new Error(SummarieErrorMessages.SUMMARIE_CONTENT_NULL);
+
+      await SummariesServices.createSummarie(userId, summarieName, summarieContent, tagId); 
 
       return res.status(200).send({message: "Summarie created !"});
     } catch (error) {
-      if (error instanceof Error) return res.status(400).send({messege: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
             
     }
   }
@@ -122,15 +143,17 @@ class SummarieController {
     */
   async delete (req: Request, res: Response): Promise<Response> {
     try {
-      const { summarieId: id } = req.params;
+      const { summarieId } = req.params;
 
-      await SummariesServices.deleteSummarie(id);
+      if(!summarieId)
+        throw new Error(SummarieErrorMessages.SUMMARIE_ID_NULL);
+			
+      await SummariesServices.deleteSummarie(summarieId);
 
-      return res.status(200).send({message: "summarie deleted !"});
+      return res.status(204).send({message: "summarie deleted !"});
     } catch (error) {
-      if (error instanceof Error) return res.status(400).send({message: error.message});
-            
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
+
     }
   }
 
