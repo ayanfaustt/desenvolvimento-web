@@ -45,6 +45,7 @@ class UserServices {
     username: string,
     email: string,
     password: string,
+    image?: string
   ): Promise<void> {
 
     await this.userCheck(username, email);
@@ -54,6 +55,7 @@ class UserServices {
       username,
       email,
       hash,
+      image
     );
 
     const date = new Date();
@@ -70,6 +72,7 @@ class UserServices {
     username: string,
     email: string,
     password: string,
+    image?: string
   ): Promise<void> {
 	
     this.userCheck(username, email);
@@ -79,6 +82,7 @@ class UserServices {
       username,
       email,
       hash,
+      image
     );
 
   }

@@ -27,6 +27,10 @@ export const UserModel = db.define("user", {
   password: {
     type: DataTypes.STRING(100),
     allowNull: false,
+  },
+  image:{
+    type: DataTypes.STRING(255),
+    allowNull: true
   }
 });
 
