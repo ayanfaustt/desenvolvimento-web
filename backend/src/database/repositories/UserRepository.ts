@@ -1,14 +1,8 @@
 import { Model } from "sequelize";
 import { DecksModel } from "../../models/decks.model";
-<<<<<<< HEAD
-import { DatabaseError, ForeignKeyConstraintError, Model, UniqueConstraintError, ValidationError } from "sequelize";
-import { SummariesModel } from "../../models/summaries.model";
-=======
 import { MetricsModel } from "../../models/metrics.model";
-import { SessionModel } from "../../models/session.model";
 import { SummariesModel } from "../../models/summaries.model";
 import { UserModel } from "../../models/user.models";
->>>>>>> b7e0a8365088f3e0338803dfa17a2f08014cc03b
 
 class UserRepository {
   async createUser (username: string, email: string, password: string, image?: string): Promise<Model> {

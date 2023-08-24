@@ -15,18 +15,24 @@ class SessionController {
     try {
       const { username: un , password: pw } = req.body;
       let user;
+			
       if(emailregex.test(un)){
         user =  await UserServices.getAllUserInfoByUserEmail(un as string);
+
       }
       else{
         user = await UserServices.getAllUserInfoByUserName(un as string);
+
       }
 
       const id  = user.get("id") as string;
+
       if(await UserServices.comparePassword(pw, user.get("password") as string)){
         const loctoken = TokenService.generateToken(user.get("username") as string);
         return res.status(200).send({userId: id, token: loctoken});
+
       }
+
       return res.status(401).send({message: "invalid credentials"});
 
     } catch (error) {

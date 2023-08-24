@@ -20,13 +20,13 @@ class TokenService {
     console.log(token);
 
     if (!token) {
-      return res.status(401).send({ message: "Token não fornecido." });
+      return res.status(401).send({ message: "You dont have permission" });
     }
 
     jwt.verify(token.substring(7), secretKey, (err: jwt.VerifyErrors | null) => {
       if (err) {
         console.log(err);
-        return res.status(403).send({ message: "Token inválido." });
+        return res.status(403).send({ message: "vai tomar no cu dimitri" });
       }
       next();
     });
