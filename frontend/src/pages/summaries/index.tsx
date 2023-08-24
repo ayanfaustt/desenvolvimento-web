@@ -9,8 +9,8 @@ export default function SummariesPage() {
 	const { userId } = useUser();
 	useEffect(() => {
 		const fetchListSummaries = async () => {
-			if (14) {
-				await ListSummaries(14).then((res) => setListSummaries(res.data));
+			if (userId) {
+				await ListSummaries(userId).then((res) => setListSummaries(res.data));
 			};
 		};
 		fetchListSummaries();

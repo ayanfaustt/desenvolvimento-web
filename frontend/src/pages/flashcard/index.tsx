@@ -10,8 +10,8 @@ export default function FlashcardPage() {
 
 	useEffect(() => {
 		const fetchListDecks = async () => {
-			if (14) {
-				await ListDecks(14).then((res) => setListFlashcards(res.data));
+			if (userId) {
+				await ListDecks(userId).then((res) => setListFlashcards(res.data));
 			};
 		};
 		fetchListDecks();

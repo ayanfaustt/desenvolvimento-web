@@ -1,9 +1,10 @@
-import { Response, Request } from "express";
-import OpenAIService, { Material } from "../services/external/services/OpenAIService";
-import { ServiceUnavailableError } from "../expcetions/ServiceUnavailableError";
-import { DatabaseError, Model } from "sequelize";
-import CustomRequest from "../services/interfaces/ICustomRequest";
+import { Request, Response } from "express";
+import { Model } from "sequelize";
 import FavoriteRepository from "../database/repositories/FavoriteRepository";
+import { CardErrorMessages, FavoriteErrorMessages, MaterialErrorMessages, SummarieErrorMessages, UserErrorMessages } from "../expcetions/messages";
+import OpenAIService, { Material } from "../services/external/services/OpenAIService";
+import CustomRequest from "../services/interfaces/ICustomRequest";
+import errorHandler from "../expcetions/returnError";
 
 class OpenAIController {
 	  
@@ -17,7 +18,7 @@ class OpenAIController {
       const { cardTitle } = req.body;
 
       if(!cardTitle)
-        throw new Error("Card title can not be null");
+        throw new Error(CardErrorMessages.CARD_NAME_NULL);
 
       cardTitle.replace("?", "");
 
@@ -25,13 +26,7 @@ class OpenAIController {
 			
       return res.status(200).send({response: content});
     } catch (error) {
-      if(error instanceof ServiceUnavailableError)
-        return res.status(503).send({message: error.message});
-		
-      if(error instanceof Error)
-      	return res.status(400).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -45,7 +40,7 @@ class OpenAIController {
       const { summarieTitle } = req.body;
 
       if(!summarieTitle)
-        throw new Error("Card title can not be null");
+        throw new Error(SummarieErrorMessages.SUMMARIE_NAME_NULL);
 
       summarieTitle.replace("?", "");
 
@@ -53,13 +48,7 @@ class OpenAIController {
 			
       return res.status(200).send({content});
     } catch (error) {
-      if(error instanceof ServiceUnavailableError)
-        return res.status(503).send({message: error.message});
-		
-      if(error instanceof Error)
-      	return res.status(400).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -73,19 +62,13 @@ class OpenAIController {
       const {material} = req.body;
 
       if(!material)
-        throw new Error("Material can not be null");
+        throw new Error(MaterialErrorMessages.MATERIAL_NULL);
 
       const content = await OpenAIService.createStudyMaterials(material);
 
       return res.status(200).send({response: content});
     } catch (error) {
-      if(error instanceof ServiceUnavailableError)
-        return res.status(503).send({message: error.message});
-
-      if(error instanceof Error)
-      	return res.status(400).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -99,35 +82,29 @@ class OpenAIController {
       const { favorite } = req.body;
 
       if(!favorite)
-        throw new Error("Favorite can not be null");
+        throw new Error(FavoriteErrorMessages.FAVORITE_NULL);
 
       if(!favorite.name)
-        throw new Error("Favorite Name can not be null");
+        throw new Error(FavoriteErrorMessages.FAVORITE_NAME_NULL);
 
       if(!favorite.type)
-        throw new Error("Favorite Type can not be null");
+        throw new Error(FavoriteErrorMessages.FAVORITE_TYPE_NULL);
 
       if(!favorite.author)
-        throw new Error("Favorite Author can not be null");
+        throw new Error(FavoriteErrorMessages.FAVORITE_AUTHOR_NULL);
 
       if(!favorite.description)
-        throw new Error("Favorite Description can not be null");
+        throw new Error(FavoriteErrorMessages.FAVORITE_DESCRIPTION_NULL);
 
       if(!favorite.userId)
-        throw new Error("Favorite user ID can not be null");
+        throw new Error(UserErrorMessages.USER_ID_NULL);
 			
       await FavoriteRepository.create(favorite);
 
       return res.status(200).send({message: "done"});
 
     } catch (error) {
-      if(error instanceof DatabaseError)
-        return res.status(500).send({message: error.message});
-
-      if(error instanceof Error)
-      	return res.status(400).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -141,17 +118,14 @@ class OpenAIController {
       const { favoriteId } = req.params;
 
       if(!favoriteId)
-        throw new Error("Favorite can not be null");
+        throw new Error(FavoriteErrorMessages.FAVORITE_ID_NULL);
 
       await FavoriteRepository.delete(favoriteId);
 
-      return res.status(200).send({message: "done"});
+      return res.status(204).send({message: "done"});
 
     } catch (error) {
-      if(error instanceof DatabaseError)
-        return res.status(500).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 
@@ -165,20 +139,14 @@ class OpenAIController {
       const { userId } = req.params;
 
       if(!userId)
-        throw new Error("User ID can not be null");
+        throw new Error(UserErrorMessages.USER_ID_NULL);
 
       const favorites = await FavoriteRepository.list(userId);
 
       return res.status(200).send(favorites);
 			
     } catch (error) {
-      if(error instanceof DatabaseError)
-        return res.status(500).send({message: error.message});
-
-      if(error instanceof Error)
-      	return res.status(400).send({message: error.message});
-
-      return res.status(400).send({message: error});
+      return errorHandler(error, res);
     }
   }
 	

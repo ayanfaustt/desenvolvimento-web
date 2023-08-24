@@ -2,6 +2,7 @@ import { Model } from "sequelize/types/model";
 import DeckRepository from "../database/repositories/DeckRepository";
 import { NotFoundError } from "../expcetions/NotFound";
 import UserServices from "./UserServices";
+import { DeckErrorMessages } from "../expcetions/messages";
 
 
 class DeckService {
@@ -16,7 +17,7 @@ class DeckService {
     const deck = await DeckRepository.get(deckId);
 
     if(!deck)
-      throw new NotFoundError("Deck not Found !");
+      throw new NotFoundError(DeckErrorMessages.DECK_NOT_FOUND);
 		
     return deck;
   }

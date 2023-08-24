@@ -2,6 +2,7 @@ import { Model } from "sequelize";
 import SummarieRepository from "../database/repositories/SummarieRepository";
 import UserServices from "./UserServices";
 import { NotFoundError } from "../expcetions/NotFound";
+import { SummarieErrorMessages } from "../expcetions/messages";
 
 class SummariesServices {
  
@@ -56,7 +57,7 @@ class SummariesServices {
     const summarie = await SummarieRepository.getSummarie(summarieId);
 
     if (!summarie) 
-      throw new NotFoundError("Summarie not found !");
+      throw new NotFoundError(SummarieErrorMessages.NOT_FOUND);
 
     return summarie;
   }

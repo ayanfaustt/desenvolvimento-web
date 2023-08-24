@@ -59,7 +59,7 @@ export default function RegisterPage(/*props: RegisterPageProps*/) {
       setIsLoading(true);
       await CreateUser(userData.username, data);
       setIsLoading(false);
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const newErrors: FormValues = {

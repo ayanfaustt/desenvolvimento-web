@@ -2,6 +2,7 @@ import { Model } from "sequelize";
 import CardRepository from "../database/repositories/CardRepository";
 import DeckService from "./DeckService";
 import { NotFoundError } from "../expcetions/NotFound";
+import { CardErrorMessages } from "../expcetions/messages";
 
 class CardServices{
 
@@ -22,7 +23,7 @@ class CardServices{
     const card = await CardRepository.get(cardId);
 
     if(!card)
-      throw new NotFoundError("Card not found !");
+      throw new NotFoundError(CardErrorMessages.NOT_FOUND);
   
     return card;
 

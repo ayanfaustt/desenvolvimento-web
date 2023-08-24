@@ -1,59 +1,44 @@
-import { UserModel } from "../../models/user.models";
-import { MetricsModel } from "../../models/metrics.model";
+import { Model } from "sequelize";
 import { DecksModel } from "../../models/decks.model";
+<<<<<<< HEAD
 import { DatabaseError, ForeignKeyConstraintError, Model, UniqueConstraintError, ValidationError } from "sequelize";
 import { SummariesModel } from "../../models/summaries.model";
+=======
+import { MetricsModel } from "../../models/metrics.model";
+import { SessionModel } from "../../models/session.model";
+import { SummariesModel } from "../../models/summaries.model";
+import { UserModel } from "../../models/user.models";
+>>>>>>> b7e0a8365088f3e0338803dfa17a2f08014cc03b
 
 class UserRepository {
-  async createUser (username: string, email: string, password: string): Promise<Model> {
-    try {
-      const isUserCreated = await UserModel.create({
-        username: username,
-        email: email,
-        password: password
-      });
-
-      if (!isUserCreated) throw new Error("User not created !");
-
-      return isUserCreated;
-    } catch (error) {
-      if (error instanceof ValidationError){
-        console.log(error.message);
-        throw new Error(`Validation Error: ${error.errors[0].message}`);
-      } else if (error instanceof UniqueConstraintError){
-        throw new Error(error.errors[0].message);
-      } else if (error instanceof ForeignKeyConstraintError){
-        throw new Error(`Foreing Key Error: ${error.message}`);
-      } else if (error instanceof DatabaseError) {
-        throw new Error(`Internal Error: ${error.message}`);
-      } else {
-
-        throw new Error(`Internal Error: ${error}`);
-      }
-    }
-  };
-    
-  async updateUser (username: string, email: string, password: string): Promise<void> {
-
-    const isUserUpdated = await UserModel.create({
+  async createUser (username: string, email: string, password: string, image?: string): Promise<Model> {
+    const isUserCreated = await UserModel.create({
       username: username,
       email: email,
-      password: password
+      password: password,
+      image: image
     });
-        
-    if (!isUserUpdated) throw new Error("User not created !");
+
+    return isUserCreated;
+  };
+    
+  async updateUser (username: string, email: string, password: string, image?: string): Promise<void> {
+    await UserModel.create({
+      username: username,
+      email: email,
+      password: password,
+      image: image
+    });
 
   };
 
-  async getUserAndMetrics (username: string): Promise<Model> {
+  async getUserAndMetrics (username: string): Promise<Model | null> {
     const userInfo = await UserModel.findOne({
       where: {
         username: username
       },
       include: [MetricsModel]
     });
-     
-    if (!userInfo) throw new Error("User not found !");
      
     return userInfo;
   }
