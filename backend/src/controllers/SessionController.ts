@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { Model } from "sequelize";
 import UserServices from "../services/UserServices";
-import TokenRepository from "../database/repositories/TokenRepository";
+import TokenService from "../services/TokenService";
 
 class SessionController {
   /**
@@ -24,7 +24,7 @@ class SessionController {
 
       const id  = user.get("id") as string;
       if(await UserServices.comparePassword(pw, user.get("password") as string)){
-        const loctoken = TokenRepository.generateToken(user.get("username") as string);
+        const loctoken = TokenService.generateToken(user.get("username") as string);
         return res.status(200).send({userId: id, token: loctoken});
       }
       return res.status(401).send({message: "invalid credentials"});
@@ -37,7 +37,7 @@ class SessionController {
   }
 
   verifySession(req: Request, res: Response, next: NextFunction){
-    return TokenRepository.verifyToken(req,res,next);
+    return TokenService.verifyToken(req,res,next);
   }
 };
 
