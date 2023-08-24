@@ -5,7 +5,6 @@ import { DecksModel } from "./decks.model";
 import { SummariesModel } from "./summaries.model";
 import { TagsModel } from "./tags.model";
 import { FavoriteModel } from "./favorite.model";
-import { SessionModel } from "./session.model";
 
 export const UserModel = db.define("user", {
   id: {
@@ -41,9 +40,6 @@ FavoriteModel.belongsTo(UserModel);
 
 UserModel.hasMany(TagsModel);
 TagsModel.belongsTo(UserModel);
-
-UserModel.hasMany(SessionModel);
-SessionModel.belongsTo(UserModel);
 
 UserModel.hasMany(MetricsModel);
 MetricsModel.belongsTo(UserModel);

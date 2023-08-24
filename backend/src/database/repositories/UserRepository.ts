@@ -3,7 +3,6 @@ import { MetricsModel } from "../../models/metrics.model";
 import { DecksModel } from "../../models/decks.model";
 import { DatabaseError, ForeignKeyConstraintError, Model, UniqueConstraintError, ValidationError } from "sequelize";
 import { SummariesModel } from "../../models/summaries.model";
-import { SessionModel } from "../../models/session.model";
 
 class UserRepository {
   async createUser (username: string, email: string, password: string): Promise<Model> {
@@ -64,7 +63,7 @@ class UserRepository {
       where: {
         username: username
       },
-      include: [SessionModel, MetricsModel, DecksModel, SummariesModel]
+      include: [ MetricsModel, DecksModel, SummariesModel]
     });
      
     return userInfo;
@@ -75,7 +74,7 @@ class UserRepository {
       where: {
         email: email
       },
-      include: [SessionModel, MetricsModel, DecksModel, SummariesModel]
+      include: [ MetricsModel, DecksModel, SummariesModel]
     });
         
     return userInfo;

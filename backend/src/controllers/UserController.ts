@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { DatabaseError, Model } from "sequelize";
 import UserServices from "../services/UserServices";
 import { MetricComparationModel} from "../services/MetricsService";
-import { createSession } from "../database/repositories/sessionRepository";
 import MetricsService from "../services/MetricsService";
 import { NotFoundError } from "../expcetions/NotFound";
 import { AlreadyExistError } from "../expcetions/AlreadyExistError";
@@ -95,9 +94,6 @@ class UserController {
 			
       if(!password)
         throw new Error("Password can not be null");
-			
-      const userId = (await UserServices.getAllUserInfoByUserName(username)).get("id");
-      await createSession(userId as string);
 
       return res.status(200).send({message: "User created !"});
     }catch(error ){
