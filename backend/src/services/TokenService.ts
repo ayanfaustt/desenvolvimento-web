@@ -26,7 +26,7 @@ class TokenService {
     jwt.verify(token.substring(7), secretKey, (err: jwt.VerifyErrors | null) => {
       if (err) {
         console.log(err);
-        return res.status(403).send({ message: "vai tomar no cu dimitri" });
+        return res.status(401).send({ message: "You dont have permission" });
       }
       next();
     });
