@@ -9,6 +9,7 @@ interface CardsProps {
 	itemId: number;
 	name: string;
 	tag: string;
+	isFlashCard: boolean;
 }
 
 export default function Cards(props: CardsProps) {
@@ -30,11 +31,19 @@ export default function Cards(props: CardsProps) {
 	};
 
 	const handleCardClick = () => {
-		navigation(`${location.pathname}/resume`, {
-			state: {
-				itemId: props.itemId,
-			},
-		});
+		if (!props.isFlashCard) {
+			navigation(`${location.pathname}/resume`, {
+				state: {
+					itemId: props.itemId,
+				},
+			});
+		} else {
+			navigation(`${location.pathname}/cards`, {
+				state: {
+					itemId: props.itemId,
+				},
+			});
+		}
 	}
 
 	return (

@@ -3,17 +3,19 @@ import SideBar from "../../components/sidebar";
 import "./styles.css";
 import { useLocation } from "react-router-dom";
 import { ListSummarie } from "../../hooks/useSummarie";
+import { ListCards } from "../../hooks/useFlashcard";
 
-export default function SummariesInsidePage() {
+export default function CardsInsidePage() {
 	const location = useLocation();
 	const { itemId } = location.state;
-	const [resumeContent, setResumeContent] = useState({ summarieName: "", summarieContent: "" });
+	const [cardContent, setCardContent] = useState({ cardName: "", cardContent: "" });
 
 	useEffect(() => {
 		const fetchResumeContent = async () => {
 			try {
-				await ListSummarie(itemId).then((res) => {
-					setResumeContent({ summarieName: res.data.summarie_name, summarieContent: res.data.summarie_content })
+				await ListCards(itemId).then((res) => {
+					console.log(res)
+					// setCardContent({ summarieName: res.data.summarie_name, summarieContent: res.data.summarie_content })
 				});
 			} catch (err) {
 				console.log(err);
@@ -27,8 +29,8 @@ export default function SummariesInsidePage() {
 		<main className="resume">
 			<SideBar />
 			<div className="resume-content">
-				<h1>{resumeContent.summarieName}</h1>
-				<p>{resumeContent.summarieContent}</p>
+				{/* <h1>{cardContent.summarieName}</h1> */}
+				{/* <p>{cardContent.summarieContent}</p> */}
 			</div>
 		</main>
 	);
