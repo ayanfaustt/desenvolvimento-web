@@ -11,6 +11,7 @@ import SummariesPage from "../pages/summaries";
 import StudyPage from "../pages/study";
 import SummariesInsidePage from "../pages/summaries/pageInside";
 import EditSummarie from "../pages/summaries/editSummariePage";
+import CardsInsidePage from "../pages/flashcard/pageInside";
 
 export const routes = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ export const routes = createBrowserRouter([
   {
     path: "/flashcard",
     element: <FlashcardPage />
+  },
+  {
+    path: "/flashcard/cards",
+    element: <CardsInsidePage />
   },
   {
     path: "/summaries",

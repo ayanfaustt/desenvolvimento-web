@@ -76,7 +76,7 @@ export default function PageFlashcardContent(props: PageContentProps) {
 				<PageNameAndButtons name={props.pageName} onItemUpdated={props.onItemChanged} onFilter={props.onFilter} deck={true} summarie={false}/>
 				<div className='cards'>
 					{props.cardsContent.map((content) => (
-							<Cards name={content.deck_name} tag={content.tag.tag_name} itemId={content.id} handleDelete={handleVisible} />
+							<Cards name={content.deck_name} tag={content.tag.tag_name} itemId={content.id} handleDelete={handleVisible} isFlashCard={true}/>
 					)
 					)}
 				</div>

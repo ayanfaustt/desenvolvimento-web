@@ -76,7 +76,7 @@ export default function PageSummariesContent(props: PageContentProps) {
 				<PageNameAndButtons name={props.pageName} onItemUpdated={props.onItemChanged} onFilter={props.onFilter} deck={false} summarie={true} />
 				<div className='cards'>
 					{props.cardsContent.map((content) => (
-						<Cards name={content.summarie_name} tag={content.tag.tag_name} itemId={content.id} handleDelete={handleVisible} />
+						<Cards name={content.summarie_name} tag={content.tag.tag_name} itemId={content.id} handleDelete={handleVisible} isFlashCard={false}/>
 					)
 					)}
 				</div>

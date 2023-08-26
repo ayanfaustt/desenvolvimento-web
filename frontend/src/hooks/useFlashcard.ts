@@ -24,3 +24,13 @@ export const FilterTagDecks = (userId: number, tagId: number) => {
 	const url = `http://localhost:8000/decks/listByTag/${userId}?tagId=${tagId}`;
 	return axios.get(url);
 };
+
+export const ListCards = (deckId: number) => {
+	const url = `http://localhost:8000/cards/list/${deckId}`;
+	return axios.get(url);
+};
+
+export const CreateCard = (deckId: string, data: object) => {
+	const url = `http://localhost:8000/cards/create/${deckId}`;
+	return axios.post(url, data);
+};
