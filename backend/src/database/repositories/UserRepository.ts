@@ -1,7 +1,6 @@
 import { Model } from "sequelize";
 import { DecksModel } from "../../models/decks.model";
 import { MetricsModel } from "../../models/metrics.model";
-import { SessionModel } from "../../models/session.model";
 import { SummariesModel } from "../../models/summaries.model";
 import { UserModel } from "../../models/user.models";
 
@@ -43,7 +42,7 @@ class UserRepository {
       where: {
         username: username
       },
-      include: [SessionModel, MetricsModel, DecksModel, SummariesModel]
+      include: [ MetricsModel, DecksModel, SummariesModel]
     });
      
     return userInfo;
@@ -54,7 +53,7 @@ class UserRepository {
       where: {
         email: email
       },
-      include: [SessionModel, MetricsModel, DecksModel, SummariesModel]
+      include: [ MetricsModel, DecksModel, SummariesModel]
     });
         
     return userInfo;

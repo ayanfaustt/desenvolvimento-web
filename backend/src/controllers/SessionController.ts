@@ -1,37 +1,36 @@
-import { Response, Request } from "express";
+import { Response, Request, NextFunction } from "express";
 import { Model } from "sequelize";
-import {
-  refreshSession,
-} from "../database/repositories/sessionRepository";
-
 import UserServices from "../services/UserServices";
+import TokenService from "../services/TokenService";
 
 class SessionController {
-
-    
   /**
     * @description User's login.
     * @param {string} username - req.body (string) the username;
     * @param {string} password - req.body (string) the user password;
-    * @param {string} session_type - req.body (string) the type of login session (web or mobile);
     * @returns A message with status code.
     */
   async login (req: Request, res: Response): Promise<Response<Model>> {
     const emailregex = /^\S+@\S+\.\S+$/;
     try {
-      const { username: un , password: pw, session_type: st} = req.body;
+      const { username: un , password: pw } = req.body;
       let user;
+			
       if(emailregex.test(un)){
         user =  await UserServices.getAllUserInfoByUserEmail(un as string);
+
       }
       else{
         user = await UserServices.getAllUserInfoByUserName(un as string);
+
       }
 
       const id  = user.get("id") as string;
+
       if(await UserServices.comparePassword(pw, user.get("password") as string)){
-        const loctoken = await refreshSession(id,+st);
+        const loctoken = TokenService.generateToken(user.get("username") as string);
         return res.status(200).send({userId: id, token: loctoken});
+
       }
 
       return res.status(401).send({message: "invalid credentials"});
@@ -41,6 +40,10 @@ class SessionController {
 
       return res.status(400).send({message: error});
     }
+  }
+
+  verifySession(req: Request, res: Response, next: NextFunction){
+    return TokenService.verifyToken(req,res,next);
   }
 };
 

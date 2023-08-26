@@ -8,56 +8,57 @@ import SessionController from "./controllers/SessionController";
 import MetricsController from "./controllers/MetricsController";
 import userController from "./controllers/UserController";
 import OpenAIController from "./controllers/OpenAIController";
+
 // import StudyMaterialController from "./controllers/StudyMaterialController";
 
 export const router = express.Router();
 
 // user
 
-router.get("/user/:username", UserController.getAllUserInfo);
-router.get("/user/metrics/:username", userController.getUserWithMetrics);
-router.post("/user/create/:username", UserController.createUser);
-router.post("/user/update/:userId", UserController.updateUser);
+router.get("/user/:username",SessionController.verifySession, UserController.getAllUserInfo);
+router.get("/user/metrics/:username",SessionController.verifySession, userController.getUserWithMetrics);
+router.post("/user/create/:username",SessionController.verifySession, UserController.createUser);
+router.post("/user/update/:userId",SessionController.verifySession, UserController.updateUser);
 
 // session
 router.post("/session/login", SessionController.login);
 
 //metrics
-router.post("/metrics/update/decks/:userId", MetricsController.updateDecksMetrics);
-router.post("/metrics/update/summaries/:userId", MetricsController.updatedSummariesMetrics);
+router.post("/metrics/update/decks/:userId",SessionController.verifySession, MetricsController.updateDecksMetrics);
+router.post("/metrics/update/summaries/:userId",SessionController.verifySession, MetricsController.updatedSummariesMetrics);
 
 //summaries
-router.get("/summaries/:summarieId", SummarieController.get);
-router.get("/summaries/list/:userId", SummarieController.list);
-router.get("/summaries/listByTag/:userId", SummarieController.listByTag);
-router.put("/summaries/update/:summarieId", SummarieController.update);
-router.post("/summaries/create/:userId", SummarieController.create);
-router.delete("/summaries/delete/:summarieId", SummarieController.delete);
+router.get("/summaries/:summarieId",SessionController.verifySession, SummarieController.get);
+router.get("/summaries/list/:userId",SessionController.verifySession, SummarieController.list);
+router.get("/summaries/listByTag/:userId",SessionController.verifySession, SummarieController.listByTag);
+router.put("/summaries/update/:summarieId",SessionController.verifySession, SummarieController.update);
+router.post("/summaries/create/:userId",SessionController.verifySession, SummarieController.create);
+router.delete("/summaries/delete/:summarieId",SessionController.verifySession, SummarieController.delete);
 
 //decks
-router.get("/decks/:deckId", DeckController.get);
-router.get("/decks/list/:userId", DeckController.list);
-router.get("/decks/listByTag/:userId", DeckController.listByTag);
-router.post("/decks/create/:userId", DeckController.create);
-router.put("/decks/update/:deckId", DeckController.update);
-router.delete("/decks/delete/:deckId", DeckController.delete);
+router.get("/decks/:deckId",SessionController.verifySession, DeckController.get);
+router.get("/decks/list/:userId",SessionController.verifySession, DeckController.list);
+router.get("/decks/listByTag/:userId",SessionController.verifySession, DeckController.listByTag);
+router.post("/decks/create/:userId",SessionController.verifySession, DeckController.create);
+router.put("/decks/update/:deckId",SessionController.verifySession, DeckController.update);
+router.delete("/decks/delete/:deckId",SessionController.verifySession, DeckController.delete);
 
 //cards
-router.get("/cards/:cardId", CardController.get);
-router.get("/cards/list/:deckId", CardController.list);
-router.post("/cards/create/:deckId", CardController.create);
-router.put("/cards/update/:cardId", CardController.update);
-router.delete("/cards/delete/:cardId", CardController.delete);
+router.get("/cards/:cardId",SessionController.verifySession, CardController.get);
+router.get("/cards/list/:deckId",SessionController.verifySession, CardController.list);
+router.post("/cards/create/:deckId",SessionController.verifySession, CardController.create);
+router.put("/cards/update/:cardId",SessionController.verifySession, CardController.update);
+router.delete("/cards/delete/:cardId",SessionController.verifySession, CardController.delete);
 
 //Tags
-router.get("/tags/list/:userId", TagController.list);
-router.post("/tags/create/:userId", TagController.create);
-router.delete("/tags/delete/:tagId", TagController.delete);
+router.get("/tags/list/:userId",SessionController.verifySession, TagController.list);
+router.post("/tags/create/:userId",SessionController.verifySession, TagController.create);
+router.delete("/tags/delete/:tagId",SessionController.verifySession, TagController.delete);
 
 //OpenAi
-router.post("/openai/create/card", OpenAIController.createCard);
-router.post("/openai/create/summarie", OpenAIController.createSummarie);
-router.post("/openai/create/materials", OpenAIController.createMaterial);
-router.post("/openai/favorite/create", OpenAIController.favorite);
-router.get("/openai/favorite/list/:userId", OpenAIController.list);
-router.delete("/openai/favorite/delete/:favoriteId", OpenAIController.removeFavorite);
+router.post("/openai/create/card",SessionController.verifySession, OpenAIController.createCard);
+router.post("/openai/create/summarie",SessionController.verifySession, OpenAIController.createSummarie);
+router.post("/openai/create/materials",SessionController.verifySession, OpenAIController.createMaterial);
+router.post("/openai/favorite/create",SessionController.verifySession, OpenAIController.favorite);
+router.get("/openai/favorite/list/:userId",SessionController.verifySession, OpenAIController.list);
+router.delete("/openai/favorite/delete/:favoriteId",SessionController.verifySession, OpenAIController.removeFavorite);

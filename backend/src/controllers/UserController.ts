@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { Model } from "sequelize";
-import { createSession } from "../database/repositories/sessionRepository";
 import MetricsService, { MetricComparationModel } from "../services/MetricsService";
 import UserServices from "../services/UserServices";
 import errorHandler from "../expcetions/returnError";
@@ -86,9 +85,6 @@ class UserController {
         throw new Error(UserErrorMessages.USER_PASSWORD_NULL);
 
       await UserServices.createUser(username, email, password, image);
-			
-      const userId = (await UserServices.getAllUserInfoByUserName(username)).get("id");
-      await createSession(userId as string);
 
       return res.status(200).send({message: "User created !"});
     }catch(error ){
