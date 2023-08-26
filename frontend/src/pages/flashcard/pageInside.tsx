@@ -4,18 +4,24 @@ import "./styles.css";
 import { useLocation } from "react-router-dom";
 import { ListSummarie } from "../../hooks/useSummarie";
 import { ListCards } from "../../hooks/useFlashcard";
+import FlashcardList from "../../components/flashcard";
+
+interface Card {
+	card_content: string;
+	card_name: string;
+}
 
 export default function CardsInsidePage() {
 	const location = useLocation();
 	const { itemId } = location.state;
-	const [cardContent, setCardContent] = useState({ cardName: "", cardContent: "" });
+	const [cardContent, setCardContent] = useState([]);
 
 	useEffect(() => {
 		const fetchResumeContent = async () => {
 			try {
 				await ListCards(itemId).then((res) => {
-					console.log(res)
-					// setCardContent({ summarieName: res.data.summarie_name, summarieContent: res.data.summarie_content })
+					console.log(res.data)
+					setCardContent(res.data)
 				});
 			} catch (err) {
 				console.log(err);
@@ -24,13 +30,13 @@ export default function CardsInsidePage() {
 		fetchResumeContent();
 	}, []);
 
-
 	return (
-		<main className="resume">
+		<main className="flashcard-main">
 			<SideBar />
-			<div className="resume-content">
-				{/* <h1>{cardContent.summarieName}</h1> */}
-				{/* <p>{cardContent.summarieContent}</p> */}
+			<div className="card-grid">
+				{cardContent.map((flashcard: Card) => {
+					return <FlashcardList card_name={flashcard.card_name} card_content={flashcard.card_content}  />
+				})}
 			</div>
 		</main>
 	);
