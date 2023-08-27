@@ -14,10 +14,9 @@ import OpenAIController from "./controllers/OpenAIController";
 export const router = express.Router();
 
 // user
-
 router.get("/user/:username",SessionController.verifySession, UserController.getAllUserInfo);
 router.get("/user/metrics/:username",SessionController.verifySession, userController.getUserWithMetrics);
-router.post("/user/create/:username",SessionController.verifySession, UserController.createUser);
+router.post("/user/create/:username", UserController.createUser);
 router.post("/user/update/:userId",SessionController.verifySession, UserController.updateUser);
 
 // session
