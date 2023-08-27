@@ -26,10 +26,11 @@ class SessionController {
       }
 
       const id  = user.get("id") as string;
+      const username = user.get("username") as string;
 
       if(await UserServices.comparePassword(pw, user.get("password") as string)){
         const loctoken = TokenService.generateToken(user.get("username") as string);
-        return res.status(200).send({userId: id, token: loctoken});
+        return res.status(200).send({userId: id, username: username, token: loctoken});
 
       }
 
