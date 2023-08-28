@@ -3,8 +3,19 @@ import { DecksModel } from "../../models/decks.model";
 import { MetricsModel } from "../../models/metrics.model";
 import { SummariesModel } from "../../models/summaries.model";
 import { UserModel } from "../../models/user.models";
+import bcrypt from "bcrypt";
 
 class UserRepository {
+  private async hashPassword(password: string): Promise<string> {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    if (!hashedPassword) {
+      throw new Error("Failed to hash password.");
+    }
+    return hashedPassword as string;
+  };
+
   async createUser (username: string, email: string, password: string, image?: string): Promise<Model> {
     const isUserCreated = await UserModel.create({
       username: username,
@@ -24,6 +35,34 @@ class UserRepository {
       image: image
     });
 
+  };
+  async updateUsername(userId: string, newUsername: string): Promise<void> {
+    await UserModel.update(
+      {
+        username: newUsername,
+      },
+      {
+        where: {
+          id: userId,
+        },
+      }
+    );
+  };
+
+  async updatePassword(userId: string, newPassword: string): Promise<void> {
+
+    const hashPassword = await this.hashPassword(newPassword); // Assuming you have a hashPassword method similar to your UserServices class
+
+    await UserModel.update(
+      {
+        password: hashPassword,
+      },
+      {
+        where: {
+          id: userId,
+        },
+      }
+    );
   };
 
   async getUserAndMetrics (username: string): Promise<Model | null> {
