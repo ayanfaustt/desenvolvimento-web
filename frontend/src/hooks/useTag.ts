@@ -1,8 +1,22 @@
 import axios from "axios";
 
-export const CreateTag = (userId: number, data: object) => {
-
+export const CreateTag = (userId: number, data: object, token: number) => {
+	const authorization = {
+		headers: {
+			'Authorization': `Bearer ${token}`,
+		}
+	};
   const url = `http://localhost:8000/tags/create/${userId}`;
-  return axios.post(url, data);
+  return axios.post(url, data, authorization);
     
+};
+
+export const TagList = (userId: number, token: number) => {
+	const authorization = {
+		headers: {
+			'Authorization': `Bearer ${token}`,
+		}
+	};
+	const url = `http://localhost:8000/tags/list/${userId}`;
+	return axios.get(url, authorization);
 };

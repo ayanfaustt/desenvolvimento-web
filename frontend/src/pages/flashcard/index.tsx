@@ -6,28 +6,28 @@ import PageFlashcardContent from "../../components/pageFlashcardContent";
 
 export default function FlashcardPage() {
 	const [listFlashcards, setListFlashcards] = useState([]);
-	const { userId } = useUser();
+	const { userId, token } = useUser();
 
 	useEffect(() => {
 		const fetchListDecks = async () => {
-			if (userId) {
-				await ListDecks(userId).then((res) => setListFlashcards(res.data));
+			if (userId && token) {
+				await ListDecks(userId, token).then((res) => setListFlashcards(res.data));
 			};
 		};
 		fetchListDecks();
 	}, []);
 
 	const fetchUpdatedListDecks = async () => {
-		if (userId) {
-			await ListDecks(userId).then((res) => setListFlashcards(res.data));
+		if (userId && token) {
+			await ListDecks(userId, token).then((res) => setListFlashcards(res.data));
 		};
 	};
 
 	const fetchFilteredDecks = async (tagId: number | null) => {
 		console.log(tagId)
-		if (userId) {
+		if (userId && token) {
 			if (tagId) {
-				await FilterTagDecks(userId, tagId).then((res) => setListFlashcards(res.data)).catch((err) => console.log(err));
+				await FilterTagDecks(userId, tagId, token).then((res) => setListFlashcards(res.data)).catch((err) => console.log(err));
 			}
 		};
 	};

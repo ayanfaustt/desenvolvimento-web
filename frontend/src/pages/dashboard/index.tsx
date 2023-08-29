@@ -1,15 +1,17 @@
 import React from "react";
 import "./styles.css";
+import { useUser } from "../../hooks/useContextUserId";
 
 
 export default function DashboardPage() {
 
+	const {username} = useUser();
 	return (
 
 		<div className='content-inside'>
 
 			<div className='text-inside'>
-				<p className='p welcome'>Welcome, userx! </p>
+				<p className='p welcome'>Welcome, {username}! </p>
 				<p className='p view'>View an overview of your progress.</p>
 			</div>
 

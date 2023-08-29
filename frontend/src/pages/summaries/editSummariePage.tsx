@@ -6,7 +6,7 @@ import { ListSummarie, UpdateSummarie } from "../../hooks/useSummarie";
 import { Alert, Button, Form } from "react-bootstrap";
 import AsyncSelect from "react-select/async";
 import { useUser } from "../../hooks/useContextUserId";
-import { TagList } from "../../hooks/useListTag";
+import { TagList } from "../../hooks/useTag";
 
 interface TagOption {
 	value: string;
@@ -21,7 +21,7 @@ interface Tag {
 export default function EditSummarie() {
 	const navigate = useNavigate();
 	const [showAlert, setShowAlert] = useState(false);
-	const { userId } = useUser();
+	const { userId, token } = useUser();
 	const location = useLocation();
 	const { itemId, tagName } = location.state;
 	const [resumeContent, setResumeContent] = useState({ summarieName: "", tagId: "", summarieContent: "" });
@@ -31,7 +31,7 @@ export default function EditSummarie() {
 	useEffect(() => {
 		const fetchResumeContent = async () => {
 			try {
-				await ListSummarie(itemId).then((res) => {
+				if (token) await ListSummarie(itemId, token).then((res) => {
 					setResumeContent({ summarieName: res.data.summarie_name, tagId: res.data.tagId, summarieContent: res.data.summarie_content })
 				})
 				setInitialTag({ value: resumeContent.tagId, label: tagName })
@@ -44,9 +44,9 @@ export default function EditSummarie() {
 	}, []);
 
 	const loadOptions = async (inputValue: string) => {
-		if (userId) {
+		if (userId && token) {
 			try {
-				const response = await TagList(userId);
+				const response = await TagList(userId, token);
 				const options: TagOption[] = response.data.map((tag: Tag) => ({
 					value: tag.id,
 					label: tag.tag_name,
@@ -90,7 +90,7 @@ export default function EditSummarie() {
 	};
 
 	const handleEditSummarie = () => {
-		UpdateSummarie(itemId, resumeContent).then(res => {
+		if (token) UpdateSummarie(itemId, resumeContent, token).then(res => {
 			setShowAlert(true);
 
 			setTimeout(() => {
