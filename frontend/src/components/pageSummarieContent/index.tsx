@@ -4,8 +4,8 @@ import SideBar from "../sidebar";
 import Cards from "../card";
 import PageNameAndButtons from "../pageNameAndButtons";
 import { Alert, Button, Col, Modal, Row } from "react-bootstrap";
-import { DeleteDeck } from "../../hooks/useFlashcard";
 import { DeleteSummarie } from "../../hooks/useSummarie";
+import { useUser } from "../../hooks/useContextUserId";
 
 interface CardInfo {
 	id: number;
@@ -26,6 +26,7 @@ export default function PageSummariesContent(props: PageContentProps) {
 	const [showAlert, setShowAlert] = useState(false);
 	const [deleteVisible, setDeleteVisible] = useState(false);
 	const [deckId, setDeckId] = useState<number>(0);
+	const { token } = useUser();
 
 	const handleVisible = (id: number) => {
 		setDeleteVisible(true);
@@ -33,7 +34,7 @@ export default function PageSummariesContent(props: PageContentProps) {
 	};
 
 	const handleDelete = async () => {
-		await DeleteSummarie(deckId).then(() => props.onItemChanged());
+		if (token) await DeleteSummarie(deckId, token).then(() => props.onItemChanged());
 		setShowAlert(true);
 		setTimeout(() => {
 			setShowAlert(false);

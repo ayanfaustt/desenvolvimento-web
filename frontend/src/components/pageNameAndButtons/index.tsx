@@ -4,9 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus, faFilter, faPen } from "@fortawesome/free-solid-svg-icons";
 import { Dropdown, Modal, Button, Row, Col, FormLabel, Alert, Form } from "react-bootstrap";
 import { CreateSummarie } from "../../hooks/useSummarie";
-import { CreateTag } from "../../hooks/useTag";
+import { CreateTag, TagList } from "../../hooks/useTag";
 import AsyncSelect from "react-select/async";
-import { TagList } from "../../hooks/useListTag";
 import { useUser } from "../../hooks/useContextUserId";
 import { CreateCard, CreateDeck, ListDecks } from "../../hooks/useFlashcard";
 import { GenerateCard, GenerateSummarie } from "../../hooks/useOpenAI";
@@ -37,7 +36,7 @@ interface Deck {
 
 
 export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
-	const { userId } = useUser();
+	const { userId, token } = useUser();
 	const [summariesVisible, setSummariesVisible] = useState(false);
 	const [tagVisible, setTagVisible] = useState(false);
 	const [deckVisible, setDeckVisible] = useState(false);
@@ -93,8 +92,8 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 
 	const handleSubmitSummarie = async () => {
 		try {
-			if (userId) {
-				await CreateSummarie(userId, resumeData).then((response) => {
+			if (userId && token) {
+				await CreateSummarie(userId, resumeData, token).then((response) => {
 					if (response.status === 200) {
 						setShowAlert(true);
 						setResumeData({ summarieName: "", tagId: "", summarieContent: "" });
@@ -115,8 +114,8 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 
 	const handleSubmitDeck = async () => {
 		try {
-			if (userId) {
-				await CreateDeck(userId, deckData).then((response) => {
+			if (userId && token) {
+				await CreateDeck(userId, deckData, token).then((response) => {
 					if (response.status === 200) {
 						setShowAlert(true);
 						setDeckData({ deckName: "", tagId: "" });
@@ -137,7 +136,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 
 	const handleSubmitCard = async () => {
 		try {
-			await CreateCard(cardData.deckId, cardData).then((response) => {
+			if (token) await CreateCard(cardData.deckId, cardData, token).then((response) => {
 				if (response.status === 200) {
 					setShowAlert(true);
 					setCardData({ cardName: "", deckId: "", cardContent: "" });
@@ -157,8 +156,8 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 
 	const handleSubmitTag = async () => {
 		try {
-			if (userId) {
-				await CreateTag(userId, tagData).then(() => {
+			if (userId && token) {
+				await CreateTag(userId, tagData, token).then(() => {
 					setShowAlert(true);
 					setTagData({ tagName: "" });
 					setTimeout(() => {
@@ -166,7 +165,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 						setTagVisible(false);
 					}, 2000);
 				});
-				await TagList(userId);
+				await TagList(userId, token);
 			}
 		} catch (error) {
 			console.error("Erro:", error);
@@ -188,9 +187,9 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 	};
 
 	const loadOptions = async (inputValue: string) => {
-		if (userId && !cardVisible) {
+		if (userId && !cardVisible && token) {
 			try {
-				const response = await TagList(userId)
+				const response = await TagList(userId, token)
 				const options: Options[] = response.data.map((tag: Tag) => ({
 					value: tag.id,
 					label: tag.tag_name,
@@ -202,9 +201,9 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 				console.error("Erro:", error);
 				return [];
 			}
-		} else if (userId && cardVisible) {
+		} else if (userId && cardVisible && token) {
 			try {
-				const response = await ListDecks(userId)
+				const response = await ListDecks(userId, token)
 				const options: Options[] = response.data.map((deck: Deck) => ({
 					value: deck.id,
 					label: deck.deck_name,
@@ -253,7 +252,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 		try {
 			setLoading(true);
 			const summarieTitle = { "summarieTitle": resumeData.summarieName }
-			await GenerateSummarie(summarieTitle).then((res) => {
+			if (token) await GenerateSummarie(summarieTitle, token).then((res) => {
 				setResumeData((prevData) => ({
 					...prevData,
 					"summarieContent": res.data.content
@@ -269,7 +268,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 		try {
 			setLoading(true);
 			const cardTitle = { "cardTitle": cardData.cardName }
-			await GenerateCard(cardTitle).then((res) => {
+			if (token) await GenerateCard(cardTitle, token).then((res) => {
 				setCardData((prevData) => ({
 					...prevData,
 					"cardContent": res.data.response

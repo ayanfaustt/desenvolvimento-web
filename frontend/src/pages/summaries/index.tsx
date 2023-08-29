@@ -5,29 +5,29 @@ import { useUser } from "../../hooks/useContextUserId";
 
 export default function SummariesPage() {
 	const [listSummaries, setListSummaries] = useState([]);
+	const { userId, token } = useUser();
 
-	const { userId } = useUser();
 	useEffect(() => {
 		const fetchListSummaries = async () => {
-			if (userId) {
-				await ListSummaries(userId).then((res) => setListSummaries(res.data));
+			if (userId && token) {
+				await ListSummaries(userId, token).then((res) => setListSummaries(res.data));
 			};
 		};
 		fetchListSummaries();
 	}, []);
 
 	const fetchUpdatedListSummaries = async () => {
-		if (userId) {
-			await ListSummaries(userId).then((res) => setListSummaries(res.data));
+		if (userId && token) {
+			await ListSummaries(userId, token).then((res) => setListSummaries(res.data));
 		};
 	};
 
 	const fetchFilteredSummaries = async (tagId: number | null) => {
-		if (userId) {
+		if (userId && token) {
 			if (tagId) {
-				await FilterTagSummaries(userId, tagId).then((res) => setListSummaries(res.data)).catch(err => console.log(err));
+				await FilterTagSummaries(userId, tagId, token).then((res) => setListSummaries(res.data)).catch(err => console.log(err));
 			} else if (tagId === null) {
-				await ListSummaries(userId).then((res) => setListSummaries(res.data));
+				await ListSummaries(userId, token).then((res) => setListSummaries(res.data));
 			}
 		}
 	};
