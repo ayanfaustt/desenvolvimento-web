@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const ListSummaries = (userId: number, token: number) => {
+export const ListSummaries = (userId: number, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
@@ -10,7 +10,7 @@ export const ListSummaries = (userId: number, token: number) => {
 	return axios.get(url, authorization);
 };
 
-export const ListSummarie = (summarieId: number, token: number) => {
+export const ListSummarie = (summarieId: number, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
@@ -20,7 +20,7 @@ export const ListSummarie = (summarieId: number, token: number) => {
 	return axios.get(url, authorization);
 };
 
-export const CreateSummarie = (userId: number, data: object, token: number) => {
+export const CreateSummarie = (userId: number, data: object, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
@@ -30,7 +30,7 @@ export const CreateSummarie = (userId: number, data: object, token: number) => {
 	return axios.post(url, data, authorization);
 };
 
-export const DeleteSummarie = (summarieId: number, token: number) => {
+export const DeleteSummarie = (summarieId: number, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
@@ -40,7 +40,7 @@ export const DeleteSummarie = (summarieId: number, token: number) => {
 	return axios.delete(url, authorization);
 };
 
-export const UpdateSummarie = (summarieId: number, data: object, token: number) => {
+export const UpdateSummarie = (summarieId: number, data: object, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
@@ -50,7 +50,7 @@ export const UpdateSummarie = (summarieId: number, data: object, token: number) 
 	return axios.put(url, data, authorization);
 };
 
-export const FilterTagSummaries = (userId: number, tagId: number, token: number) => {
+export const FilterTagSummaries = (userId: number, tagId: number, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,

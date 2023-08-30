@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const ListDecks = (userId: number, token: number) => {
+export const ListDecks = (userId: number, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
@@ -10,7 +10,7 @@ export const ListDecks = (userId: number, token: number) => {
 	return axios.get(url, authorization);
 };
 
-export const CreateDeck = (userId: number, data: object, token: number) => {
+export const CreateDeck = (userId: number, data: object, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
@@ -20,7 +20,7 @@ export const CreateDeck = (userId: number, data: object, token: number) => {
 	return axios.post(url, data);
 };
 
-export const DeleteDeck = (deckId: number, token: number) => {
+export const DeleteDeck = (deckId: number, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
@@ -30,7 +30,7 @@ export const DeleteDeck = (deckId: number, token: number) => {
 	return axios.delete(url);
 };
 
-export const UpdateDeck = (deckId: number, data: object, token: number) => {
+export const UpdateDeck = (deckId: number, data: object, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
@@ -40,7 +40,7 @@ export const UpdateDeck = (deckId: number, data: object, token: number) => {
 	return axios.post(url, data);
 };
 
-export const FilterTagDecks = (userId: number, tagId: number, token: number) => {
+export const FilterTagDecks = (userId: number, tagId: number, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
@@ -50,7 +50,7 @@ export const FilterTagDecks = (userId: number, tagId: number, token: number) => 
 	return axios.get(url);
 };
 
-export const ListCards = (deckId: number, token: number) => {
+export const ListCards = (deckId: number, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
@@ -60,7 +60,7 @@ export const ListCards = (deckId: number, token: number) => {
 	return axios.get(url);
 };
 
-export const CreateCard = (deckId: string, data: object, token: number) => {
+export const CreateCard = (deckId: string, data: object, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const CreateTag = (userId: number, data: object, token: number) => {
+export const CreateTag = (userId: number, data: object, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
@@ -11,7 +11,7 @@ export const CreateTag = (userId: number, data: object, token: number) => {
     
 };
 
-export const TagList = (userId: number, token: number) => {
+export const TagList = (userId: number, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
