@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const GenerateSummarie = (summarieTitle: object, token: number) => {
+export const GenerateSummarie = (summarieTitle: object, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,
@@ -10,7 +10,7 @@ export const GenerateSummarie = (summarieTitle: object, token: number) => {
 	return axios.post(url, summarieTitle, authorization);
 };
 
-export const GenerateCard = (cardTitle: object, token: number) => {
+export const GenerateCard = (cardTitle: object, token: string) => {
 	const authorization = {
 		headers: {
 			'Authorization': `Bearer ${token}`,

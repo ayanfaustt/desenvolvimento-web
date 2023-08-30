@@ -2,10 +2,10 @@ import React, { createContext, useState, useContext } from "react";
 
 interface UserContextType {
   userId: number | null;
-  token: number | null;
+  token: string | null;
   username: string | null;
   setUserId: (userId: number | null) => void;
-  setToken: (token: number | null) => void;
+  setToken: (token: string | null) => void;
   setUsername: (username: string | null) => void;
 }
 
@@ -21,7 +21,7 @@ const UserContext = createContext<UserContextType>({
 
 export function UserProvider(props: { children: React.ReactNode }) {
   const [userId, setUserId] = useState<number | null>(null);
-  const [token, setToken] = useState<number | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
 
   return (
