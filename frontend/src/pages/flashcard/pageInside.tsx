@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { ListSummarie } from "../../hooks/useSummarie";
 import { ListCards } from "../../hooks/useFlashcard";
 import FlashcardList from "../../components/flashcard";
+import { useUser } from "../../hooks/useContextUserId";
 
 interface Card {
 	card_content: string;
@@ -13,13 +14,14 @@ interface Card {
 
 export default function CardsInsidePage() {
 	const location = useLocation();
+	const { token } = useUser();
 	const { itemId } = location.state;
 	const [cardContent, setCardContent] = useState([]);
 
 	useEffect(() => {
 		const fetchResumeContent = async () => {
 			try {
-				await ListCards(itemId).then((res) => {
+				if (token) await ListCards(itemId, token).then((res) => {
 					console.log(res.data)
 					setCardContent(res.data)
 				});

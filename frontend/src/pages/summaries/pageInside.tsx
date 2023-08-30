@@ -3,16 +3,18 @@ import SideBar from "../../components/sidebar";
 import "./styles.css";
 import { useLocation } from "react-router-dom";
 import { ListSummarie } from "../../hooks/useSummarie";
+import { useUser } from "../../hooks/useContextUserId";
 
 export default function SummariesInsidePage() {
 	const location = useLocation();
+	const { token } = useUser();
 	const { itemId } = location.state;
 	const [resumeContent, setResumeContent] = useState({ summarieName: "", summarieContent: "" });
 
 	useEffect(() => {
 		const fetchResumeContent = async () => {
 			try {
-				await ListSummarie(itemId).then((res) => {
+				if (token) await ListSummarie(itemId, token).then((res) => {
 					setResumeContent({ summarieName: res.data.summarie_name, summarieContent: res.data.summarie_content })
 				});
 			} catch (err) {
