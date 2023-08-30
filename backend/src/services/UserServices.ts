@@ -69,16 +69,23 @@ class UserServices {
   }
 
   async updateUser(
-    username: string,
-    email: string,
-    password: string,
+    userId: string,
+    username?: string,
+    email?: string,
+    password?: string,
     image?: string
   ): Promise<void> {
-	
-    this.userCheck(username, email);
+		
+    if(username  || email)
+      await this.userCheck(username, email);
 
-    const hash = await this.hashPassword(password);
-    await UserRepository.createUser(
+    let hash;
+
+    if(password)
+    	hash = await this.hashPassword(password);
+
+    await UserRepository.updateUser(
+      userId,
       username,
       email,
       hash,

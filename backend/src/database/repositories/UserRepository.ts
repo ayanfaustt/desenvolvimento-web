@@ -27,12 +27,16 @@ class UserRepository {
     return isUserCreated;
   };
     
-  async updateUser (username: string, email: string, password: string, image?: string): Promise<void> {
-    await UserModel.create({
+  async updateUser (userId: string, username?: string, email?: string, password?: string, image?: string): Promise<void> {
+    await UserModel.update({
       username: username,
       email: email,
       password: password,
       image: image
+    },{
+      where: {
+        id: userId
+      }
     });
 
   };
