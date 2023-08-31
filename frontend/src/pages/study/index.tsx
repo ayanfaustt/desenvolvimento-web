@@ -124,8 +124,8 @@ export default function StudyMaterialPage(props : StudyMaterialPageProps){
 					</div>
 				</div>
 				<div>
-					<button className="btn">Generate</button>
-					<button className="btn">Favorite</button>
+					<button className="side-btn">Generate</button>
+					<button className="side-btn">Favorite</button>
 				</div>
 			</div>
 		</main>
