@@ -19,3 +19,13 @@ export const GenerateCard = (cardTitle: object, token: string) => {
 	const url = `http://localhost:8000/openai/create/card`;
 	return axios.post(url, cardTitle, authorization);
 };
+
+export const GenerateStudyMaterial = (material: object, token: string) => {
+	const authorization = {
+		headers: {
+			'Authorization': `Bearer ${token}`,
+		}
+	};
+	const url = `http://localhost:8000/openai/create/materials`;
+	return axios.post(url, material, authorization);
+};
