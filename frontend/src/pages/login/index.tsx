@@ -61,6 +61,7 @@ export default function LoginPage() {
 				setUsername(response.data.username);
 			});
 			setIsLoading(false);
+			
 			navigate("/dashboard");
 		} catch (error) {
 			setIsLoading(false);
