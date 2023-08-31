@@ -118,6 +118,31 @@ class UserController {
 
   }
 
+    /**
+   * @description Update the username of a user.
+   * @param {string} userId - req.params (string) user Id;
+   * @param {string} newUsername - req.body (string) the new username;
+   * @returns A message with status code.
+   */
+  async updateUsername(req: Request, res: Response): Promise<Response> {
+    try {
+      const { userId } = req.params;
+      const { newUsername } = req.body;
+
+      if (!userId)
+        throw new Error(UserErrorMessages.USER_ID_NULL);
+
+      if (!newUsername)
+        throw new Error("New username cannot be empty.");
+
+      await UserServices.updateUsername(userId, newUsername);
+
+      return res.status(200).send({ message: "Username updated !" });
+    } catch (error) {
+      return errorHandler(error, res);
+    }
+  }
+
   /**
     * @description Delete an user.
     * @param {string} username - req.params (string) the username;

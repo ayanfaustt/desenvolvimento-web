@@ -91,7 +91,21 @@ class UserServices {
       hash,
       image
     );
+  }
 
+  async updateUsername(userId: string, newUsername: string): Promise<void> {
+    const user = await UserRepository.getUserById(userId);
+
+    if (!user) {
+      throw new NotFoundError(UserErrorMessages.USER_NOT_FOUND);
+    }
+
+    const isUsernameTaken = await UserRepository.getAllUserInfoByUserName(newUsername);
+    if (isUsernameTaken) {
+      throw new AlreadyExistError(UserErrorMessages.USER_USERNAME_USED);
+    }
+
+    await UserRepository.username(userId, newUsername);
   }
 
   async getUserAndMetrics(username: string): Promise<Model> {
