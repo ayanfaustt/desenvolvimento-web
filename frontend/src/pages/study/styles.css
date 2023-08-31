@@ -7,7 +7,7 @@
 	width: 120vh;
 	min-height: 60vh;
 	max-height: 100vh;
-	background-color: aqua;
+	background-color: #DAE9F1;
 	padding: 30px;
 	overflow-y: auto;
 	border-radius: 16px;
@@ -62,7 +62,7 @@
 	border: none;
 	width: 10vh;
 	padding: 0%;
-	background-color: aqua;
+	background-color: #DAE9F1;
 	color: #024959;
 }
 
@@ -73,7 +73,7 @@
 .card-main {
 	display: flex;
 	border-radius: 10px;
-	background-color: #DAE9F1;
+	background-color: #A4C3DA;
 	padding: 12px;
 	margin-top: 20px;
 }
@@ -84,7 +84,7 @@
 	justify-content: space-between;
 	gap: 20px;
 	padding: 20px;
-	background-color: #DAE9F1;
+	background-color: #A4C3DA;
 	border: 1px solid #004257;
 	border-radius: 10px;
 	flex-grow: 1;
