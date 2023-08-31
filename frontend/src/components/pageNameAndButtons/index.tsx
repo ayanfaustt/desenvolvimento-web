@@ -325,7 +325,12 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 						</Row>
 						<Row>
 							<Col>
-								{loading ? "Please wait, GPT is generating your summary...." : <></>}
+								{loading ?
+									<div className="loading-spinner">
+										<div className="spinner"></div>
+									</div>
+									: null
+								}
 							</Col>
 						</Row>
 						<Row className='mb-4'>
@@ -441,7 +446,12 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 						</Row>
 						<Row>
 							<Col>
-								{loading ? "Please wait, GPT is generating your summary...." : <></>}
+								{loading ?
+									<div className="loading-spinner">
+										<div className="spinner"></div>
+									</div>
+									: null
+								}
 							</Col>
 						</Row>
 						<Row>
