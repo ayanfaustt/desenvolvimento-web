@@ -40,17 +40,17 @@ class UserRepository {
     });
 
   };
-  async updateUsername(userId: string, newUsername: string): Promise<void> {
+  
+  async username(userId: string, newUsername: string): Promise<void> {
+
     await UserModel.update(
       {
-        username: newUsername,
-      },
-      {
+        username: newUsername
+      },{
         where: {
-          id: userId,
-        },
-      }
-    );
+          id: userId
+        }
+      });
   };
 
   async updatePassword(userId: string, newPassword: string): Promise<void> {
