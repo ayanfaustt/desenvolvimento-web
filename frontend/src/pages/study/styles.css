@@ -1,35 +1,39 @@
 .div {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .searchContainer {
 	width: 120vh;
-	height: 70vh;
+	min-height: 60vh;
+	max-height: 100vh;
 	background-color: aqua;
+	padding: 30px;
+	overflow-y: auto;
+	border-radius: 16px;
 }
 
 .main-container {
 	display: flex;
-	justify-content: center; 
-	align-items: center; 
+	justify-content: center;
+	align-items: center;
 	height: 100vh;
 }
 
 .generate-button {
 	border-radius: 50px;
 	border: none;
-	background-color: #024959 ;
+	background-color: #024959;
 	width: 18vh;
 	height: 40px;
 	font-size: x-large;
 	color: aliceblue;
 }
 
-.op{
+.op {
 	display: flex;
-	justify-content: center; 
-	align-items: center; 
+	justify-content: center;
+	align-items: center;
 	gap: 15px;
 }
 
@@ -40,9 +44,10 @@
 	border-width: 2px;
 	width: 40vh;
 	height: 40px;
+	padding: 10px;
 }
 
-.title{
+.title {
 	font-size: 45px;
 	font-weight: 700;
 }
@@ -57,4 +62,57 @@
 	border: none;
 	width: 10vh;
 	padding: 0%;
+	background-color: aqua;
+	color: #024959;
+}
+
+.underline {
+	text-decoration: underline;
+}
+
+.card-main {
+	display: flex;
+	border-radius: 10px;
+	background-color: #DAE9F1;
+	padding: 12px;
+	margin-top: 20px;
+}
+
+.card-inside {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	gap: 20px;
+	padding: 20px;
+	background-color: #DAE9F1;
+	border: 1px solid #004257;
+	border-radius: 10px;
+	flex-grow: 1;
+}
+
+.loading-spinner {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1000;
+}
+
+.spinner {
+	width: 50px;
+	height: 50px;
+	border: 5px solid rgba(0, 0, 0, 0.1);
+	border-top: 5px solid #3498db;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
 }
