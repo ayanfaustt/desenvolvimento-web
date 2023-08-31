@@ -1,7 +1,9 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { useUser } from "../../hooks/useContextUserId";
 import axios from "axios";
-import PageStudyMaterial from "../../components/pageStudymaterial";
+import "./styles.css";
+
+import SideBar from "../../components/sidebar";
 
 interface StudyMaterialPageProps {
     userName: string;
@@ -108,7 +110,24 @@ export default function StudyMaterialPage(props : StudyMaterialPageProps){
         }   
     
     };
+
+
     return(
-        <PageStudyMaterial/>
+        <main className="main-container">
+			<SideBar/>
+			<div className="searchContainer">
+				<div className="search-container-top">
+					<p className="title">Study Material</p>
+					<div className="op">
+						<input className="generate-input "/>
+						<button className="generate-button ">Generate</button>
+					</div>
+				</div>
+				<div>
+					<button className="btn">Generate</button>
+					<button className="btn">Favorite</button>
+				</div>
+			</div>
+		</main>
     )
 }
