@@ -27,26 +27,30 @@ class UserRepository {
     return isUserCreated;
   };
     
-  async updateUser (username: string, email: string, password: string, image?: string): Promise<void> {
-    await UserModel.create({
+  async updateUser (userId: string, username?: string, email?: string, password?: string, image?: string): Promise<void> {
+    await UserModel.update({
       username: username,
       email: email,
       password: password,
       image: image
+    },{
+      where: {
+        id: userId
+      }
     });
 
   };
-  async updateUsername(userId: string, newUsername: string): Promise<void> {
+  
+  async username(userId: string, newUsername: string): Promise<void> {
+
     await UserModel.update(
       {
-        username: newUsername,
-      },
-      {
+        username: newUsername
+      },{
         where: {
-          id: userId,
-        },
-      }
-    );
+          id: userId
+        }
+      });
   };
 
   async updatePassword(userId: string, newPassword: string): Promise<void> {

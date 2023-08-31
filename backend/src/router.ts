@@ -17,7 +17,8 @@ export const router = express.Router();
 router.get("/user/:username",SessionController.verifySession, UserController.getAllUserInfo);
 router.get("/user/metrics/:username",SessionController.verifySession, userController.getUserWithMetrics);
 router.post("/user/create/:username", UserController.createUser);
-router.post("/user/update/:userId",SessionController.verifySession, UserController.updateUser);
+router.put("/user/update/:userId",SessionController.verifySession, UserController.updateUser);
+router.put("/user/username/:userID",SessionController.verifySession, UserController.updateUsername);
 
 // session
 router.post("/session/login", SessionController.login);

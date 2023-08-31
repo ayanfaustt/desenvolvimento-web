@@ -94,33 +94,53 @@ class UserController {
 
   /**
     * @description Update an user.
-    * @param {string} username - req.params (string) the username;
+		* @param {string} userId - req.params (string) user Id;
+    * @param {string} username - req.body (string) the username;
     * @param {string} email - req.body (string) the user's email;
-    * @param {string} password - req.params (string) the user's password;
+    * @param {string} password - req.body (string) the user's password;
 		* @param {string} image - req.body (string) user image reference;
     * @returns A message with status code.
     */
   async updateUser (req: Request, res: Response): Promise<Response> {
     try {
-      const { username } = req.params;
-      const { email, password, image }  = req.body;
+      const { userId } = req.params;
+      const { username, email, password, image }  = req.body;
 
-      if(!username)
-        throw new Error(UserErrorMessages.USER_USERNAME_NULL);
+      if(!userId)
+        throw new Error(UserErrorMessages.USER_ID_NULL);
 
-      if(!email)
-        throw new Error(UserErrorMessages.USER_EMAIL_NULL);
-		
-      if(!password)
-        throw new Error(UserErrorMessages.USER_PASSWORD_NULL);
-
-      await UserServices.updateUser(username, email, password, image);
+      await UserServices.updateUser(userId, username, email, password, image);
 
       return res.status(200).send({message: "User updated !"});
     } catch (error) {
       return errorHandler(error, res);
     }
 
+  }
+
+    /**
+   * @description Update the username of a user.
+   * @param {string} userId - req.params (string) user Id;
+   * @param {string} newUsername - req.body (string) the new username;
+   * @returns A message with status code.
+   */
+  async updateUsername(req: Request, res: Response): Promise<Response> {
+    try {
+      const { userId } = req.params;
+      const { newUsername } = req.body;
+
+      if (!userId)
+        throw new Error(UserErrorMessages.USER_ID_NULL);
+
+      if (!newUsername)
+        throw new Error("New username cannot be empty.");
+
+      await UserServices.updateUsername(userId, newUsername);
+
+      return res.status(200).send({ message: "Username updated !" });
+    } catch (error) {
+      return errorHandler(error, res);
+    }
   }
 
   /**

@@ -69,22 +69,43 @@ class UserServices {
   }
 
   async updateUser(
-    username: string,
-    email: string,
-    password: string,
+    userId: string,
+    username?: string,
+    email?: string,
+    password?: string,
     image?: string
   ): Promise<void> {
-	
-    this.userCheck(username, email);
+		
+    if(username  || email)
+      await this.userCheck(username, email);
 
-    const hash = await this.hashPassword(password);
-    await UserRepository.createUser(
+    let hash;
+
+    if(password)
+    	hash = await this.hashPassword(password);
+
+    await UserRepository.updateUser(
+      userId,
       username,
       email,
       hash,
       image
     );
+  }
 
+  async updateUsername(userId: string, newUsername: string): Promise<void> {
+    const user = await UserRepository.getUserById(userId);
+
+    if (!user) {
+      throw new NotFoundError(UserErrorMessages.USER_NOT_FOUND);
+    }
+
+    const isUsernameTaken = await UserRepository.getAllUserInfoByUserName(newUsername);
+    if (isUsernameTaken) {
+      throw new AlreadyExistError(UserErrorMessages.USER_USERNAME_USED);
+    }
+
+    await UserRepository.username(userId, newUsername);
   }
 
   async getUserAndMetrics(username: string): Promise<Model> {
