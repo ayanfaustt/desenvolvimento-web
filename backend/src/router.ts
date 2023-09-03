@@ -18,7 +18,7 @@ router.get("/user/:username",SessionController.verifySession, UserController.get
 router.get("/user/metrics/:username",SessionController.verifySession, userController.getUserWithMetrics);
 router.post("/user/create/:username", UserController.createUser);
 router.put("/user/update/:userId",SessionController.verifySession, UserController.updateUser);
-router.put("/user/username/:userID",SessionController.verifySession, UserController.updateUsername);
+// router.put("/user/username/:userID",SessionController.verifySession, UserController.updateUsername);
 
 // session
 router.post("/session/login", SessionController.login);
