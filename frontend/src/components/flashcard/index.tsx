@@ -4,6 +4,7 @@ import "./styles.css";
 interface FlashcardListProps {
 	card_name: string;
 	card_content: string;
+	className: string;
 }
 
 export default function FlashcardList(props: FlashcardListProps) {
@@ -23,12 +24,12 @@ export default function FlashcardList(props: FlashcardListProps) {
 	useEffect(() => {
 		window.addEventListener('resize', setMaxHeight)
 		return () => window.removeEventListener('resize', setMaxHeight)
-	  }, []);
+	}, []);
 
 	return (
 		<div
-			className={`card ${flip ? "flip" : ""}`}
-			style={{height : height }}
+			className={`card ${flip ? "flip" : ""} ${props.className}`}
+			style={{ height: height }}
 			onClick={() => setFlip(!flip)}>
 			<div className="front" ref={front}>{props.card_name}</div>
 			<div className="back" ref={back}>{props.card_content}</div>

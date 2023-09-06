@@ -1,4 +1,8 @@
 .card {
+	display: none;
+}
+
+.card.active {
 	display: flex;
 	justify-content: center;
 	align-items: center;
