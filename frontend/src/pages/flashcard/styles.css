@@ -1,7 +1,7 @@
 .flashcard-main {
 	display: flex;
 	align-items: center;
-	padding-left: 300px;
+	padding-left: 800px;
 	height: 100vh;
 	width: 100vw;
 }
@@ -12,4 +12,21 @@
 	width: 300px;
 	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 	gap: 1rem;
+}
+
+.flashcard {
+	background-color: aqua;
+}
+
+.prevNextButtons {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+
+.prev-button {
+	width: 50%;
+}
+.next-button {
+	width: 50%;
 }
