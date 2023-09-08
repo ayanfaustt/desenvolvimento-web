@@ -16,14 +16,14 @@ export default function DashboardPage() {
 	const [percent, setPercent] = useState<any>();
 	const [isGrow, setIsGrow] = useState<any>();
 
-	const bardData2 = [
-		{ x: 'Sun', y: 10 || 0 },
-		{ x: 'Mon', y: 12 || 0 },
-		{ x: 'Tue', y: 3 || 0 },
-		{ x: 'Wed', y: 4 || 0 },
-		{ x: 'Thu', y: 7 || 0 },
-		{ x: 'Fri', y: 1 || 0 },
-		{ x: 'Sat', y: 9 || 0 },
+	const barData = [
+		{ x: 'Sun', y: reviews[0] || 0 },
+		{ x: 'Mon', y: reviews[1] || 0 },
+		{ x: 'Tue', y: reviews[2] || 0 },
+		{ x: 'Wed', y: reviews[3] || 0 },
+		{ x: 'Thu', y: reviews[4] || 0 },
+		{ x: 'Fri', y: reviews[5] || 0 },
+		{ x: 'Sat', y: reviews[6] || 0 },
 	]
 
 
@@ -50,8 +50,13 @@ export default function DashboardPage() {
 			setMetrics(response.data.user.metrics);
 			setPercent(response.data.metricsInfo.percent);
 			setIsGrow(response.data.metricsInfo.isGrowth);
-			// metrics.sort((a,b) => new Date(a.metrics_date) - new Date(b.metrics_date));
-
+			metrics.sort((a, b) => {
+				const dateA = new Date(a.metrics_date);
+				const dateB = new Date(b.metrics_date);
+			  
+				return dateA.getTime() - dateB.getTime();
+			  });
+			  
 			const reviewsData = response.data.user.metrics.map((x: any) => x.reviews);
 			setReviews(reviewsData);
 		} catch (error) {
@@ -89,7 +94,7 @@ export default function DashboardPage() {
 						width={350}
 					>
 						<VictoryBar
-							data={bardData2}
+							data={barData}
 							style={{ data: { fill: "#024959" } }}
 
 						/>
@@ -104,14 +109,14 @@ export default function DashboardPage() {
 					<VictoryPie
 						data={
 							[
-								{ x: "Summaries", y: summaries || 2 },
-								{ x: "Decks", y: decks || 10 }
+								{ x: "Summaries", y: summaries || 1 },
+								{ x: "Decks", y: decks || 1 }
 							]
 						}
 						colorScale={['#024959', '#A7C6D9']}
-						labelRadius={({ innerRadius }) => innerRadius as number +120 }
-						innerRadius={40}
-						width={350}
+						labelRadius={({ innerRadius }) => innerRadius as number + 90}
+						innerRadius={70}
+						width={550}
 						style={{ labels: { fill: "black" } }}
 					/>
 				</div>
