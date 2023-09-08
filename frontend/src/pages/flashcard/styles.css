@@ -27,6 +27,22 @@
 .prev-button {
 	width: 50%;
 }
+
 .next-button {
 	width: 50%;
+}
+
+.carousel-list {
+	font-size: 16px;
+	color: #006699;
+}
+
+.carousel-icons {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.icons {
+	cursor: pointer;
 }
