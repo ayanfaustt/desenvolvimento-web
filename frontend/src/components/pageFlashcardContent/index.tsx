@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./styles.css";
 import SideBar from "../sidebar";
-import Cards from "../card";
+import Cards from "../Card";
 import PageNameAndButtons from "../pageNameAndButtons";
 import { Alert, Button, Col, Modal, Row } from "react-bootstrap";
 import { DeleteSummarie } from "../../hooks/useSummarie";
