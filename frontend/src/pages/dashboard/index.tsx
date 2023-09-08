@@ -37,6 +37,9 @@ export default function DashboardPage() {
 	}, [metrics]);
 
 	const getMetrics = async () => {
+		const data = {
+			
+		};
 		try {
 			const response = await axios.get(
 				`http://localhost:8000/user/metrics/${username}`,

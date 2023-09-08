@@ -3,7 +3,8 @@ import "./styles.css";
 import Label from "../../components/label";
 import { useUser } from "../../hooks/useContextUserId";
 import { Form } from "react-bootstrap";
-import { UserInfo } from "../../hooks/useUser";
+import { UpdateUser, UserInfo } from "../../hooks/useUser";
+import axios from "axios";
 
 
 // interface ConfigPageProps {
@@ -11,20 +12,29 @@ import { UserInfo } from "../../hooks/useUser";
 // }
 
 export default function ConfigPage(/*props: ConfigPageProps*/) {
-	const { username, token } = useUser();
-	const [user, setUser] = useState(username ? username : "");
-	const [email, setEmail] = useState("");
+	const { userId, username, token, setUsername } = useUser();
+	const [userNameRetr, setUser] = useState(username ? username : "");
+	const [emailRetr, setEmail] = useState("");
 	// const [language, setLanguage] = useState("English");
 	const [curPassword, setCurPassword] = useState("");
 	const [newPassword, setNewPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
+	const [originalUserName, setOriginalUserName] = useState("");
+	const [originalEmail, setOriginalEmail] = useState("");
 
 
 	useEffect(() => {
 		const fetchUser = async () => {
-			if (username && token) await UserInfo(username, token).then((res) => setEmail(res.data.email))
+			if (username && token) {
+				await UserInfo(username, token).then((res) => {
+					setEmail(res.data.email)
+					setOriginalEmail(res.data.email)
+				})
+				setOriginalUserName(username)
+			}
 		}
 		fetchUser();
+
 	}, []);
 
 	const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -32,8 +42,6 @@ export default function ConfigPage(/*props: ConfigPageProps*/) {
 		if (name === "user") {
 			setUser(value);
 		} else if (name === "email") {
-			setEmail(value);
-		} else if (name === "newPassword") {
 			setEmail(value);
 		} else if (name === "curPassword") {
 			setCurPassword(value);
@@ -44,9 +52,46 @@ export default function ConfigPage(/*props: ConfigPageProps*/) {
 		};
 	};
 
-	const handleSubmit = () => {
-		console.log(user, curPassword, newPassword, confirmPassword)
-	};
+	const submitUpdate = async (data: object) => {
+		try {
+			if (userId != null && token != null) {
+				await UpdateUser(userId, data, token).then((response) => {
+					if (response.status === 200) {
+						console.log("done!")
+					}
+				})
+			}
+		} catch (error) {
+			console.error(error)
+		};
+	}
+
+	const handleSubmit = async () => {
+		console.log(token, userId)
+
+		const data: Record<string, any> = {}
+
+		if (userNameRetr !== originalUserName) {
+			data.username = userNameRetr
+		}
+		if (emailRetr !== originalEmail) {
+			data.email = emailRetr
+		}
+
+		if(!(curPassword==="" && newPassword==="" && confirmPassword==="")){
+			if(newPassword!==confirmPassword){
+				//retornar que os campos devem ser iguais
+			}
+			else{
+				data.password = newPassword
+				submitUpdate(data)
+			}
+		}else{
+			submitUpdate(data)
+		}
+
+
+	}
 
 	return (
 		<div className='config-box-inside'>
@@ -55,11 +100,11 @@ export default function ConfigPage(/*props: ConfigPageProps*/) {
 				<div className='textFields-inputFields'>
 					<div>
 						<Label textName='Username' />
-						<Form.Control name='user' type="text" value={user} onChange={handleInputChange} className='inputField'></Form.Control>
+						<Form.Control name='user' type="text" value={userNameRetr} onChange={handleInputChange} className='inputField'></Form.Control>
 					</div>
 					<div>
 						<Label textName='Email' />
-						<Form.Control name='email' type="text" value={email} onChange={handleInputChange} className='inputField'></Form.Control>
+						<Form.Control name='email' type="text" value={emailRetr} onChange={handleInputChange} className='inputField'></Form.Control>
 					</div>
 				</div>
 				{/* <div>
