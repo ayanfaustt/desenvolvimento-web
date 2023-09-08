@@ -69,3 +69,13 @@ export const CreateCard = (deckId: string, data: object, token: string) => {
 	const url = `http://localhost:8000/cards/create/${deckId}`;
 	return axios.post(url, data, authorization);
 };
+
+export const UpdateCard = (cardId: string, data: object, token: string) => {
+	const authorization = {
+		headers: {
+			'Authorization': `Bearer ${token}`,
+		}
+	};
+	const url = `http://localhost:8000/cards/update/${cardId}`;
+	return axios.put(url, data, authorization);
+};

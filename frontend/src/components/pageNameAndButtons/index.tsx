@@ -309,7 +309,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 									loadOptions={loadOptions}
 									onChange={handleAsyncSelection}
 									defaultOptions
-									placeholder="Digite para buscar..."
+									placeholder="Type to search..."
 									isSearchable
 								/>
 							</Col>
@@ -343,7 +343,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 						<Row >
 							<Col className="text-center" >
 								<Button onClick={handleSubmitSummarie}>
-									Criar
+									Create
 								</Button>
 								{showAlert && (
 									<Alert variant="success" className="mt-3" onClose={() => setShowAlert(false)} dismissible>
@@ -390,7 +390,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 						<Row >
 							<Col className="text-center" >
 								<Button onClick={handleSubmitDeck}>
-									Criar
+									Create
 								</Button>
 								{showAlert && (
 									<Alert variant="success" className="mt-3" onClose={() => setShowAlert(false)} dismissible>
@@ -463,7 +463,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 						<Row >
 							<Col className="text-center" >
 								<Button onClick={handleSubmitCard}>
-									Criar
+									Create
 								</Button>
 								{showAlert && (
 									<Alert variant="success" className="mt-3" onClose={() => setShowAlert(false)} dismissible>
@@ -495,7 +495,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 						<Row >
 							<Col className="text-center" >
 								<Button onClick={handleSubmitTag}>
-									Salvar
+									Save
 								</Button>
 								{showAlert && (
 									<Alert variant="success" className="mt-3" onClose={() => setShowAlert(false)} dismissible>
@@ -520,7 +520,7 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 							loadOptions={loadOptions}
 							onChange={handleFilterSelection}
 							defaultOptions
-							placeholder="Digite para buscar..."
+							placeholder="Type to search..."
 							isSearchable
 							isClearable
 						/>
@@ -559,8 +559,8 @@ export default function PageNameAndButtons(props: PageNameAndButtonsProps) {
 						<FontAwesomeIcon icon={faCirclePlus} />
 					</Dropdown.Toggle>
 					<Dropdown.Menu>
-						<Dropdown.Item eventKey="deck" >Adicionar deck</Dropdown.Item>
-						<Dropdown.Item eventKey="card" >Adicionar card</Dropdown.Item>
+						<Dropdown.Item eventKey="deck" >Add a deck</Dropdown.Item>
+						<Dropdown.Item eventKey="card" >Add a card</Dropdown.Item>
 						<Dropdown.Item eventKey="tag" >Add a tag</Dropdown.Item>
 					</Dropdown.Menu>
 				</Dropdown>
